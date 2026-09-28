@@ -1,0 +1,45 @@
+/* Styling Latar Belakang & Asas Sistem */
+html {
+    height: 100%;
+}
+
+body {
+    background: url('../images/background.png') no-repeat center center fixed;
+    background-size: cover;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.hero-banner {
+    background: rgba(0, 0, 0, 0.65);
+    color: #ffffff;
+    padding: 60px 20px;
+    border-radius: 12px;
+}
+
+/* --- Penambahbaikan untuk Kad Projek (Modern Glass/Clean Look) --- */
+.card-custom {
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(8px); /* Kesan kabur moden di belakang kad */
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 14px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+    transition: all 0.3s ease-in-out;
+    overflow: hidden;
+}
+
+/* Kesan apungan (lift-up) apabila tetikus menyentuh kad */
+.card-custom:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+}
+
+/* Kesan zum lembut pada imej preview apabila tetikus berada di atas kad */
+.card-custom img {
+    transition: transform 0.5s ease;
+}
+
+.card-custom:hover img {
+    transform: scale(1.04);
+}
