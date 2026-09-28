@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_deadline'])) {
 }
 
 // Tarik data dari database
-$result = $conn->query("SELECT * FROM submission_deadlines ORDER BY id ASC");
+$result = $conn->query("SELECT * FROM submission_deadlines WHERE title <> 'Log Book' ORDER BY id ASC");
 
 include_once '../includes/header.php';
 include_once '../includes/sidebar_supervisor.php';

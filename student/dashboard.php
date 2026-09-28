@@ -84,7 +84,6 @@ $doc_list = [
     'D'                 => 'D: Project Demonstration 3 (15%)',
     'E'                 => 'E: Final Presentation - Poster (15%)',
     'F'                 => 'F: Final Presentation (15%)',
-    'LOG_BOOK'          => 'Log Book (10%)',
     'TECHNICAL_REPORT'  => 'Technical Report (15%)',
 ];
 

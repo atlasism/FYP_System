@@ -10,7 +10,7 @@ if (!function_exists('sanitize')) {
 }
 
 // Tarik data dari database
-$sql = "SELECT * FROM submission_deadlines ORDER BY id ASC";
+$sql = "SELECT * FROM submission_deadlines WHERE title <> 'Log Book' ORDER BY id ASC";
 $result = $conn->query($sql);
 
 include_once '../includes/header.php';

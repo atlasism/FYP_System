@@ -6,7 +6,7 @@ check_access(['Student']);
 $student_id = $_SESSION['user_id'];
 $message = '';
 $message_type = '';
-$max_file_size = 20 * 1024 * 1024;
+$max_file_size = 100 * 1024 * 1024;
 $document_types = [
     'A' => ['label' => 'Proposal Presentation', 'weight' => '10%'],
     'B' => ['label' => 'Project Demonstration 1', 'weight' => '10%'],
@@ -14,7 +14,6 @@ $document_types = [
     'D' => ['label' => 'Project Demonstration 3', 'weight' => '15%'],
     'E' => ['label' => 'Final Presentation - Poster', 'weight' => '15%'],
     'F' => ['label' => 'Final Presentation', 'weight' => '15%'],
-    'LOG_BOOK' => ['label' => 'Log Book', 'weight' => '10%'],
     'TECHNICAL_REPORT' => ['label' => 'Technical Report', 'weight' => '15%']
 ];
 $allowed_mimes = [
@@ -35,6 +34,17 @@ $stmt_proj->bind_param("ii", $student_id, $student_id);
 $stmt_proj->execute();
 $project = $stmt_proj->get_result()->fetch_assoc();
 
+$uploaded_doc_types = [];
+if ($project) {
+    $stmt_uploaded_types = $conn->prepare("SELECT DISTINCT doc_type FROM project_documents WHERE project_id = ?");
+    $stmt_uploaded_types->bind_param("i", $project['id']);
+    $stmt_uploaded_types->execute();
+    $uploaded_types_result = $stmt_uploaded_types->get_result();
+    while ($uploaded_type = $uploaded_types_result->fetch_assoc()) {
+        $uploaded_doc_types[$uploaded_type['doc_type']] = true;
+    }
+}
+
 // 2. Proses Muat Naik Dokumen
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['document_file'])) {
     if (!$project) {
@@ -48,6 +58,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['document_file'])) {
         if (!isset($document_types[$doc_type])) {
             $message = "Please select a Document Type from the list!";
             $message_type = "danger";
+        } elseif (isset($uploaded_doc_types[$doc_type])) {
+            $message = "This document type has already been submitted by a group member. Other members do not need to upload it again.";
+            $message_type = "warning";
         } elseif ($file['error'] === UPLOAD_ERR_OK) {
             $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
             $mime = (new finfo(FILEINFO_MIME_TYPE))->file($file['tmp_name']);
@@ -129,7 +142,8 @@ include_once '../includes/sidebar_student.php';
                     <select name="doc_type" class="form-select" required>
                         <option value="">-- Select Rubric Category --</option>
                         <?php foreach ($document_types as $type => $document): ?>
-                            <option value="<?= sanitize($type); ?>" <?= (($_POST['doc_type'] ?? '') === $type) ? 'selected' : ''; ?>><?= sanitize($type . ': ' . $document['label'] . ' (' . $document['weight'] . ')'); ?></option>
+                            <?php $already_uploaded = isset($uploaded_doc_types[$type]); ?>
+                            <option value="<?= sanitize($type); ?>" <?= (($_POST['doc_type'] ?? '') === $type) ? 'selected' : ''; ?> <?= $already_uploaded ? 'disabled' : ''; ?>><?= sanitize($type . ': ' . $document['label'] . ' (' . $document['weight'] . ')' . ($already_uploaded ? ' - Submitted by group member' : '')); ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>

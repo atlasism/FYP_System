@@ -16,13 +16,6 @@ $stmt = $conn->prepare("
         u.class_name,
         ss.session,
         (
-            SELECT COUNT(*)
-            FROM supervisor_logbook sl
-            WHERE sl.supervisor_id = ss.supervisor_id
-              AND sl.student_id = u.id
-              AND sl.is_verified = 1
-        ) AS verified_weeks,
-        (
             SELECT status
             FROM student_demo_status ds
             WHERE ds.supervisor_id = ss.supervisor_id
@@ -54,7 +47,7 @@ include_once '../includes/sidebar_supervisor.php';
     <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
         <div>
             <h3 class="fw-bold text-primary mb-1"><i class="fas fa-user-graduate me-2"></i>Assigned Students</h3>
-            <p class="text-muted mb-0">Verify log book activities and Demo 1/Demo 2 milestone status.</p>
+            <p class="text-muted mb-0">Verify Demo 1/Demo 2 milestone status.</p>
         </div>
     </div>
 
@@ -72,7 +65,6 @@ include_once '../includes/sidebar_supervisor.php';
                             <th class="ps-4">Student</th>
                             <th>Matrix No</th>
                             <th>Session</th>
-                            <th>Log Book</th>
                             <th>Demo 1</th>
                             <th>Demo 2</th>
                             <th class="text-end pe-4">Actions</th>
@@ -80,7 +72,7 @@ include_once '../includes/sidebar_supervisor.php';
                     </thead>
                     <tbody>
                         <?php if ($students->num_rows === 0): ?>
-                            <tr><td colspan="7" class="text-center text-muted py-5">No assigned students found.</td></tr>
+                            <tr><td colspan="6" class="text-center text-muted py-5">No assigned students found.</td></tr>
                         <?php else: ?>
                             <?php while ($student = $students->fetch_assoc()): ?>
                                 <?php
@@ -97,11 +89,9 @@ include_once '../includes/sidebar_supervisor.php';
                                     </td>
                                     <td><?= sanitize($student['matric_no'] ?: 'Not Set'); ?></td>
                                     <td><?= sanitize($student['session'] ?? '-'); ?></td>
-                                    <td><span class="badge <?= (int) $student['verified_weeks'] === 14 ? 'bg-success' : 'bg-warning text-dark'; ?>"><?= (int) $student['verified_weeks']; ?>/14 weeks</span></td>
                                     <td><span class="badge <?= $status_class($demo_1); ?>"><?= sanitize($demo_1); ?></span></td>
                                     <td><span class="badge <?= $status_class($demo_2); ?>"><?= sanitize($demo_2); ?></span></td>
                                     <td class="text-end pe-4">
-                                        <a href="verify_logbook.php?student_id=<?= (int) $student['id']; ?>" class="btn btn-sm btn-outline-primary me-1"><i class="fas fa-book me-1"></i> Log Book</a>
                                         <a href="update_demo_status.php?student_id=<?= (int) $student['id']; ?>" class="btn btn-sm btn-primary"><i class="fas fa-flag-checkered me-1"></i> Milestones</a>
                                     </td>
                                 </tr>
