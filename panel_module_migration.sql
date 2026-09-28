@@ -33,6 +33,19 @@ PREPARE panel_sessions_staff_id_statement FROM @panel_sessions_staff_id_sql;
 EXECUTE panel_sessions_staff_id_statement;
 DEALLOCATE PREPARE panel_sessions_staff_id_statement;
 
+SET @panel_sessions_has_expected_panel_count = (
+    SELECT COUNT(*) FROM information_schema.columns
+    WHERE table_schema = DATABASE() AND table_name = 'panel_sessions' AND column_name = 'expected_panel_count'
+);
+SET @panel_sessions_expected_panel_count_sql = IF(
+    @panel_sessions_has_expected_panel_count = 0,
+    'ALTER TABLE panel_sessions ADD COLUMN expected_panel_count TINYINT UNSIGNED NOT NULL DEFAULT 1 AFTER panel_staff_id',
+    'SELECT 1'
+);
+PREPARE panel_sessions_expected_panel_count_statement FROM @panel_sessions_expected_panel_count_sql;
+EXECUTE panel_sessions_expected_panel_count_statement;
+DEALLOCATE PREPARE panel_sessions_expected_panel_count_statement;
+
 CREATE TABLE IF NOT EXISTS panel_session_projects (
     panel_session_id INT UNSIGNED NOT NULL,
     project_id INT NOT NULL,
@@ -42,9 +55,23 @@ CREATE TABLE IF NOT EXISTS panel_session_projects (
     CONSTRAINT fk_panel_session_projects_project FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+CREATE TABLE IF NOT EXISTS panel_assessors (
+    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    panel_session_id INT UNSIGNED NOT NULL,
+    panel_name VARCHAR(150) NOT NULL,
+    panel_email VARCHAR(190) NULL,
+    status ENUM('Active', 'Submitted') NOT NULL DEFAULT 'Active',
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    submitted_at DATETIME NULL,
+    PRIMARY KEY (id),
+    UNIQUE KEY uq_panel_assessor_name (panel_session_id, panel_name),
+    CONSTRAINT fk_panel_assessor_session FOREIGN KEY (panel_session_id) REFERENCES panel_sessions(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 CREATE TABLE IF NOT EXISTS panel_evaluations (
     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
     panel_session_id INT UNSIGNED NOT NULL,
+    panel_assessor_id INT UNSIGNED NULL,
     project_id INT NOT NULL,
     panel_staff_id VARCHAR(30) NULL,
     panel_name VARCHAR(150) NOT NULL,
@@ -56,6 +83,7 @@ CREATE TABLE IF NOT EXISTS panel_evaluations (
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
     UNIQUE KEY uq_panel_evaluation_session_project (panel_session_id, project_id),
+    KEY idx_panel_evaluation_session (panel_session_id),
     KEY idx_panel_evaluation_project (project_id),
     CONSTRAINT fk_panel_evaluation_session FOREIGN KEY (panel_session_id) REFERENCES panel_sessions(id) ON DELETE CASCADE,
     CONSTRAINT fk_panel_evaluation_project FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE
@@ -73,6 +101,47 @@ SET @panel_evaluations_staff_id_sql = IF(
 PREPARE panel_evaluations_staff_id_statement FROM @panel_evaluations_staff_id_sql;
 EXECUTE panel_evaluations_staff_id_statement;
 DEALLOCATE PREPARE panel_evaluations_staff_id_statement;
+
+SET @panel_evaluations_has_assessor_id = (
+    SELECT COUNT(*) FROM information_schema.columns
+    WHERE table_schema = DATABASE() AND table_name = 'panel_evaluations' AND column_name = 'panel_assessor_id'
+);
+SET @panel_evaluations_assessor_id_sql = IF(
+    @panel_evaluations_has_assessor_id = 0,
+    'ALTER TABLE panel_evaluations ADD COLUMN panel_assessor_id INT UNSIGNED NULL AFTER panel_session_id',
+    'SELECT 1'
+);
+PREPARE panel_evaluations_assessor_id_statement FROM @panel_evaluations_assessor_id_sql;
+EXECUTE panel_evaluations_assessor_id_statement;
+DEALLOCATE PREPARE panel_evaluations_assessor_id_statement;
+
+SET @panel_evaluations_has_session_index = (
+    SELECT COUNT(*) FROM information_schema.statistics
+    WHERE table_schema = DATABASE() AND table_name = 'panel_evaluations' AND index_name = 'idx_panel_evaluation_session'
+);
+SET @panel_evaluations_session_index_sql = IF(
+    @panel_evaluations_has_session_index = 0,
+    'ALTER TABLE panel_evaluations ADD KEY idx_panel_evaluation_session (panel_session_id)',
+    'SELECT 1'
+);
+PREPARE panel_evaluations_session_index_statement FROM @panel_evaluations_session_index_sql;
+EXECUTE panel_evaluations_session_index_statement;
+DEALLOCATE PREPARE panel_evaluations_session_index_statement;
+
+INSERT INTO panel_assessors (panel_session_id, panel_name, panel_email, status, created_at, submitted_at)
+SELECT ps.id, ps.panel_name, ps.panel_email,
+       IF(ps.status = 'Submitted', 'Submitted', 'Active'), ps.created_at, ps.submitted_at
+FROM panel_sessions ps
+WHERE ps.panel_name IS NOT NULL AND TRIM(ps.panel_name) <> ''
+  AND NOT EXISTS (
+      SELECT 1 FROM panel_assessors pa
+      WHERE pa.panel_session_id = ps.id AND pa.panel_name = ps.panel_name
+  );
+
+UPDATE panel_evaluations pe
+JOIN panel_assessors pa ON pa.panel_session_id = pe.panel_session_id AND pa.panel_name = pe.panel_name
+SET pe.panel_assessor_id = pa.id
+WHERE pe.panel_assessor_id IS NULL;
 
 CREATE TABLE IF NOT EXISTS panel_student_marks (
     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -102,11 +171,19 @@ SET @new_panel_evaluation_key = (
     FROM information_schema.statistics
     WHERE table_schema = DATABASE()
       AND table_name = 'panel_evaluations'
-      AND index_name = 'uq_panel_evaluation_session_project'
+      AND index_name = 'uq_panel_eval_assessor_project'
 );
 SET @panel_evaluation_key_sql = IF(
-    @old_panel_evaluation_key > 0 AND @new_panel_evaluation_key = 0,
-    'ALTER TABLE panel_evaluations DROP INDEX uq_panel_evaluation_session, ADD UNIQUE KEY uq_panel_evaluation_session_project (panel_session_id, project_id)',
+    @new_panel_evaluation_key = 0,
+    IF(
+        (SELECT COUNT(*) FROM information_schema.statistics WHERE table_schema = DATABASE() AND table_name = 'panel_evaluations' AND index_name = 'uq_panel_evaluation_session_project') > 0,
+        'ALTER TABLE panel_evaluations DROP INDEX uq_panel_evaluation_session_project, ADD UNIQUE KEY uq_panel_eval_assessor_project (panel_assessor_id, project_id)',
+        IF(
+            @old_panel_evaluation_key > 0,
+            'ALTER TABLE panel_evaluations DROP INDEX uq_panel_evaluation_session, ADD UNIQUE KEY uq_panel_eval_assessor_project (panel_assessor_id, project_id)',
+            'ALTER TABLE panel_evaluations ADD UNIQUE KEY uq_panel_eval_assessor_project (panel_assessor_id, project_id)'
+        )
+    ),
     'SELECT 1'
 );
 PREPARE panel_evaluation_key_statement FROM @panel_evaluation_key_sql;

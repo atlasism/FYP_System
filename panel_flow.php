@@ -19,6 +19,9 @@ $score_values = $_POST['scores'] ?? [];
 $active_aspect = max(0, min(7, (int) ($_POST['active_aspect'] ?? 0)));
 $assessor_type = 'EXTERNAL ASSESSOR';
 $choice_csrf = '';
+$assessor_csrf = '';
+$panel_assessor = null;
+$panel_assessor_id = 0;
 $rubric = [
     ['title' => 'Project achievement and objective', 'weight' => 12.5, 'levels' => [4 => 'Project is 100% complete and achieve all objectives', 3 => 'Project is more than 80% complete and achieve all objectives', 2 => 'Project is more than 50% complete and achieve a few objectives', 1 => 'Project is less than 50% complete and achieve only one objective']],
     ['title' => 'User Requirements', 'weight' => 12.5, 'levels' => [4 => 'All requirements were met.', 3 => 'Several requirements were met', 2 => 'Only one requirement was met', 1 => 'No requirement was met']],
@@ -43,6 +46,82 @@ if ($token === '' || !preg_match('/^[a-f0-9]{64}$/', $token)) {
     } elseif ($panel_session['status'] === 'Expired' || ($panel_session['expires_at'] && strtotime($panel_session['expires_at']) < time())) {
         $error = 'This panel evaluation link has expired.';
     } else {
+        $assessor_session_key = 'panel_assessor_' . $panel_session['id'];
+        $panel_assessor_id = (int) ($_SESSION[$assessor_session_key] ?? 0);
+        if ($panel_assessor_id) {
+            $assessor_stmt = $conn->prepare('SELECT * FROM panel_assessors WHERE id = ? AND panel_session_id = ? LIMIT 1');
+            $assessor_stmt->bind_param('ii', $panel_assessor_id, $panel_session['id']);
+            $assessor_stmt->execute();
+            $panel_assessor = $assessor_stmt->get_result()->fetch_assoc();
+            if (!$panel_assessor) {
+                unset($_SESSION[$assessor_session_key]);
+                $panel_assessor_id = 0;
+            }
+        }
+
+        $assessor_csrf_key = 'panel_assessor_csrf_' . $panel_session['id'];
+        $_SESSION[$assessor_csrf_key] = $_SESSION[$assessor_csrf_key] ?? bin2hex(random_bytes(32));
+        $assessor_csrf = $_SESSION[$assessor_csrf_key];
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register_panel'])) {
+            $panel_name = trim($_POST['panel_name'] ?? '');
+            $panel_email = trim($_POST['panel_email'] ?? '');
+            if (!hash_equals($assessor_csrf, $_POST['assessor_csrf'] ?? '')) {
+                $error = 'Your form session is invalid. Please reload the page.';
+            } elseif ($panel_name === '') {
+                $error = 'Please enter the panel name.';
+            } elseif ($panel_email !== '' && !filter_var($panel_email, FILTER_VALIDATE_EMAIL)) {
+                $error = 'Please enter a valid email address.';
+            } else {
+                $conn->begin_transaction();
+                try {
+                    $lock_stmt = $conn->prepare('SELECT expected_panel_count FROM panel_sessions WHERE id = ? FOR UPDATE');
+                    $lock_stmt->bind_param('i', $panel_session['id']);
+                    $lock_stmt->execute();
+                    $expected_panel_count = (int) $lock_stmt->get_result()->fetch_assoc()['expected_panel_count'];
+
+                    $existing_assessor_stmt = $conn->prepare('SELECT id FROM panel_assessors WHERE panel_session_id = ? AND panel_name = ? LIMIT 1');
+                    $existing_assessor_stmt->bind_param('is', $panel_session['id'], $panel_name);
+                    $existing_assessor_stmt->execute();
+                    $existing_assessor = $existing_assessor_stmt->get_result()->fetch_assoc();
+                    if ($existing_assessor) {
+                        $panel_assessor_id = (int) $existing_assessor['id'];
+                        $email_stmt = $conn->prepare('UPDATE panel_assessors SET panel_email = ? WHERE id = ?');
+                        $email_stmt->bind_param('si', $panel_email, $panel_assessor_id);
+                        $email_stmt->execute();
+                    } else {
+                        $assessor_count_stmt = $conn->prepare('SELECT COUNT(*) AS total FROM panel_assessors WHERE panel_session_id = ?');
+                        $assessor_count_stmt->bind_param('i', $panel_session['id']);
+                        $assessor_count_stmt->execute();
+                        $registered_count = (int) $assessor_count_stmt->get_result()->fetch_assoc()['total'];
+                        if ($expected_panel_count > 0 && $registered_count >= $expected_panel_count) {
+                            throw new RuntimeException('All panel member places for this QR have been registered.');
+                        }
+                        $insert_assessor_stmt = $conn->prepare('INSERT INTO panel_assessors (panel_session_id, panel_name, panel_email) VALUES (?, ?, ?)');
+                        $insert_assessor_stmt->bind_param('iss', $panel_session['id'], $panel_name, $panel_email);
+                        if (!$insert_assessor_stmt->execute()) {
+                            throw new RuntimeException('Unable to register this panel member.');
+                        }
+                        $panel_assessor_id = (int) $conn->insert_id;
+                    }
+                    $conn->commit();
+                    $_SESSION[$assessor_session_key] = $panel_assessor_id;
+                    header('Location: panel.php?token=' . urlencode($token));
+                    exit();
+                } catch (Throwable $exception) {
+                    $conn->rollback();
+                    $error = $exception->getMessage();
+                }
+            }
+        }
+
+        if ($panel_assessor_id && !$panel_assessor) {
+            $assessor_stmt = $conn->prepare('SELECT * FROM panel_assessors WHERE id = ? AND panel_session_id = ? LIMIT 1');
+            $assessor_stmt->bind_param('ii', $panel_assessor_id, $panel_session['id']);
+            $assessor_stmt->execute();
+            $panel_assessor = $assessor_stmt->get_result()->fetch_assoc();
+        }
+
         $choice_csrf_key = 'panel_choice_csrf_' . $panel_session['id'];
         $_SESSION[$choice_csrf_key] = $_SESSION[$choice_csrf_key] ?? bin2hex(random_bytes(32));
         $choice_csrf = $_SESSION[$choice_csrf_key];
@@ -56,7 +135,9 @@ if ($token === '' || !preg_match('/^[a-f0-9]{64}$/', $token)) {
 
         $project_stmt = $conn->prepare("SELECT p.id, p.title, p.session, p.course_code, p.student_id, p.is_panel_choice, sv.full_name AS supervisor_name, leader.full_name AS leader_name FROM projects p LEFT JOIN users sv ON sv.id = p.supervisor_id LEFT JOIN users leader ON leader.id = p.student_id WHERE p.id = ? AND p.department = 'JTMK' AND p.course_code = 'DFT50114' LIMIT 1");
         $member_stmt = $conn->prepare("SELECT u.id, u.full_name, u.matric_no, u.class_name FROM project_members pm JOIN users u ON u.id = pm.student_id WHERE pm.project_id = ? ORDER BY CASE WHEN pm.member_order = 0 THEN 255 ELSE pm.member_order END, pm.id ASC");
-        $evaluation_stmt = $conn->prepare('SELECT id, student_scores_json FROM panel_evaluations WHERE panel_session_id = ? AND project_id = ? LIMIT 1');
+        $evaluation_stmt = $panel_assessor_id
+            ? $conn->prepare('SELECT id, student_scores_json FROM panel_evaluations WHERE panel_assessor_id = ? AND project_id = ? LIMIT 1')
+            : null;
 
         foreach ($project_ids as $project_id) {
             $project_stmt->bind_param('i', $project_id);
@@ -72,9 +153,13 @@ if ($token === '' || !preg_match('/^[a-f0-9]{64}$/', $token)) {
             while ($member = $member_result->fetch_assoc()) {
                 $group['members'][] = $member;
             }
-            $evaluation_stmt->bind_param('ii', $panel_session['id'], $project_id);
-            $evaluation_stmt->execute();
-            $group['evaluation'] = $evaluation_stmt->get_result()->fetch_assoc();
+            if ($evaluation_stmt) {
+                $evaluation_stmt->bind_param('ii', $panel_assessor_id, $project_id);
+                $evaluation_stmt->execute();
+                $group['evaluation'] = $evaluation_stmt->get_result()->fetch_assoc();
+            } else {
+                $group['evaluation'] = null;
+            }
             $groups[$project_id] = $group;
         }
 
@@ -108,8 +193,8 @@ if ($token === '' || !preg_match('/^[a-f0-9]{64}$/', $token)) {
             $panel_csrf = $_SESSION[$csrf_key];
 
             if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_evaluation'])) {
-                $panel_name = trim($_POST['panel_name'] ?? $panel_session['panel_name'] ?? '');
-                $panel_email = trim($_POST['panel_email'] ?? $panel_session['panel_email'] ?? '');
+                $panel_name = $panel_assessor['panel_name'] ?? '';
+                $panel_email = $panel_assessor['panel_email'] ?? '';
                 $comments = trim($_POST['comments'] ?? '');
                 $aspect_scores = [];
                 $student_totals = array_fill_keys(array_column($members, 'id'), 0.0);
@@ -118,8 +203,10 @@ if ($token === '' || !preg_match('/^[a-f0-9]{64}$/', $token)) {
 
                 if (!hash_equals($panel_csrf, $_POST['panel_csrf'] ?? '')) {
                     $error = 'Your form session is invalid. Please reload the page.';
+                } elseif (!$panel_assessor) {
+                    $error = 'Register your panel name before submitting an evaluation.';
                 } elseif ($evaluation) {
-                    $error = 'This group has already been assessed in this panel session.';
+                    $error = 'You have already assessed this group.';
                 } elseif ($panel_name === '') {
                     $error = 'Please enter the panel name.';
                 } elseif ($panel_email !== '' && !filter_var($panel_email, FILTER_VALIDATE_EMAIL)) {
@@ -155,8 +242,8 @@ if ($token === '' || !preg_match('/^[a-f0-9]{64}$/', $token)) {
                     $assessor_string = $assessor_type;
                     $conn->begin_transaction();
                     try {
-                        $save_stmt = $conn->prepare('INSERT INTO panel_evaluations (panel_session_id, project_id, panel_name, panel_email, assessor_types, student_scores_json, comments, average_score) VALUES (?, ?, ?, ?, ?, ?, ?, ?)');
-                        $save_stmt->bind_param('iisssssd', $panel_session['id'], $selected_project_id, $panel_name, $panel_email, $assessor_string, $score_json, $comments, $average_score);
+                        $save_stmt = $conn->prepare('INSERT INTO panel_evaluations (panel_session_id, panel_assessor_id, project_id, panel_name, panel_email, assessor_types, student_scores_json, comments, average_score) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)');
+                        $save_stmt->bind_param('iiisssssd', $panel_session['id'], $panel_assessor_id, $selected_project_id, $panel_name, $panel_email, $assessor_string, $score_json, $comments, $average_score);
                         if (!$save_stmt->execute()) {
                             throw new RuntimeException('Evaluation insert failed.');
                         }
@@ -172,7 +259,10 @@ if ($token === '' || !preg_match('/^[a-f0-9]{64}$/', $token)) {
                             }
                         }
 
-                        $group_demo3 = count($results) ? round(array_sum(array_column($results, 'demo3_score')) / count($results), 2) : 0;
+                        $group_demo3_stmt = $conn->prepare('SELECT AVG(group_scores.group_demo3) AS average_demo3 FROM (SELECT panel_evaluation_id, AVG(demo3_score) AS group_demo3 FROM panel_student_marks WHERE project_id = ? GROUP BY panel_evaluation_id) group_scores');
+                        $group_demo3_stmt->bind_param('i', $selected_project_id);
+                        $group_demo3_stmt->execute();
+                        $group_demo3 = round((float) ($group_demo3_stmt->get_result()->fetch_assoc()['average_demo3'] ?? 0), 2);
                         $old_marks_stmt = $conn->prepare('SELECT demonstration_3, total_score FROM project_marks WHERE project_id = ? FOR UPDATE');
                         $old_marks_stmt->bind_param('i', $selected_project_id);
                         $old_marks_stmt->execute();
@@ -190,12 +280,6 @@ if ($token === '' || !preg_match('/^[a-f0-9]{64}$/', $token)) {
                             throw new RuntimeException('Project marks update failed.');
                         }
 
-                        $identity_stmt = $conn->prepare('UPDATE panel_sessions SET panel_name = ?, panel_email = ? WHERE id = ? AND status = \'Active\'');
-                        $identity_stmt->bind_param('ssi', $panel_name, $panel_email, $panel_session['id']);
-                        if (!$identity_stmt->execute()) {
-                            throw new RuntimeException('Panel identity update failed.');
-                        }
-
                         $count_stmt = $conn->prepare('SELECT COUNT(*) AS total FROM panel_session_projects WHERE panel_session_id = ?');
                         $count_stmt->bind_param('i', $panel_session['id']);
                         $count_stmt->execute();
@@ -203,14 +287,25 @@ if ($token === '' || !preg_match('/^[a-f0-9]{64}$/', $token)) {
                         if (!$required_count) {
                             $required_count = 1;
                         }
-                        $count_stmt = $conn->prepare('SELECT COUNT(*) AS total FROM panel_evaluations WHERE panel_session_id = ?');
-                        $count_stmt->bind_param('i', $panel_session['id']);
+                        $count_stmt = $conn->prepare('SELECT COUNT(*) AS total FROM panel_evaluations WHERE panel_assessor_id = ?');
+                        $count_stmt->bind_param('i', $panel_assessor_id);
                         $count_stmt->execute();
                         $completed_count = (int) $count_stmt->get_result()->fetch_assoc()['total'];
                         if ($completed_count >= $required_count) {
-                            $done_stmt = $conn->prepare("UPDATE panel_sessions SET status = 'Submitted', submitted_at = NOW() WHERE id = ? AND status = 'Active'");
-                            $done_stmt->bind_param('i', $panel_session['id']);
+                            $done_stmt = $conn->prepare("UPDATE panel_assessors SET status = 'Submitted', submitted_at = NOW() WHERE id = ? AND status = 'Active'");
+                            $done_stmt->bind_param('i', $panel_assessor_id);
                             $done_stmt->execute();
+
+                            $expected_assessors = (int) $panel_session['expected_panel_count'];
+                            $all_assessors_stmt = $conn->prepare("SELECT COUNT(*) AS total FROM panel_assessors WHERE panel_session_id = ? AND status = 'Submitted'");
+                            $all_assessors_stmt->bind_param('i', $panel_session['id']);
+                            $all_assessors_stmt->execute();
+                            $submitted_assessors = (int) $all_assessors_stmt->get_result()->fetch_assoc()['total'];
+                            if ($expected_assessors > 0 && $submitted_assessors >= $expected_assessors) {
+                                $batch_done_stmt = $conn->prepare("UPDATE panel_sessions SET status = 'Submitted', submitted_at = NOW() WHERE id = ? AND status = 'Active'");
+                                $batch_done_stmt->bind_param('i', $panel_session['id']);
+                                $batch_done_stmt->execute();
+                            }
                         }
                         $conn->commit();
                         header('Location: panel.php?token=' . urlencode($token) . '&saved=1');
@@ -264,9 +359,26 @@ if ($token === '' || !preg_match('/^[a-f0-9]{64}$/', $token)) {
 <body>
 <header class="panel-header py-3 mb-4"><div class="container d-flex align-items-center justify-content-between gap-3"><div><strong class="d-block fs-4">Panel Evaluation</strong><small>Project Demonstration 3 | DFT50114</small></div><img src="assets/image/logo.png" class="panel-logo" alt="Politeknik Besut"></div></header>
 <main class="container pb-5">
-    <?php if ($error): ?>
+    <?php if ($error && !$panel_session): ?>
         <div class="alert alert-danger"><?= sanitize($error); ?></div>
-    <?php elseif ($panel_session && $selected_group): ?>
+    <?php elseif ($panel_session && !$panel_assessor): ?>
+        <?php if ($error): ?><div class="alert alert-danger"><?= sanitize($error); ?></div><?php endif; ?>
+        <?php if ($groups): ?>
+        <section class="panel-card p-4 mx-auto" style="max-width: 640px;">
+            <h1 class="h4 fw-bold mb-2">Panel Member Registration</h1>
+            <p class="text-muted">This QR batch contains <?= count($groups); ?> groups and is shared by <?= (int) $panel_session['expected_panel_count'] ? 'up to ' . (int) $panel_session['expected_panel_count'] . ' panel members' : 'all panel members'; ?>. Register your own details so your scores stay separate.</p>
+            <form method="POST">
+                <input type="hidden" name="token" value="<?= sanitize($token); ?>">
+                <input type="hidden" name="assessor_csrf" value="<?= sanitize($assessor_csrf); ?>">
+                <div class="mb-3"><label class="form-label fw-bold" for="panel_name">Panel Name *</label><input class="form-control" id="panel_name" name="panel_name" required maxlength="150" value="<?= sanitize($_POST['panel_name'] ?? ''); ?>"></div>
+                <div class="mb-3"><label class="form-label fw-bold" for="panel_email">Email Address</label><input class="form-control" type="email" id="panel_email" name="panel_email" maxlength="190" value="<?= sanitize($_POST['panel_email'] ?? ''); ?>"></div>
+                <button type="submit" name="register_panel" value="1" class="btn btn-primary fw-bold">Continue to Groups</button>
+            </form>
+        </section>
+        <?php endif; ?>
+    <?php elseif ($error): ?>
+        <div class="alert alert-danger"><?= sanitize($error); ?></div>
+    <?php elseif ($panel_session && $panel_assessor && $selected_group): ?>
         <?php if ($selected_group['evaluation']): ?>
             <section class="panel-card p-4"><h1 class="h4 fw-bold">Group already assessed</h1><p><?= sanitize($selected_group['title']); ?></p><a class="btn btn-primary" href="panel.php?token=<?= urlencode($token); ?>">Back to Group List</a></section>
         <?php else: ?>
@@ -287,13 +399,7 @@ if ($token === '' || !preg_match('/^[a-f0-9]{64}$/', $token)) {
                 <input type="hidden" name="token" value="<?= sanitize($token); ?>"><input type="hidden" name="project_id" value="<?= $selected_project_id; ?>"><input type="hidden" name="panel_csrf" value="<?= sanitize($panel_csrf); ?>"><input type="hidden" name="active_aspect" id="activeAspectInput" value="<?= $active_aspect; ?>"><input type="hidden" name="save_evaluation" value="1">
                 <h2 class="h5 fw-bold mb-3">Panel Information</h2>
                 <div class="row g-3 mb-4">
-                    <?php if ($panel_session['panel_name']): ?>
-                        <div class="col-12"><div class="alert alert-primary mb-0"><strong><?= sanitize($panel_session['panel_name']); ?></strong><?php if ($panel_session['panel_email']): ?> · <?= sanitize($panel_session['panel_email']); ?><?php endif; ?><span class="d-block small mt-1">External assessor · saved for this QR session</span></div></div>
-                    <?php else: ?>
-                        <div class="col-12"><p class="small text-muted mb-0">Assessor type: External Assessor. Your name and email will be saved for this QR session and reused for every group.</p></div>
-                        <div class="col-md-6"><label class="form-label fw-bold">Panel Name *</label><input class="form-control" name="panel_name" required value="<?= sanitize($_POST['panel_name'] ?? ''); ?>"></div>
-                        <div class="col-md-6"><label class="form-label fw-bold">Email Address</label><input class="form-control" type="email" name="panel_email" value="<?= sanitize($_POST['panel_email'] ?? ''); ?>"></div>
-                    <?php endif; ?>
+                    <div class="col-12"><div class="alert alert-primary mb-0"><strong><?= sanitize($panel_assessor['panel_name']); ?></strong><?php if ($panel_assessor['panel_email']): ?> · <?= sanitize($panel_assessor['panel_email']); ?><?php endif; ?><span class="d-block small mt-1">External assessor · scores are saved under your name</span></div></div>
                 </div>
                 <div class="d-flex justify-content-between align-items-center mb-2"><h2 class="h5 fw-bold mb-0">Select a Criteria</h2><span class="small text-muted"><span id="completedCount">0</span>/8 completed</span></div><div class="panel-progress mb-3"><div id="progressBar" class="panel-progress-bar"></div></div>
                 <nav class="aspect-tabs mb-4" aria-label="Rubric criteria"><?php foreach ($rubric as $i => $aspect): ?><button type="button" class="btn aspect-tab <?= $i === $active_aspect ? 'active' : ''; ?>" data-aspect-tab="<?= $i; ?>">Criteria <?= $i + 1; ?></button><?php endforeach; ?></nav>
@@ -313,21 +419,21 @@ if ($token === '' || !preg_match('/^[a-f0-9]{64}$/', $token)) {
                 <p class="small text-muted mt-3 mb-0">Demo 3 marks are calculated automatically: weighted total / 100 × 15.</p>
             </form>
         <?php endif; ?>
-    <?php elseif ($panel_session): ?>
+    <?php elseif ($panel_session && $panel_assessor): ?>
                 <?php if ($saved): ?><div class="alert alert-primary">Scores saved. Select the next group or press Done when finished.</div><?php endif; ?>
                 <?php if ($choice_saved): ?><div class="alert alert-success">Panel\'s Choice updated.</div><?php endif; ?>
-        <?php if ($finished && $panel_session['status'] === 'Submitted'): ?>
-            <section class="panel-card p-5 text-center"><i class="fas fa-check-circle text-primary fa-3x mb-3"></i><h1 class="h3 fw-bold">Evaluation Complete</h1><p class="text-muted mb-0">Thank you, <?= sanitize($panel_session['panel_name'] ?? 'panel'); ?>. All groups have been assessed.</p></section>
+        <?php if ($finished && $panel_assessor['status'] === 'Submitted'): ?>
+            <section class="panel-card p-5 text-center"><i class="fas fa-check-circle text-primary fa-3x mb-3"></i><h1 class="h3 fw-bold">Evaluation Complete</h1><p class="text-muted mb-0">Thank you, <?= sanitize($panel_assessor['panel_name']); ?>. All groups have been assessed.</p></section>
         <?php else: ?>
             <section class="panel-card p-4">
-                <div class="d-flex justify-content-between align-items-start flex-wrap gap-3 mb-3"><div><h1 class="h3 fw-bold mb-1"><?= $panel_session['status'] === 'Submitted' ? 'Evaluation Results' : 'Group List'; ?></h1><p class="text-muted mb-0"><?= $panel_session['status'] === 'Submitted' ? 'Review each group assessment status.' : 'Select a group to assess Project Demonstration 3.'; ?></p></div><span class="badge text-bg-primary">Demo 3 · 15%</span></div>
-                <?php if ($panel_session['panel_name']): ?><div class="alert alert-primary py-2"><strong><?= sanitize($panel_session['panel_name']); ?></strong><?php if ($panel_session['panel_email']): ?> · <?= sanitize($panel_session['panel_email']); ?><?php endif; ?> · External assessor</div><?php endif; ?>
+                <div class="d-flex justify-content-between align-items-start flex-wrap gap-3 mb-3"><div><h1 class="h3 fw-bold mb-1"><?= $panel_assessor['status'] === 'Submitted' ? 'Evaluation Results' : 'Group List'; ?></h1><p class="text-muted mb-0"><?= $panel_assessor['status'] === 'Submitted' ? 'Review your group assessment status.' : 'Select a group to assess Project Demonstration 3.'; ?></p></div><span class="badge text-bg-primary">Demo 3 · 15%</span></div>
+                <div class="alert alert-primary py-2"><strong><?= sanitize($panel_assessor['panel_name']); ?></strong><?php if ($panel_assessor['panel_email']): ?> · <?= sanitize($panel_assessor['panel_email']); ?><?php endif; ?> · External assessor</div>
                 <?php $group_number = 0; foreach ($groups as $group): $group_number++; $group_done = !empty($group['evaluation']); ?>
                     <div class="group-row py-3"><div class="d-flex align-items-center justify-content-between gap-3"><div class="d-flex align-items-start gap-3"><span class="badge rounded-pill text-bg-light border text-dark mt-1" style="min-width: 32px;"> <?= $group_number; ?> </span><div><strong><?= sanitize($group['title']); ?></strong><div class="small text-muted"><?= sanitize($group['leader_name'] ?? ''); ?> · <?= count($group['members']); ?> <?= count($group['members']) === 1 ? 'student' : 'students'; ?> · <?= sanitize($group['session'] ?? ''); ?></div></div></div><div class="d-flex align-items-center gap-2"><form method="POST" class="m-0"><input type="hidden" name="token" value="<?= sanitize($token); ?>"><input type="hidden" name="choice_project_id" value="<?= (int) $group['id']; ?>"><input type="hidden" name="choice_csrf" value="<?= sanitize($choice_csrf); ?>"><button type="submit" name="toggle_panel_choice" value="1" class="btn btn-sm panel-choice-button <?= !empty($group['is_panel_choice']) ? 'is-selected' : ''; ?>" title="<?= !empty($group['is_panel_choice']) ? 'Remove from Panel\'s Choices' : 'Add to Panel\'s Choices'; ?>" aria-label="<?= !empty($group['is_panel_choice']) ? 'Remove from Panel\'s Choices' : 'Add to Panel\'s Choices'; ?>"><i class="fas fa-star"></i></button></form><?php if ($group_done): ?><span class="badge text-bg-primary">Complete</span><?php else: ?><a class="btn btn-sm btn-outline-primary" href="panel.php?token=<?= urlencode($token); ?>&amp;project_id=<?= (int) $group['id']; ?>">Assess Group</a><?php endif; ?></div></div></div>
                 <?php endforeach; ?>
-                <?php if ($panel_session['status'] === 'Submitted'): ?><div class="alert alert-primary mt-4 mb-0">Evaluation complete. All groups in this QR session have been assessed.</div><?php endif; ?>
+                <?php if ($panel_assessor['status'] === 'Submitted'): ?><div class="alert alert-primary mt-4 mb-0">You have assessed all groups in this QR batch.</div><?php endif; ?>
             </section>
-            <?php if ($panel_session['status'] === 'Submitted'): ?><div class="text-end mt-3"><a class="btn btn-primary" href="panel.php?token=<?= urlencode($token); ?>&amp;done=1">Done</a></div><?php endif; ?>
+            <?php if ($panel_assessor['status'] === 'Submitted'): ?><div class="text-end mt-3"><a class="btn btn-primary" href="panel.php?token=<?= urlencode($token); ?>&amp;done=1">Done</a></div><?php endif; ?>
         <?php endif; ?>
     <?php endif; ?>
 </main>
