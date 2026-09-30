@@ -22,6 +22,7 @@ if (!function_exists('sanitize')) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../assets/user-preferences.css?v=8">
     
     <style>
         :root {
@@ -40,12 +41,17 @@ if (!function_exists('sanitize')) {
 
         #wrapper {
             display: flex;
+            min-height: calc(100vh - var(--footer-height));
             transition: all 0.3s ease;
         }
 
         #sidebar {
             width: var(--sidebar-width);
-            min-height: calc(100vh - var(--footer-height));
+            position: sticky;
+            top: 0;
+            align-self: flex-start;
+            min-height: 100vh;
+            height: 100vh;
             background: #10243d;
             box-shadow: 2px 0 10px rgba(0,0,0,0.05);
             transition: all 0.3s ease;
@@ -55,7 +61,20 @@ if (!function_exists('sanitize')) {
             justify-content: space-between;
         }
 
+        #sidebar::before {
+            content: "";
+            position: fixed;
+            inset: 0 auto 0 0;
+            width: var(--sidebar-width);
+            background: #10243d;
+            z-index: -1;
+        }
+
         #sidebar.collapsed {
+            width: var(--sidebar-collapsed-width);
+        }
+
+        #sidebar.collapsed::before {
             width: var(--sidebar-collapsed-width);
         }
 
@@ -141,7 +160,7 @@ if (!function_exists('sanitize')) {
         #page-content {
             flex: 1;
             width: 100%;
-            overflow-x: hidden;
+            overflow-x: clip;
             min-height: calc(100vh - var(--footer-height));
             transition: all 0.3s ease;
         }
@@ -178,6 +197,9 @@ if (!function_exists('sanitize')) {
         }
 
         #page-content > .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 1030;
             background: #10243d !important;
             border-color: rgba(255,255,255,.12) !important;
         }
@@ -199,7 +221,7 @@ if (!function_exists('sanitize')) {
         }
     </style>
 </head>
-<body>
+<body class="user-portal">
 
 <div id="wrapper">
     <!-- Sidebar Supervisor -->
@@ -214,37 +236,37 @@ if (!function_exists('sanitize')) {
                 <!-- 1. Dashboard -->
                 <li class="nav-item">
                     <a href="dashboard.php" class="nav-link <?= ($current_page == 'dashboard.php') ? 'active' : ''; ?>">
-                        <i class="fas fa-home me-2"></i> <span class="link-text">Dashboard</span>
+                        <i class="fas fa-home me-2"></i> <span class="link-text" data-i18n="Dashboard">Dashboard</span>
                     </a>
                 </li>
                 <!-- 2. Supervised Projects -->
                 <li class="nav-item">
                     <a href="supervised_projects.php" class="nav-link <?= ($current_page == 'supervised_projects.php' || $current_page == 'students.php') ? 'active' : ''; ?>">
-                        <i class="fas fa-project-diagram me-2"></i> <span class="link-text">Supervised Projects</span>
+                        <i class="fas fa-project-diagram me-2"></i> <span class="link-text" data-i18n="Supervised Projects">Supervised Projects</span>
                     </a>
                 </li>
                 <!-- 3. Student Verification -->
                 <li class="nav-item">
                     <a href="my_students.php" class="nav-link <?= ($current_page == 'my_students.php' || $current_page == 'verify_logbook.php' || $current_page == 'update_demo_status.php') ? 'active' : ''; ?>">
-                        <i class="fas fa-user-check me-2"></i> <span class="link-text">Student Verification</span>
+                        <i class="fas fa-user-check me-2"></i> <span class="link-text" data-i18n="Student Verification">Student Verification</span>
                     </a>
                 </li>
                 <!-- 4. Past Projects -->
                 <li class="nav-item">
                     <a href="past_projects.php" class="nav-link <?= ($current_page == 'past_projects.php') ? 'active' : ''; ?>">
-                        <i class="fas fa-archive me-2"></i> <span class="link-text">Past Projects</span>
+                        <i class="fas fa-archive me-2"></i> <span class="link-text" data-i18n="Past Projects">Past Projects</span>
                     </a>
                 </li>
                 <!-- 5. Review Documents -->
                 <li class="nav-item">
                     <a href="review_documents_readonly.php" class="nav-link <?= ($current_page == 'review_documents_readonly.php' || $current_page == 'review_documents.php') ? 'active' : ''; ?>">
-                        <i class="fas fa-file-alt me-2"></i> <span class="link-text">Review Documents</span>
+                        <i class="fas fa-file-alt me-2"></i> <span class="link-text" data-i18n="Review Documents">Review Documents</span>
                     </a>
                 </li>
                 <!-- 6. Deadline Reminders -->
                 <li class="nav-item">
                     <a href="deadline_reminders.php" class="nav-link <?= ($current_page == 'deadline_reminders.php') ? 'active' : ''; ?>">
-                        <i class="fas fa-calendar-alt me-2 text-warning"></i> <span class="link-text">Deadline Reminders</span>
+                        <i class="fas fa-calendar-alt me-2 text-warning"></i> <span class="link-text" data-i18n="Deadline Reminders">Deadline Reminders</span>
                     </a>
                 </li>
             </ul>
@@ -254,7 +276,7 @@ if (!function_exists('sanitize')) {
             <ul class="nav nav-pills flex-column">
                 <li class="nav-item">
                     <a href="../logout.php" class="nav-link logout-link" onclick="return confirm('Are you sure you want to log out?');">
-                        <i class="fas fa-sign-out-alt me-2"></i> <span class="link-text">Logout</span>
+                        <i class="fas fa-sign-out-alt me-2"></i> <span class="link-text" data-i18n="Logout">Logout</span>
                     </a>
                 </li>
             </ul>
@@ -268,9 +290,13 @@ if (!function_exists('sanitize')) {
                 <i class="fas fa-bars"></i>
             </button>
             <div class="ms-auto d-flex align-items-center">
-                <a href="../index.php" class="btn btn-outline-primary btn-sm me-3"><i class="fas fa-home me-1"></i>Main Page</a>
+                <div class="appearance-controls">
+                    <button type="button" class="btn btn-outline-light" data-theme-toggle aria-label="Toggle dark mode" title="Light/Dark"><i data-theme-icon class="fas fa-moon"></i></button>
+                    <select class="form-select form-select-sm" data-language-select aria-label="Language"><option value="en">EN</option><option value="ms">BM</option></select>
+                </div>
+                <a href="../index.php" class="btn btn-outline-primary btn-sm me-3"><i class="fas fa-home me-1"></i><span data-i18n="Main Page">Main Page</span></a>
                 <a href="profile.php" class="text-decoration-none d-flex align-items-center profile-link">
-                    <span class="me-3 fw-semibold text-muted">Welcome, <strong class="text-primary"><?= sanitize($_SESSION['full_name'] ?? 'Supervisor'); ?></strong></span>
+                    <span class="me-3 fw-semibold text-muted"><span data-i18n="Welcome">Welcome</span>, <strong class="text-primary"><?= sanitize($_SESSION['full_name'] ?? 'Supervisor'); ?></strong></span>
                     <i class="fas fa-user-circle fa-2x text-primary"></i>
                 </a>
             </div>

@@ -10,22 +10,6 @@ if (!function_exists('sanitize')) {
 }
 
 $search = $_GET['search'] ?? '';
-$category_filter = $_GET['category'] ?? '';
-$project_categories = [
-    'Multimedia and animation',
-    'Internet of Things (IOT)',
-    'Artificial Intelligent (AI)',
-    'Software application',
-    'Web application',
-    'Mobile application',
-    'Networking system',
-    'Hardware design',
-    'Robotic programming',
-    'Information system',
-    'Security system',
-    'Data management & visualization',
-    'Data analysis'
-];
 
 // Query Asas
 $query = "
@@ -57,13 +41,6 @@ if (!empty($search)) {
     $types .= "sssss";
 }
 
-// Tapis mengikut Category (Dropdown)
-if (!empty($category_filter)) {
-    $query .= " AND p.category = ?";
-    $params[] = $category_filter;
-    $types .= "s";
-}
-
 $query .= " GROUP BY p.id ORDER BY p.project_group_no ASC";
 
 $stmt = $conn->prepare($query);
@@ -87,28 +64,14 @@ include_once '../includes/sidebar_student.php';
     
     <!-- Borang Carian & Filter -->
     <form method="GET" action="groups.php" class="row g-3">
-        <div class="col-md-3">
+        <div class="col-md-8">
             <label class="form-label small fw-bold text-muted">Keyword / Title / Name</label>
             <div class="input-group">
                 <span class="input-group-text bg-white text-primary"><i class="fas fa-search"></i></span>
                 <input type="text" name="search" class="form-control" placeholder="Search title, name..." value="<?= sanitize($search); ?>">
             </div>
         </div>
-        
-        <div class="col-md-3">
-            <label class="form-label small fw-bold text-muted">Category Selection</label>
-            <div class="input-group">
-                <span class="input-group-text bg-white text-primary"><i class="fas fa-tags"></i></span>
-                <select name="category" class="form-select">
-                    <option value="">-- All Categories --</option>
-                    <?php foreach ($project_categories as $category_option): ?>
-                        <option value="<?= sanitize($category_option); ?>" <?= ($category_filter === $category_option) ? 'selected' : ''; ?>><?= sanitize($category_option); ?></option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
-        </div>
-
-        <div class="col-md-3 d-flex align-items-end gap-2">
+        <div class="col-md-4 d-flex align-items-end gap-2">
             <button type="submit" class="btn btn-primary w-50 fw-bold shadow-sm">
                 <i class="fas fa-filter me-1"></i> Search
             </button>
@@ -128,7 +91,7 @@ include_once '../includes/sidebar_student.php';
                     <th width="5%">#</th>
                     <th width="30%">Project Title / System</th>
                     <th width="35%">Group Members (Name & Matric No.)</th>
-                    <th width="20%">Category / Session</th>
+                    <th width="20%">Session</th>
                     <th width="10%">Department</th>
                 </tr>
             </thead>
@@ -138,9 +101,6 @@ include_once '../includes/sidebar_student.php';
                         <td class="fw-bold text-muted"><?= $i++; ?></td>
                         <td>
                             <strong class="text-dark d-block mb-1"><?= sanitize($g['title'] ?? 'Title Not Provided'); ?></strong>
-                            <span class="badge bg-light text-secondary border fw-normal">
-                                <i class="fas fa-calendar-alt me-1 text-primary"></i>Session: <?= sanitize($g['session'] ?? '-'); ?>
-                            </span>
                         </td>
                         <td>
                             <!-- Papar Ketua -->
@@ -167,9 +127,8 @@ include_once '../includes/sidebar_student.php';
                             ?>
                         </td>
                         <td>
-                            <!-- Diperbetulkan kepada teks gelap kontras tinggi (text-dark) serta saiz ruang yang lebih selesa -->
-                            <span class="badge bg-info text-dark border border-info px-2 py-1 fw-bold text-wrap" style="text-align: left;">
-                                <?= sanitize($g['category'] ?? 'N/A'); ?>
+                            <span class="badge bg-light text-secondary border fw-normal">
+                                <i class="fas fa-calendar-alt me-1 text-primary"></i><?= sanitize($g['session'] ?? '-'); ?>
                             </span>
                         </td>
                         <td>

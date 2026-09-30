@@ -11,9 +11,15 @@ if (!function_exists('sanitize')) {
 
 // Parameter Carian & Filter
 $search     = $_GET['search'] ?? '';
-$category   = $_GET['category'] ?? '';
 $session    = $_GET['session'] ?? '';
-$department = $_GET['department'] ?? '';
+
+$session_options = [];
+$session_result = $conn->query("SELECT DISTINCT session FROM projects WHERE session IS NOT NULL AND session <> '' ORDER BY session DESC");
+if ($session_result) {
+    while ($session_row = $session_result->fetch_assoc()) {
+        $session_options[] = $session_row['session'];
+    }
+}
 
 // Query untuk mengambil projek-projek lepas
 $query = "
@@ -43,21 +49,9 @@ if (!empty($search)) {
     $types .= "ss";
 }
 
-if (!empty($category)) {
-    $query .= " AND p.category = ?";
-    $params[] = $category;
-    $types .= "s";
-}
-
 if (!empty($session)) {
-    $query .= " AND p.session LIKE ?";
-    $params[] = "%$session%";
-    $types .= "s";
-}
-
-if (!empty($department)) {
-    $query .= " AND u_leader.department = ?";
-    $params[] = $department;
+    $query .= " AND p.session = ?";
+    $params[] = $session;
     $types .= "s";
 }
 
@@ -96,7 +90,7 @@ include_once '../includes/sidebar_student.php';
                 </h4>
                 <p class="text-muted mb-0">Gallery of documentation, final reports, and system previews from alumni and previous students' projects.</p>
             </div>
-            <?php if (!empty($search) || !empty($category) || !empty($session) || !empty($department)): ?>
+            <?php if (!empty($search) || !empty($session)): ?>
                 <div>
                     <a href="<?= htmlspecialchars(basename($_SERVER['PHP_SELF'])); ?>" class="btn btn-outline-secondary btn-sm fw-bold">
                         <i class="fas fa-redo me-1"></i> Reset Filter
@@ -109,32 +103,14 @@ include_once '../includes/sidebar_student.php';
             <div class="col-md-3">
                 <input type="text" name="search" class="form-control" placeholder="Keyword / title..." value="<?= sanitize($search); ?>">
             </div>
-            
-            <div class="col-md-3">
-                <select name="category" class="form-select">
-                    <option value="">-- All Categories --</option>
-                    <option value="WEB BASED SYSTEM" <?= $category == 'WEB BASED SYSTEM' ? 'selected' : ''; ?>>WEB BASED SYSTEM</option>
-                    <option value="MOBILE APP" <?= $category == 'MOBILE APP' ? 'selected' : ''; ?>>MOBILE APP</option>
-                    <option value="IoT / HARDWARE" <?= $category == 'IoT / HARDWARE' ? 'selected' : ''; ?>>IoT / HARDWARE</option>
-                    <option value="AI / MACHINE LEARNING" <?= $category == 'AI / MACHINE LEARNING' ? 'selected' : ''; ?>>AI / MACHINE LEARNING</option>
-                    <option value="GAME DEVELOPMENT" <?= $category == 'GAME DEVELOPMENT' ? 'selected' : ''; ?>>GAME DEVELOPMENT</option>
-                    <option value="CYBERSECURITY" <?= $category == 'CYBERSECURITY' ? 'selected' : ''; ?>>CYBERSECURITY</option>
-                    <option value="CRAF & VISUAL DESIGN" <?= $category == 'CRAF & VISUAL DESIGN' ? 'selected' : ''; ?>>CRAF & VISUAL DESIGN</option>
+            <div class="col-md-2">
+                <select name="session" class="form-select">
+                    <option value="">-- Select Session --</option>
+                    <?php foreach ($session_options as $session_option): ?>
+                        <option value="<?= sanitize($session_option); ?>" <?= $session === $session_option ? 'selected' : ''; ?>><?= sanitize($session_option); ?></option>
+                    <?php endforeach; ?>
                 </select>
             </div>
-
-            <div class="col-md-2">
-                <input type="text" name="session" class="form-control" placeholder="Session (e.g. 2024/2025)" value="<?= sanitize($session); ?>">
-            </div>
-            
-            <div class="col-md-2">
-                <select name="department" class="form-select">
-                    <option value="">-- All Dept --</option>
-                    <option value="JTMK" <?= $department == 'JTMK' ? 'selected' : ''; ?>>JTMK</option>
-                    <option value="JRKV" <?= $department == 'JRKV' ? 'selected' : ''; ?>>JRKV</option>
-                </select>
-            </div>
-
             <div class="col-md-2">
                 <button type="submit" class="btn btn-primary w-100 fw-bold">
                     <i class="fas fa-search me-1"></i> Search

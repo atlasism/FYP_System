@@ -18,6 +18,7 @@ if (!function_exists('sanitize')) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/user-preferences.css?v=8">
     <style>
         :root { --admin-sidebar: 272px; --admin-blue: #1f63aa; --admin-ink: #10243d; --admin-bg: #e9eef4; }
         body { margin: 0; background: var(--admin-bg); color: var(--admin-ink); font-family: "Segoe UI", sans-serif; }
@@ -68,7 +69,7 @@ if (!function_exists('sanitize')) {
         .podium-bar-3 { height: 40px; }
     </style>
 </head>
-<body>
+<body class="user-portal">
 <div class="admin-shell">
     <aside class="admin-sidebar" id="adminSidebar">
         <a href="dashboard.php" class="admin-brand">
@@ -77,18 +78,18 @@ if (!function_exists('sanitize')) {
         </a>
         <div class="admin-department"><i class="bi bi-building me-2"></i><span>JTMK | DFT50114</span></div>
         <nav class="admin-nav nav flex-column">
-            <a class="nav-link <?= $current_page === 'dashboard.php' ? 'active' : ''; ?>" href="dashboard.php"><i class="bi bi-speedometer2"></i><span>Dashboard</span></a>
-            <a class="nav-link <?= $current_page === 'manage_users.php' ? 'active' : ''; ?>" href="manage_users.php"><i class="bi bi-people"></i><span>Manage Users</span></a>
-            <a class="nav-link <?= $current_page === 'manage_projects.php' ? 'active' : ''; ?>" href="manage_projects.php"><i class="bi bi-kanban"></i><span>Manage Projects</span></a>
-            <a class="nav-link <?= $current_page === 'panel_qr.php' ? 'active' : ''; ?>" href="panel_qr.php"><i class="bi bi-qr-code"></i><span>External Panel QR</span></a>
-            <a class="nav-link <?= $current_page === 'reports.php' ? 'active' : ''; ?>" href="reports.php"><i class="bi bi-bar-chart-line"></i><span>Reports</span></a>
-            <a class="nav-link <?= $current_page === 'settings.php' ? 'active' : ''; ?>" href="settings.php"><i class="bi bi-gear"></i><span>Settings</span></a>
+            <a class="nav-link <?= $current_page === 'dashboard.php' ? 'active' : ''; ?>" href="dashboard.php"><i class="bi bi-speedometer2"></i><span data-i18n="Dashboard">Dashboard</span></a>
+            <a class="nav-link <?= $current_page === 'manage_users.php' ? 'active' : ''; ?>" href="manage_users.php"><i class="bi bi-people"></i><span data-i18n="Manage Users">Manage Users</span></a>
+            <a class="nav-link <?= $current_page === 'manage_projects.php' ? 'active' : ''; ?>" href="manage_projects.php"><i class="bi bi-kanban"></i><span data-i18n="Manage Projects">Manage Projects</span></a>
+            <a class="nav-link <?= $current_page === 'panel_qr.php' ? 'active' : ''; ?>" href="panel_qr.php"><i class="bi bi-qr-code"></i><span data-i18n="External Panel QR">External Panel QR</span></a>
+            <a class="nav-link <?= $current_page === 'reports.php' ? 'active' : ''; ?>" href="reports.php"><i class="bi bi-bar-chart-line"></i><span data-i18n="Reports">Reports</span></a>
+            <a class="nav-link <?= $current_page === 'settings.php' ? 'active' : ''; ?>" href="settings.php"><i class="bi bi-gear"></i><span data-i18n="Settings">Settings</span></a>
         </nav>
-        <a href="../logout.php" class="admin-logout nav-link text-warning" onclick="return confirm('Log out from the Admin Panel?');"><i class="bi bi-box-arrow-right me-2"></i><span>Logout</span></a>
+        <a href="../logout.php" class="admin-logout nav-link text-warning" onclick="return confirm('Log out from the Admin Panel?');"><i class="bi bi-box-arrow-right me-2"></i><span data-i18n="Logout">Logout</span></a>
     </aside>
     <main class="admin-main">
         <header class="admin-topbar">
             <button class="admin-toggle" id="adminSidebarToggle" type="button" aria-label="Toggle sidebar"><i class="bi bi-list"></i></button>
-            <div class="admin-profile"><a class="btn btn-outline-light btn-sm" href="../index.php"><i class="bi bi-house-door me-1"></i>Main Page</a><div class="text-end"><small class="text-muted d-block">Signed in as</small><strong><?= sanitize($_SESSION['full_name'] ?? 'Admin'); ?></strong></div><span class="admin-avatar"><i class="bi bi-person-fill"></i></span></div>
+            <div class="admin-profile"><div class="admin-theme-toggle appearance-controls"><button type="button" class="btn btn-outline-light" data-theme-toggle aria-label="Toggle dark mode" title="Light/Dark"><i data-theme-icon class="fas fa-moon"></i></button><select class="form-select form-select-sm" data-language-select aria-label="Language"><option value="en">EN</option><option value="ms">BM</option></select></div><a class="btn btn-outline-light btn-sm" href="../index.php"><i class="bi bi-house-door me-1"></i><span data-i18n="Main Page">Main Page</span></a><div class="text-end"><small class="text-muted d-block" data-i18n="Signed in as">Signed in as</small><strong><?= sanitize($_SESSION['full_name'] ?? 'Admin'); ?></strong></div><span class="admin-avatar"><i class="bi bi-person-fill"></i></span></div>
         </header>
         <section class="admin-content">

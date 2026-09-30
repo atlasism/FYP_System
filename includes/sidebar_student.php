@@ -22,6 +22,7 @@ if (!function_exists('sanitize')) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../assets/user-preferences.css?v=8">
     
     <style>
         :root {
@@ -40,13 +41,18 @@ if (!function_exists('sanitize')) {
 
         #wrapper {
             display: flex;
+            min-height: calc(100vh - var(--footer-height));
             transition: all 0.3s ease;
         }
 
         /* Sidebar Styling */
         #sidebar {
             width: var(--sidebar-width);
+            position: sticky;
+            top: 0;
+            align-self: flex-start;
             min-height: calc(100vh - var(--footer-height));
+            height: calc(100vh - var(--footer-height));
             background: #10243d;
             box-shadow: 2px 0 10px rgba(0,0,0,0.05);
             transition: all 0.3s ease;
@@ -56,8 +62,21 @@ if (!function_exists('sanitize')) {
             justify-content: space-between;
         }
 
+        #sidebar::before {
+            content: "";
+            position: fixed;
+            inset: 0 auto 0 0;
+            width: var(--sidebar-width);
+            background: #10243d;
+            z-index: -1;
+        }
+
         /* Kelakuan apabila Sidebar Dikecilkan (Collapsed) */
         #sidebar.collapsed {
+            width: var(--sidebar-collapsed-width);
+        }
+
+        #sidebar.collapsed::before {
             width: var(--sidebar-collapsed-width);
         }
 
@@ -144,7 +163,7 @@ if (!function_exists('sanitize')) {
         #page-content {
             flex: 1;
             width: 100%;
-            overflow-x: hidden;
+            overflow-x: clip;
             min-height: calc(100vh - var(--footer-height));
             transition: all 0.3s ease;
         }
@@ -182,6 +201,9 @@ if (!function_exists('sanitize')) {
         }
 
         #page-content > .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 1030;
             background: #10243d !important;
             border-color: rgba(255,255,255,.12) !important;
         }
@@ -194,7 +216,7 @@ if (!function_exists('sanitize')) {
         }
     </style>
 </head>
-<body>
+<body class="user-portal">
 
 <div id="wrapper">
     <!-- Sidebar -->
@@ -209,37 +231,37 @@ if (!function_exists('sanitize')) {
             <ul class="nav nav-pills flex-column mt-3">
                 <li class="nav-item">
                     <a href="dashboard.php" class="nav-link <?= ($current_page == 'dashboard.php') ? 'active' : ''; ?>">
-                        <i class="fas fa-home me-2"></i> <span class="link-text">Dashboard</span>
+                        <i class="fas fa-home me-2"></i> <span class="link-text" data-i18n="Dashboard">Dashboard</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="register_project.php" class="nav-link <?= ($current_page == 'register_project.php') ? 'active' : ''; ?>">
-                        <i class="fas fa-project-diagram me-2"></i> <span class="link-text">My Project</span>
+                        <i class="fas fa-project-diagram me-2"></i> <span class="link-text" data-i18n="My Project">My Project</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="upload_doc.php" class="nav-link <?= ($current_page == 'upload_doc.php') ? 'active' : ''; ?>">
-                        <i class="fas fa-file-upload me-2"></i> <span class="link-text">Upload Documents</span>
+                        <i class="fas fa-file-upload me-2"></i> <span class="link-text" data-i18n="Upload Documents">Upload Documents</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="marks.php" class="nav-link <?= ($current_page == 'marks.php') ? 'active' : ''; ?>">
-                        <i class="fas fa-chart-bar me-2"></i> <span class="link-text">Evaluation Marks</span>
+                        <i class="fas fa-chart-bar me-2"></i> <span class="link-text" data-i18n="Evaluation Marks">Evaluation Marks</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="reminders.php" class="nav-link <?= ($current_page == 'reminders.php') ? 'active' : ''; ?>">
-                        <i class="fas fa-calendar-alt me-2 text-warning"></i> <span class="link-text">Deadline Reminders</span>
+                        <i class="fas fa-calendar-alt me-2 text-warning"></i> <span class="link-text" data-i18n="Deadline Reminders">Deadline Reminders</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="groups.php" class="nav-link <?= ($current_page == 'groups.php') ? 'active' : ''; ?>">
-                        <i class="fas fa-users me-2"></i> <span class="link-text">Group List</span>
+                        <i class="fas fa-users me-2"></i> <span class="link-text" data-i18n="Group List">Group List</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="past_projects.php" class="nav-link <?= ($current_page == 'past_projects.php') ? 'active' : ''; ?>">
-                        <i class="fas fa-archive me-2"></i> <span class="link-text">Past Projects Archive</span>
+                        <i class="fas fa-archive me-2"></i> <span class="link-text" data-i18n="Past Projects Archive">Past Projects Archive</span>
                     </a>
                 </li>
             </ul>
@@ -250,7 +272,7 @@ if (!function_exists('sanitize')) {
             <ul class="nav nav-pills flex-column">
                 <li class="nav-item">
                     <a href="../logout.php" class="nav-link logout-link" onclick="return confirm('Are you sure you want to log out?');">
-                        <i class="fas fa-sign-out-alt me-2"></i> <span class="link-text">Logout</span>
+                        <i class="fas fa-sign-out-alt me-2"></i> <span class="link-text" data-i18n="Logout">Logout</span>
                     </a>
                 </li>
             </ul>
@@ -265,10 +287,13 @@ if (!function_exists('sanitize')) {
                 <i class="fas fa-bars"></i>
             </button>
             <div class="ms-auto d-flex align-items-center">
-                <!-- Pautan ke halaman profil (tukarkan 'profile.php' jika nama fail anda berbeza) -->
-                <a href="../index.php" class="btn btn-outline-primary btn-sm me-3"><i class="fas fa-home me-1"></i>Main Page</a>
+                <div class="appearance-controls">
+                    <button type="button" class="btn btn-outline-light" data-theme-toggle aria-label="Toggle dark mode" title="Light/Dark"><i data-theme-icon class="fas fa-moon"></i></button>
+                    <select class="form-select form-select-sm" data-language-select aria-label="Language"><option value="en">EN</option><option value="ms">BM</option></select>
+                </div>
+                <a href="../index.php" class="btn btn-outline-primary btn-sm me-3"><i class="fas fa-home me-1"></i><span data-i18n="Main Page">Main Page</span></a>
                 <a href="profile.php" class="text-decoration-none d-flex align-items-center profile-link">
-                    <span class="me-3 fw-semibold text-muted">Welcome, <strong class="text-primary"><?= sanitize($_SESSION['full_name'] ?? 'Student'); ?></strong></span>
+                    <span class="me-3 fw-semibold text-muted"><span data-i18n="Welcome">Welcome</span>, <strong class="text-primary"><?= sanitize($_SESSION['full_name'] ?? 'Student'); ?></strong></span>
                     <i class="fas fa-user-circle fa-2x text-primary"></i>
                 </a>
             </div>

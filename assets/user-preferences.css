@@ -1,0 +1,234 @@
+body.user-portal {
+    --portal-bg: #e9eef4;
+    --portal-surface: #ffffff;
+    --portal-text: #10243d;
+    --portal-muted: #64748b;
+    --portal-border: rgba(16, 36, 61, .12);
+    background-color: var(--portal-bg) !important;
+    color: var(--portal-text);
+    transition: background-color .2s ease, color .2s ease;
+}
+
+body.user-portal > footer {
+    background-color: #10243d !important;
+    color: #f4f8fc;
+}
+
+body.user-portal.portal-dark > footer {
+    background-color: #0d1b2a !important;
+}
+
+body.user-portal.portal-dark {
+    --portal-bg: #101923;
+    --portal-surface: #1b2938;
+    --portal-text: #e5edf6;
+    --portal-muted: #aab9c9;
+    --portal-border: rgba(229, 237, 246, .16);
+}
+
+body.user-portal.portal-dark #page-content,
+body.user-portal.portal-dark .admin-main {
+    background: var(--portal-bg) !important;
+    color: var(--portal-text);
+}
+
+body.user-portal.portal-dark .container,
+body.user-portal.portal-dark .container-fluid,
+body.user-portal.portal-dark main,
+body.user-portal.portal-dark section {
+    color: var(--portal-text);
+}
+
+body.user-portal.portal-dark h1,
+body.user-portal.portal-dark h2,
+body.user-portal.portal-dark h3,
+body.user-portal.portal-dark h4,
+body.user-portal.portal-dark h5,
+body.user-portal.portal-dark h6,
+body.user-portal.portal-dark label,
+body.user-portal.portal-dark .form-label,
+body.user-portal.portal-dark .card-title,
+body.user-portal.portal-dark .card-header {
+    color: var(--portal-text);
+}
+
+body.user-portal.portal-dark .navbar-light,
+body.user-portal.portal-dark .navbar-light .navbar-nav .nav-link,
+body.user-portal.portal-dark .navbar-light .navbar-brand {
+    color: var(--portal-text);
+}
+
+body.user-portal.portal-dark .card,
+body.user-portal.portal-dark .card-custom,
+body.user-portal.portal-dark .admin-card,
+body.user-portal.portal-dark .list-group-item,
+body.user-portal.portal-dark .table,
+body.user-portal.portal-dark .bg-light,
+body.user-portal.portal-dark .form-control,
+body.user-portal.portal-dark .form-select,
+body.user-portal.portal-dark textarea {
+    background-color: var(--portal-surface) !important;
+    color: var(--portal-text);
+    border-color: var(--portal-border);
+}
+
+body.user-portal.portal-dark .form-control::placeholder,
+body.user-portal.portal-dark textarea::placeholder {
+    color: #aab9c9 !important;
+    opacity: 1;
+}
+
+body.user-portal.portal-dark .text-muted,
+body.user-portal.portal-dark .form-text,
+body.user-portal.portal-dark .table {
+    color: var(--portal-muted) !important;
+}
+
+body.user-portal.portal-dark .table-light,
+body.user-portal.portal-dark .table-primary {
+    --bs-table-bg: #24384d;
+    --bs-table-color: var(--portal-text);
+}
+
+body.user-portal.portal-dark .table {
+    --bs-table-bg: #1b2b3b;
+    --bs-table-color: #e5edf6;
+    --bs-table-border-color: rgba(229, 237, 246, .14);
+    --bs-table-striped-bg: #21364a;
+    --bs-table-striped-color: #e5edf6;
+    --bs-table-hover-bg: #2a4359;
+    --bs-table-hover-color: #ffffff;
+    color: #e5edf6 !important;
+    background-color: #1b2b3b !important;
+}
+
+body.user-portal.portal-dark .table > :not(caption) > * > *,
+body.user-portal.portal-dark .table thead th,
+body.user-portal.portal-dark .table tbody td,
+body.user-portal.portal-dark .table tbody th {
+    color: #e5edf6 !important;
+    background-color: #1b2b3b !important;
+    border-color: rgba(229, 237, 246, .14) !important;
+}
+
+body.user-portal.portal-dark .table thead th,
+body.user-portal.portal-dark .table .table-light th,
+body.user-portal.portal-dark .table .table-primary th {
+    background-color: #263e54 !important;
+    color: #f4f8fc !important;
+}
+
+body.user-portal.portal-dark .table-striped > tbody > tr:nth-of-type(odd) > *,
+body.user-portal.portal-dark .table-striped > tbody > tr:nth-of-type(odd) > td,
+body.user-portal.portal-dark .table-striped > tbody > tr:nth-of-type(odd) > th {
+    background-color: #21364a !important;
+    color: #e5edf6 !important;
+}
+
+body.user-portal.portal-dark .table-hover > tbody > tr:hover > * {
+    background-color: #2a4359 !important;
+    color: #ffffff !important;
+}
+
+body.user-portal.portal-dark .bg-white {
+    background-color: var(--portal-surface) !important;
+    color: var(--portal-text) !important;
+}
+
+body.user-portal.portal-dark .badge.bg-light.text-dark {
+    background-color: #24384d !important;
+    color: #e5edf6 !important;
+    border-color: rgba(229, 237, 246, .24) !important;
+}
+
+body.user-portal .card-custom,
+body.user-portal .admin-card,
+body.user-portal .card:not(.admin-stat) {
+    transition: transform .22s ease, box-shadow .22s ease, background-color .22s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    body.user-portal .card-custom:hover,
+    body.user-portal .admin-card:hover,
+    body.user-portal .card:not(.admin-stat):hover {
+        transform: translateY(-5px);
+        box-shadow: 0 16px 34px rgba(4, 16, 31, .22) !important;
+    }
+}
+
+body.user-portal.portal-dark .text-dark:not(.badge),
+body.user-portal.portal-dark .text-body:not(.badge),
+body.user-portal.portal-dark .text-black:not(.badge),
+body.user-portal.portal-dark .admin-content .text-dark:not(.badge),
+body.user-portal.portal-dark .admin-content .text-body:not(.badge),
+body.user-portal.portal-dark .admin-content .text-black:not(.badge),
+body.user-portal.portal-dark .text-secondary:not(.badge) {
+    color: var(--portal-text) !important;
+}
+
+body.user-portal.portal-dark #page-content .card strong:not(.badge),
+body.user-portal.portal-dark #page-content .card span:not(.badge),
+body.user-portal.portal-dark #page-content .card small:not(.badge) {
+    color: inherit;
+}
+
+body.user-portal.portal-dark .border,
+body.user-portal.portal-dark .border-bottom,
+body.user-portal.portal-dark .border-top {
+    border-color: var(--portal-border) !important;
+}
+
+.appearance-controls {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-right: 14px;
+    flex: 0 0 auto;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+}
+
+.appearance-controls .form-select,
+.appearance-controls .btn {
+    flex: 0 0 auto;
+    min-height: 32px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    font-size: .8rem;
+}
+
+.appearance-controls .form-select {
+    width: 62px;
+}
+
+.portal-dark .appearance-controls .form-select {
+    color: #e5edf6;
+    background-color: #1b2938;
+    border-color: rgba(229, 237, 246, .3);
+}
+
+@media (max-width: 767.98px) {
+    .appearance-controls { margin-right: 8px; gap: 4px; }
+    .appearance-controls .form-select { width: 60px; }
+    .appearance-controls .btn { padding-left: 8px; padding-right: 8px; }
+    .navbar-nav > .nav-item.d-flex { flex-wrap: nowrap; white-space: nowrap; }
+}
+
+.admin-theme-toggle {
+    margin-right: 8px;
+}
+
+.admin-theme-toggle .btn,
+.admin-theme-toggle .form-select {
+    min-height: 32px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    font-size: .8rem;
+}
+
+body.user-portal.portal-dark .admin-card,
+body.user-portal.portal-dark .podium-card,
+body.user-portal.portal-dark .admin-content .bg-light {
+    background: var(--portal-surface) !important;
+    color: var(--portal-text);
+}

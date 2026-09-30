@@ -3,7 +3,7 @@
 </div> <!-- Penutup #wrapper -->
 
 <!-- FOOTER -->
-<footer class="bg-black border-top text-center py-3 fixed-bottom" style="height: var(--footer-height); z-index: 1050;">
+<footer class="bg-black border-top text-center py-3 fixed-bottom" style="height: var(--footer-height); box-sizing: border-box; margin: 0; z-index: 1050;">
     <div class="container-fluid d-flex align-items-center justify-content-center h-100">
         <small class="text-white fw-semibold">
             &copy; <?= date('Y'); ?> <strong class="text-warning">SPInE FYP</strong> | Politeknik Besut, Terengganu. Hak Cipta Terpelihara.
@@ -13,6 +13,7 @@
 
 <!-- Bootstrap 5 JS Bundle -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/fyp_system/assets/js/user-preferences.js?v=12"></script>
 
 <!-- Script Toggle Sidebar -->
 <script>
