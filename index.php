@@ -61,28 +61,6 @@ if ($stmt_projects) {
 
     <div class="card public-glass card-custom p-4 mb-4 shadow-sm border-0">
         <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
-            <h4 class="fw-bold text-primary mb-0"><i class="fas fa-star text-warning me-2"></i>Panel's Choices</h4>
-            <span class="badge bg-warning text-dark">Featured Projects</span>
-        </div>
-        <?php if ($panel_choice_rows && $panel_choice_rows->num_rows > 0): ?>
-            <div class="row g-3">
-                <?php while ($choice = $panel_choice_rows->fetch_assoc()): ?>
-                    <div class="col-md-6 col-xl-4">
-                        <div class="p-3 bg-light rounded border h-100">
-                            <div class="d-flex justify-content-between gap-2"><span class="badge bg-primary">Group <?= (int) $choice['project_group_no']; ?></span><i class="fas fa-star text-warning"></i></div>
-                            <h5 class="fw-bold mt-3 mb-2"><?= sanitize($choice['title']); ?></h5>
-                            <p class="small text-muted mb-0"><?= sanitize($choice['leader_name'] ?? '-'); ?> · <?= (int) $choice['member_count']; ?> students · <?= sanitize($choice['session'] ?? '-'); ?></p>
-                        </div>
-                    </div>
-                <?php endwhile; ?>
-            </div>
-        <?php else: ?>
-            <p class="text-muted mb-0">Panel's Choices will appear here after the panel selects the featured groups.</p>
-        <?php endif; ?>
-    </div>
-
-    <div class="card public-glass card-custom p-4 mb-4 shadow-sm border-0">
-        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
             <h4 class="fw-bold text-primary mb-0"><i class="fas fa-trophy text-warning me-2"></i>Top 5 Project Ranking</h4>
             <span class="badge bg-primary">Demo 3 Panel Marks</span>
         </div>
@@ -112,6 +90,28 @@ if ($stmt_projects) {
             <?php endif; ?>
         <?php else: ?>
             <p class="text-muted mb-0">Project ranking will appear here once the external panel submits Demo 3 marks.</p>
+        <?php endif; ?>
+    </div>
+
+    <div class="card public-glass card-custom p-4 mb-4 shadow-sm border-0">
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+            <h4 class="fw-bold text-primary mb-0"><i class="fas fa-star text-warning me-2"></i>Panel's Choices</h4>
+            <span class="badge bg-warning text-dark">Featured Projects</span>
+        </div>
+        <?php if ($panel_choice_rows && $panel_choice_rows->num_rows > 0): ?>
+            <div class="row g-3">
+                <?php while ($choice = $panel_choice_rows->fetch_assoc()): ?>
+                    <div class="col-md-6 col-xl-4">
+                        <div class="p-3 bg-light rounded border h-100">
+                            <div class="d-flex justify-content-between gap-2"><span class="badge bg-primary">Group <?= (int) $choice['project_group_no']; ?></span><i class="fas fa-star text-warning"></i></div>
+                            <h5 class="fw-bold mt-3 mb-2"><?= sanitize($choice['title']); ?></h5>
+                            <p class="small text-muted mb-0"><?= sanitize($choice['leader_name'] ?? '-'); ?> · <?= (int) $choice['member_count']; ?> students · <?= sanitize($choice['session'] ?? '-'); ?></p>
+                        </div>
+                    </div>
+                <?php endwhile; ?>
+            </div>
+        <?php else: ?>
+            <p class="text-muted mb-0">Panel's Choices will appear here after the panel selects the featured groups.</p>
         <?php endif; ?>
     </div>
 

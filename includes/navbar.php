@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm sticky-top">
   <div class="container">
     <a class="navbar-brand d-flex align-items-center" href="/fyp_system/index.php">
       <img src="/fyp_system/assets/image/logo.png" alt="SPInE Politeknik Besut logo" height="40" class="me-2" onerror="this.style.display='none'">

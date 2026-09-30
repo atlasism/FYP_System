@@ -70,14 +70,6 @@ include_once '../includes/admin_header.php';
         </div>
     </div>
 
-    <div class="card admin-card p-4 mt-4" id="panel-choices">
-        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
-            <div><h5 class="fw-bold mb-1"><i class="bi bi-star-fill text-warning me-2"></i>Panel's Choices</h5><p class="text-muted mb-0">Groups selected by the external panel.</p></div>
-            <a class="btn btn-outline-primary" href="reports.php#panel-choices"><i class="bi bi-bar-chart-line me-2"></i>Open Panel's Choice Report</a>
-        </div>
-        <div class="mt-3"><span class="display-6 fw-bold text-primary"><?= $panel_choice_count; ?></span><span class="text-muted ms-2">selected group<?= $panel_choice_count === 1 ? '' : 's'; ?></span></div>
-    </div>
-
     <div class="card admin-card p-4 mt-4" id="rankings">
         <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
             <div><h5 class="fw-bold mb-1"><i class="bi bi-trophy-fill text-warning me-2"></i>Top 5 Project Ranking</h5><p class="text-muted mb-0">Ranked by average panel marks from Demo 3 evaluation.</p></div>
@@ -112,6 +104,14 @@ include_once '../includes/admin_header.php';
                 </div>
             <?php endif; ?>
         <?php endif; ?>
+    </div>
+
+    <div class="card admin-card p-4 mt-4" id="panel-choices">
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+            <div><h5 class="fw-bold mb-1"><i class="bi bi-star-fill text-warning me-2"></i>Panel's Choices</h5><p class="text-muted mb-0">Groups selected by the external panel.</p></div>
+            <a class="btn btn-outline-primary" href="reports.php#panel-choices"><i class="bi bi-bar-chart-line me-2"></i>Open Panel's Choice Report</a>
+        </div>
+        <div class="mt-3"><span class="display-6 fw-bold text-primary"><?= $panel_choice_count; ?></span><span class="text-muted ms-2">selected group<?= $panel_choice_count === 1 ? '' : 's'; ?></span></div>
     </div>
 </div>
 
