@@ -1,5 +1,7 @@
 (function () {
-    if (!document.body.classList.contains('user-portal')) return;
+    const isPortal = document.body.classList.contains('user-portal');
+    const isHome = document.body.classList.contains('home-page');
+    if (!isPortal && !isHome) return;
     document.documentElement.classList.add('portal-scroll');
 
     const storageKey = 'spine-user-preferences';
@@ -267,7 +269,7 @@
     Object.assign(translations.en, {
         'Reset Filter': 'Reset Filter',
         'Keyword / title...': 'Keyword / title...',
-        'Session (e.g. 2024/2025)': 'Session (e.g. 2024/2025)',
+        'Session (e.g. I : 2024/2025)': 'Session (e.g. I : 2024/2025)',
         'Records shown:': 'Records shown:',
         'projects found.': 'projects found.',
         'Supervisor N/A': 'Supervisor N/A',
@@ -277,7 +279,7 @@
     Object.assign(translations.ms, {
         'Reset Filter': 'Tetap Semula Penapis',
         'Keyword / title...': 'Kata kunci / tajuk...',
-        'Session (e.g. 2024/2025)': 'Sesi (contoh: 2024/2025)',
+        'Session (e.g. I : 2024/2025)': 'Sesi (contoh: I : 2024/2025)',
         'Records shown:': 'Rekod dipaparkan:',
         'projects found.': 'projek ditemui.',
         'Supervisor N/A': 'Penyelia Tiada',
@@ -391,6 +393,56 @@
         'Project Summary Information': 'Maklumat Ringkasan Projek',
         'Complete': 'Lengkap',
         'Pending Review': 'Menunggu Semakan'
+    });
+    Object.assign(translations.en, {
+        'Supervisor Profile': 'Supervisor Profile',
+        'Admin Profile': 'Admin Profile',
+        'My Profile': 'My Profile',
+        'Profile Picture': 'Profile Picture',
+        'IC / Staff ID': 'IC / Staff ID',
+        'Full Name': 'Full Name',
+        'Change Password (Leave blank if not changing)': 'Change Password (Leave blank if not changing)',
+        'Change Password (Leave blank to keep your current password)': 'Change Password (Leave blank to keep your current password)',
+        'Change Password': 'Change Password',
+        'Update your administrator account details and password.': 'Update your administrator account details and password.',
+        'JPG, PNG or WEBP, maximum 2 MB.': 'JPG, PNG or WEBP, maximum 2 MB.',
+        'Leave blank to keep current password': 'Leave blank to keep current password',
+        'Password must contain at least 8 characters.': 'Password must contain at least 8 characters.'
+    });
+    Object.assign(translations.ms, {
+        'Supervisor Profile': 'Profil Penyelia',
+        'Admin Profile': 'Profil Admin',
+        'My Profile': 'Profil Saya',
+        'Profile Picture': 'Gambar Profil',
+        'IC / Staff ID': 'No. Kad Pengenalan / ID Staf',
+        'Full Name': 'Nama Penuh',
+        'Change Password (Leave blank if not changing)': 'Tukar Kata Laluan (Biarkan kosong jika tidak mahu menukar)',
+        'Change Password (Leave blank to keep your current password)': 'Tukar Kata Laluan (Biarkan kosong untuk kekalkan kata laluan semasa)',
+        'Change Password': 'Tukar Kata Laluan',
+        'Update your administrator account details and password.': 'Kemas kini butiran akaun pentadbir dan kata laluan anda.',
+        'JPG, PNG or WEBP, maximum 2 MB.': 'JPG, PNG atau WEBP, maksimum 2 MB.',
+        'Leave blank to keep current password': 'Biarkan kosong untuk kekalkan kata laluan semasa',
+        'Password must contain at least 8 characters.': 'Kata laluan mesti mempunyai sekurang-kurangnya 8 aksara.'
+    });
+    Object.assign(translations.en, {
+        'SPInE Student Project System': 'SPInE Student Project System',
+        'JTMK | DFT50114 Integrated Project': 'JTMK | DFT50114 Integrated Project',
+        'Top 5 Project Ranking': 'Top 5 Project Ranking',
+        "Panel's Choices": "Panel's Choices",
+        'Featured Projects': 'Featured Projects',
+        'Current Announcement:': 'Current Announcement:',
+        'Project Deadlines': 'Project Deadlines',
+        'Current Projects In Progress': 'Current Projects In Progress'
+    });
+    Object.assign(translations.ms, {
+        'SPInE Student Project System': 'Sistem Projek Pelajar SPInE',
+        'JTMK | DFT50114 Integrated Project': 'Projek Bersepadu JTMK | DFT50114',
+        'Top 5 Project Ranking': '5 Kedudukan Projek Teratas',
+        "Panel's Choices": 'Pilihan Panel',
+        'Featured Projects': 'Projek Pilihan',
+        'Current Announcement:': 'Pengumuman Semasa:',
+        'Project Deadlines': 'Tarikh Akhir Projek',
+        'Current Projects In Progress': 'Projek Semasa Dalam Proses'
     });
     Object.assign(translations.en, {
         'FYP Group & Project Monitoring': 'FYP Group & Project Monitoring',
@@ -525,6 +577,7 @@
     }
 
     function applyTheme(theme) {
+        if (!isPortal) return;
         document.body.classList.toggle('portal-dark', theme === 'dark');
         document.querySelectorAll('[data-theme-icon]').forEach(function (icon) {
             icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
@@ -534,7 +587,7 @@
     function setupControls(preferences) {
         const themeButton = document.querySelector('[data-theme-toggle]');
         const languageSelect = document.querySelector('[data-language-select]');
-        if (themeButton) {
+        if (themeButton && isPortal) {
             themeButton.addEventListener('click', function () {
                 preferences.theme = preferences.theme === 'dark' ? 'light' : 'dark';
                 savePreferences(preferences);
@@ -550,7 +603,13 @@
             languageSelect.addEventListener('change', function () {
                 preferences.language = languageSelect.value;
                 savePreferences(preferences);
-                translatePage(preferences.language);
+                document.body.classList.add('language-changing');
+                window.setTimeout(function () {
+                    translatePage(preferences.language);
+                    window.requestAnimationFrame(function () {
+                        document.body.classList.remove('language-changing');
+                    });
+                }, 120);
             });
         }
     }

@@ -157,7 +157,7 @@ if ($stmt_projects) {
         <?php if ($top_projects && $top_projects->num_rows > 0): ?>
             <?php while ($proj = $top_projects->fetch_assoc()): ?>
                 <div class="col-md-4">
-                    <div class="card public-glass card-custom h-100 shadow-sm border-0">
+                    <div class="card public-glass card-custom current-project-card h-100 shadow-sm border-0">
                         <div class="card-body d-flex flex-column">
                             <span class="badge bg-secondary mb-2 w-auto align-self-start">
                                 <?= sanitize($proj['department'] ?? 'N/A'); ?> - <?= sanitize($proj['category'] ?? 'N/A'); ?>

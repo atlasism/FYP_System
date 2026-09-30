@@ -244,7 +244,7 @@ include_once '../includes/sidebar_student.php';
                     </div>
                     <div class="col-md-4">
                         <label class="form-label fw-bold">Academic Session</label>
-                        <input type="text" name="session" class="form-control bg-light" value="SESSION 1 2024/2025" readonly>
+                        <input type="text" name="session" class="form-control bg-light" value="I : 2024/2025" readonly>
                     </div>
                 </div>
 

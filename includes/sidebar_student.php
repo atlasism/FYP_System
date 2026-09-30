@@ -322,7 +322,7 @@ if (!function_exists('sanitize')) {
                 <a href="../index.php" class="btn btn-outline-primary btn-sm me-3"><i class="fas fa-home me-1"></i><span data-i18n="Home">Home</span></a>
                 <a href="profile.php" class="text-decoration-none d-flex align-items-center profile-link">
                     <span class="me-3 fw-semibold text-muted"><span data-i18n="Welcome">Welcome</span>, <strong class="text-primary"><?= sanitize($_SESSION['full_name'] ?? 'Student'); ?></strong></span>
-                    <i class="fas fa-user-circle fa-2x text-primary"></i>
+                    <?php if (!empty($_SESSION['profile_picture'])): ?><img src="../uploads/profile/<?= rawurlencode($_SESSION['profile_picture']); ?>" alt="Profile picture" class="profile-avatar rounded-circle"><?php else: ?><i class="fas fa-user-circle fa-2x text-primary"></i><?php endif; ?>
                 </a>
             </div>
         </nav>

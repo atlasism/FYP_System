@@ -9,9 +9,7 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto align-items-lg-center">
-        <li class="nav-item">
-          <a class="nav-link" href="/fyp_system/index.php"><i class="fas fa-home me-1"></i> Home</a>
-        </li>
+        <?php if ($current_page === 'index.php'): ?><li class="nav-item home-language-item"><select class="form-select form-select-sm home-language-control" data-language-select aria-label="Language"><option value="en">EN</option><option value="ms">BM</option></select></li><?php else: ?><li class="nav-item"><a class="nav-link" href="/fyp_system/index.php"><i class="fas fa-home me-1"></i> <span data-i18n="Home">Home</span></a></li><?php endif; ?>
         <?php if (isset($_SESSION['user_id'])): ?>
           <?php if ($_SESSION['role'] === 'Student'): ?>
             <li class="nav-item"><a class="nav-link" href="/fyp_system/student/dashboard.php" data-i18n="Dashboard">Dashboard</a></li>
@@ -22,7 +20,6 @@
             <li class="nav-item"><a class="nav-link" href="/fyp_system/admin/manage_projects.php">Projects</a></li>
           <?php elseif ($_SESSION['role'] === 'Supervisor'): ?>
             <li class="nav-item"><a class="nav-link" href="/fyp_system/supervisor/dashboard.php" data-i18n="Dashboard">Dashboard</a></li>
-            <li class="nav-item"><a class="nav-link" href="/fyp_system/supervisor/supervised_projects.php">My Projects</a></li>
           <?php endif; ?>
           <li class="nav-item ms-lg-2 d-flex align-items-center">
             <?php if ($current_page !== 'index.php'): ?><div class="appearance-controls">

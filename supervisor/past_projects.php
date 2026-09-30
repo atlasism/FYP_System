@@ -114,7 +114,7 @@ include_once '../includes/sidebar_supervisor.php';
                 </select>
             </div>
             <div class="col-md-2">
-                <input type="text" class="form-control" name="session" placeholder="Session (e.g. 2024/2025)" value="<?= sanitize($session); ?>">
+                <input type="text" class="form-control" name="session" placeholder="Session (e.g. I : 2024/2025)" value="<?= sanitize($session); ?>">
             </div>
             <div class="col-md-2">
                 <select class="form-select" name="department">

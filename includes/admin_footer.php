@@ -2,7 +2,7 @@
     </main>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="/fyp_system/assets/js/user-preferences.js?v=13"></script>
+<script src="/fyp_system/assets/js/user-preferences.js?v=14"></script>
 <script>
 (function () {
     const sidebar = document.getElementById('adminSidebar');

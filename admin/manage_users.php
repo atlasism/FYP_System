@@ -106,6 +106,13 @@ while ($student = $student_result->fetch_assoc()) {
     $students_by_session[$session][] = $student;
 }
 
+foreach ($students_by_session as &$session_students) {
+    usort($session_students, static function ($left, $right) {
+        return strnatcasecmp((string) ($left['matric_no'] ?? ''), (string) ($right['matric_no'] ?? ''));
+    });
+}
+unset($session_students);
+
 $session_sort_key = static function ($session) {
     $year = preg_match('/(\d{4})\s*\/\s*\d{4}/', $session, $year_match) ? (int) $year_match[1] : 0;
     $term = 0;

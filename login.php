@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_login'])) {
     $password = trim($_POST['password']);
 
     if (!empty($matric_no) && !empty($password)) {
-        $stmt = $conn->prepare("SELECT id, username, password, full_name, role, department, ic_number FROM users WHERE BINARY ic_number = ? OR BINARY email = ?");
+        $stmt = $conn->prepare("SELECT id, username, password, full_name, role, department, ic_number, profile_picture FROM users WHERE BINARY ic_number = ? OR BINARY email = ?");
         $stmt->bind_param("ss", $matric_no, $matric_no);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -49,6 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_login'])) {
                 $_SESSION['role']        = $user['role'];
                 $_SESSION['department']  = $user['department'];
                 $_SESSION['matric_no']   = $user['ic_number'];
+                $_SESSION['profile_picture'] = $user['profile_picture'] ?? '';
 
                 // Redirect according to role
                 if ($user['role'] === 'Student') {

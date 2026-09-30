@@ -43,6 +43,14 @@ body.user-portal.theme-changing * {
     transition-duration: .38s !important;
 }
 
+body.language-changing #page-content > .p-4,
+body.language-changing .admin-content,
+body.language-changing > .container,
+body.language-changing > .container-fluid {
+    opacity: .45;
+    transition: opacity .12s ease;
+}
+
 body.user-portal > footer {
     background-color: #10243d !important;
     color: #f4f8fc;
@@ -221,6 +229,8 @@ body.user-portal.portal-dark .border-top {
     flex-wrap: nowrap;
     white-space: nowrap;
 }
+
+.profile-avatar { width: 38px; height: 38px; object-fit: cover; }
 
 .appearance-controls .form-select,
 .appearance-controls .btn {
