@@ -1,5 +1,6 @@
 <?php
 require_once 'config/database.php';
+require_once 'includes/ranking.php';
 include_once 'includes/header.php';
 include_once 'includes/navbar.php';
 
@@ -34,6 +35,12 @@ if ($deadline_result) {
 }
 
 $panel_choice_rows = $conn->query("SELECT p.id, p.project_group_no, p.title, p.category, p.session, leader.full_name AS leader_name, COUNT(DISTINCT pm.student_id) AS member_count FROM projects p LEFT JOIN users leader ON leader.id = p.student_id LEFT JOIN project_members pm ON pm.project_id = p.id WHERE p.department = 'JTMK' AND p.course_code = 'DFT50114' AND p.is_panel_choice = 1 GROUP BY p.id, p.project_group_no, p.title, p.category, p.session, leader.full_name ORDER BY p.project_group_no ASC");
+
+$ranking_data = get_project_rankings($conn, 5);
+$top_rankings = $ranking_data['rows'];
+$ranking_available = $ranking_data['available'];
+$podium_order = [2, 1, 3];
+
 
 // Paparkan projek semasa yang belum lengkap untuk penilaian.
 $stmt_projects = $conn->prepare("SELECT p.*, u.full_name FROM projects p JOIN users u ON p.student_id = u.id WHERE COALESCE(p.is_complete_for_evaluation, 0) = 0 AND (p.status IS NULL OR p.status <> 'Completed') ORDER BY p.project_group_no ASC LIMIT 6");
@@ -71,6 +78,40 @@ if ($stmt_projects) {
             </div>
         <?php else: ?>
             <p class="text-muted mb-0">Panel's Choices will appear here after the panel selects the featured groups.</p>
+        <?php endif; ?>
+    </div>
+
+    <div class="card public-glass card-custom p-4 mb-4 shadow-sm border-0">
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+            <h4 class="fw-bold text-primary mb-0"><i class="fas fa-trophy text-warning me-2"></i>Top 5 Project Ranking</h4>
+            <span class="badge bg-primary">Demo 3 Panel Marks</span>
+        </div>
+        <?php if ($ranking_available && $top_rankings): ?>
+            <div class="ranking-podium">
+                <?php foreach ($podium_order as $podium_position): $ranking = $top_rankings[$podium_position - 1] ?? null; if (!$ranking) continue; ?>
+                    <div class="podium-step podium-step-<?= $podium_position; ?>">
+                        <div class="podium-card">
+                            <span class="podium-medal">#<?= (int) $ranking['rank']; ?></span>
+                            <strong class="d-block text-truncate" title="<?= sanitize($ranking['title']); ?>"><?= sanitize($ranking['title']); ?></strong>
+                            <small class="d-block text-muted">Group <?= (int) $ranking['project_group_no']; ?> · <?= sanitize($ranking['leader_name'] ?? '-'); ?></small>
+                            <span class="badge bg-primary mt-2"><?= number_format($ranking['avg_total_score'], 2); ?> pts</span>
+                        </div>
+                        <div class="podium-bar podium-bar-<?= $podium_position; ?>"></div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+            <?php if (count($top_rankings) > 3): ?>
+                <div class="list-group mt-3">
+                    <?php foreach (array_slice($top_rankings, 3) as $ranking): ?>
+                        <div class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
+                            <div><span class="badge bg-secondary me-2">#<?= (int) $ranking['rank']; ?></span><strong><?= sanitize($ranking['title']); ?></strong><small class="text-muted d-block ms-4">Group <?= (int) $ranking['project_group_no']; ?> · <?= sanitize($ranking['leader_name'] ?? '-'); ?></small></div>
+                            <span class="badge bg-primary"><?= number_format($ranking['avg_total_score'], 2); ?> pts</span>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+        <?php else: ?>
+            <p class="text-muted mb-0">Project ranking will appear here once the external panel submits Demo 3 marks.</p>
         <?php endif; ?>
     </div>
 

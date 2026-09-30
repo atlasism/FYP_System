@@ -1,7 +1,12 @@
 <?php
 require_once '../config/database.php';
 require_once '../includes/auth_check.php';
+require_once '../includes/ranking.php';
 check_access(['Admin']);
+
+$ranking_data = get_project_rankings($conn);
+$project_rankings = $ranking_data['rows'];
+$ranking_available = $ranking_data['available'];
 
 $category_rows = $conn->query("SELECT category, COUNT(*) AS total FROM projects WHERE department = 'JTMK' AND course_code = 'DFT50114' GROUP BY category ORDER BY total DESC, category ASC");
 $status_rows = $conn->query("SELECT status, COUNT(*) AS total FROM projects WHERE department = 'JTMK' AND course_code = 'DFT50114' GROUP BY status ORDER BY status ASC");
@@ -66,6 +71,40 @@ include_once '../includes/admin_header.php';
         <div class="col-lg-6"><div class="card admin-card p-4 h-100"><h5 class="fw-bold mb-3">Project Registration Status</h5><?php while ($row = $status_rows->fetch_assoc()): ?><div class="d-flex justify-content-between align-items-center border-bottom py-3"><span><?= sanitize($row['status'] ?: 'Unknown'); ?></span><strong><?= $row['total']; ?></strong></div><?php endwhile; ?></div></div>
         <div class="col-12"><div class="card admin-card p-4"><h5 class="fw-bold mb-3">Demo Verification Summary</h5><div class="row g-3"><?php foreach (['Demo 1', 'Demo 2'] as $demo): ?><div class="col-md-6"><div class="p-3 rounded-3 bg-light border"><h6 class="fw-bold mb-3"><?= $demo; ?></h6><div class="d-flex gap-2 flex-wrap"><span class="badge bg-success">Passed: <?= $demo_summary[$demo]['Passed'] ?? 0; ?></span><span class="badge bg-danger">Not Passed: <?= $demo_summary[$demo]['Not Passed'] ?? 0; ?></span><span class="badge bg-secondary">Pending: <?= $demo_summary[$demo]['Pending'] ?? 0; ?></span></div></div></div><?php endforeach; ?></div><p class="text-muted small mt-3 mb-0">This summary covers Demo 1 and Demo 2 verification. Demo 3 panel scores are listed below.</p></div></div>
         <div class="col-12" id="panel-choices"><div class="card admin-card p-4"><div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3"><div><h5 class="fw-bold mb-1"><i class="bi bi-star-fill text-warning me-2"></i>Panel's Choices</h5><p class="text-muted small mb-0">Groups marked as the panel's favourite projects.</p></div><span class="badge text-bg-warning"><?= $panel_choice_rows ? $panel_choice_rows->num_rows : 0; ?> selected</span></div><?php if (!$panel_choice_rows || $panel_choice_rows->num_rows === 0): ?><p class="text-muted mb-0">No groups have been selected yet.</p><?php else: ?><div class="table-responsive"><table class="table table-hover align-middle mb-0"><thead class="table-light"><tr><th>Group</th><th>Project</th><th>Leader</th><th>Members</th><th>Supervisor</th><th>Selected At</th></tr></thead><tbody><?php while ($choice = $panel_choice_rows->fetch_assoc()): ?><tr><td><?= (int) $choice['project_group_no']; ?></td><td><strong><?= sanitize($choice['title']); ?></strong><small class="d-block text-muted"><?= sanitize($choice['category']); ?></small></td><td><?= sanitize($choice['leader_name'] ?? '-'); ?></td><td><?= (int) $choice['member_count']; ?></td><td><?= sanitize($choice['supervisor_name'] ?? '-'); ?></td><td><?= $choice['panel_choice_at'] ? sanitize(date('d M Y, h:i A', strtotime($choice['panel_choice_at']))) : '-'; ?></td></tr><?php endwhile; ?></tbody></table></div><?php endif; ?></div></div>
+        <div class="col-12" id="rankings">
+            <div class="card admin-card p-4">
+                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+                    <div><h5 class="fw-bold mb-1"><i class="bi bi-trophy-fill text-warning me-2"></i>Full Project Ranking</h5><p class="text-muted small mb-0">All groups ranked by average panel marks from Demo 3 evaluation.</p></div>
+                    <?php if ($ranking_available): ?><span class="badge text-bg-primary"><?= count($project_rankings); ?> ranked group<?= count($project_rankings) === 1 ? '' : 's'; ?></span><?php endif; ?>
+                </div>
+                <?php if (!$ranking_available): ?>
+                    <div class="alert alert-warning mb-0">Ranking data is unavailable. Run <code>panel_module_migration.sql</code>.</div>
+                <?php elseif (!$project_rankings): ?>
+                    <p class="text-muted mb-0">Ranking will appear once the external panel submits marks.</p>
+                <?php else: ?>
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light"><tr><th>Rank</th><th>Group</th><th>Project</th><th>Leader</th><th>Members</th><th>Panel Submissions</th><th>Average Marks /100</th><th>Average Demo 3 /15</th></tr></thead>
+                            <tbody>
+                                <?php foreach ($project_rankings as $ranking): ?>
+                                    <tr>
+                                        <td><span class="badge <?= $ranking['rank'] <= 3 ? 'bg-warning text-dark' : 'bg-secondary'; ?>">#<?= (int) $ranking['rank']; ?></span></td>
+                                        <td><?= (int) $ranking['project_group_no']; ?></td>
+                                        <td><strong><?= sanitize($ranking['title']); ?></strong><small class="d-block text-muted"><?= sanitize($ranking['category']); ?></small></td>
+                                        <td><?= sanitize($ranking['leader_name'] ?? '-'); ?></td>
+                                        <td><?= (int) $ranking['member_count']; ?></td>
+                                        <td><?= (int) $ranking['evaluation_count']; ?></td>
+                                        <td class="fw-bold"><?= number_format($ranking['avg_total_score'], 2); ?></td>
+                                        <td><?= number_format($ranking['avg_demo3_score'], 2); ?></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                <?php endif; ?>
+            </div>
+        </div>
+
         <div class="col-12">
             <div class="card admin-card p-4">
                 <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-3">

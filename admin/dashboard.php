@@ -1,7 +1,13 @@
 <?php
 require_once '../config/database.php';
 require_once '../includes/auth_check.php';
+require_once '../includes/ranking.php';
 check_access(['Admin']);
+
+$ranking_data = get_project_rankings($conn, 5);
+$top_rankings = $ranking_data['rows'];
+$ranking_available = $ranking_data['available'];
+$podium_order = [2, 1, 3];
 
 $student_count = 0;
 $supervisor_count = 0;
@@ -70,6 +76,42 @@ include_once '../includes/admin_header.php';
             <a class="btn btn-outline-primary" href="reports.php#panel-choices"><i class="bi bi-bar-chart-line me-2"></i>Open Panel's Choice Report</a>
         </div>
         <div class="mt-3"><span class="display-6 fw-bold text-primary"><?= $panel_choice_count; ?></span><span class="text-muted ms-2">selected group<?= $panel_choice_count === 1 ? '' : 's'; ?></span></div>
+    </div>
+
+    <div class="card admin-card p-4 mt-4" id="rankings">
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+            <div><h5 class="fw-bold mb-1"><i class="bi bi-trophy-fill text-warning me-2"></i>Top 5 Project Ranking</h5><p class="text-muted mb-0">Ranked by average panel marks from Demo 3 evaluation.</p></div>
+            <a class="btn btn-outline-primary" href="reports.php#rankings"><i class="bi bi-list-ol me-2"></i>View Full Ranking</a>
+        </div>
+        <?php if (!$ranking_available): ?>
+            <div class="alert alert-warning mb-0">Ranking data is unavailable. Run <code>panel_module_migration.sql</code>.</div>
+        <?php elseif (!$top_rankings): ?>
+            <p class="text-muted mb-0">Ranking will appear once the external panel submits marks.</p>
+        <?php else: ?>
+            <div class="ranking-podium">
+                <?php foreach ($podium_order as $podium_position): $ranking = $top_rankings[$podium_position - 1] ?? null; if (!$ranking) continue; ?>
+                    <div class="podium-step podium-step-<?= $podium_position; ?>">
+                        <div class="podium-card">
+                            <span class="podium-medal">#<?= (int) $ranking['rank']; ?></span>
+                            <strong class="d-block text-truncate" title="<?= sanitize($ranking['title']); ?>"><?= sanitize($ranking['title']); ?></strong>
+                            <small class="d-block text-muted">Group <?= (int) $ranking['project_group_no']; ?> · <?= sanitize($ranking['leader_name'] ?? '-'); ?></small>
+                            <span class="badge bg-primary mt-2"><?= number_format($ranking['avg_total_score'], 2); ?> pts</span>
+                        </div>
+                        <div class="podium-bar podium-bar-<?= $podium_position; ?>"></div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+            <?php if (count($top_rankings) > 3): ?>
+                <div class="list-group mt-3">
+                    <?php foreach (array_slice($top_rankings, 3) as $ranking): ?>
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            <div><span class="badge bg-secondary me-2">#<?= (int) $ranking['rank']; ?></span><strong><?= sanitize($ranking['title']); ?></strong><small class="text-muted d-block ms-4">Group <?= (int) $ranking['project_group_no']; ?> · <?= sanitize($ranking['leader_name'] ?? '-'); ?></small></div>
+                            <span class="badge bg-primary"><?= number_format($ranking['avg_total_score'], 2); ?> pts</span>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+        <?php endif; ?>
     </div>
 </div>
 
