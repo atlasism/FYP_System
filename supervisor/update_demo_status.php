@@ -27,20 +27,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (!hash_equals($csrf_token, $_POST['csrf_token'] ?? '')) {
         $error = 'Invalid form session. Please try again.';
-    } elseif (!in_array($demo_1_status, $valid_statuses, true) || !in_array($demo_2_status, $valid_statuses, true)) {
-        $error = 'Please select Passed or Not Passed for both milestones.';
+    } elseif (($demo_1_status === '' && $demo_2_status === '') || ($demo_1_status !== '' && !in_array($demo_1_status, $valid_statuses, true)) || ($demo_2_status !== '' && !in_array($demo_2_status, $valid_statuses, true))) {
+        $error = 'Please select Passed or Not Passed for at least one milestone.';
     } else {
         $conn->begin_transaction();
         try {
             $status_stmt = $conn->prepare("INSERT INTO student_demo_status (supervisor_id, student_id, demo_type, status) VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE status = VALUES(status), updated_at = NOW()");
-            $demo_type = 'Demo 1';
-            $status_stmt->bind_param('iiss', $supervisor_id, $student_id, $demo_type, $demo_1_status);
-            $status_stmt->execute();
-            $demo_type = 'Demo 2';
-            $status_stmt->bind_param('iiss', $supervisor_id, $student_id, $demo_type, $demo_2_status);
-            $status_stmt->execute();
+            foreach ([
+                'Demo 1' => $demo_1_status,
+                'Demo 2' => $demo_2_status
+            ] as $demo_type => $demo_status) {
+                if ($demo_status === '') {
+                    continue;
+                }
+                $status_stmt->bind_param('iiss', $supervisor_id, $student_id, $demo_type, $demo_status);
+                $status_stmt->execute();
+            }
             $conn->commit();
-            $message = 'Demo milestone status updated successfully.';
+            $message = 'Selected demo milestone status updated successfully.';
         } catch (Throwable $exception) {
             $conn->rollback();
             $error = 'Unable to update the demo milestone status.';
@@ -89,7 +93,7 @@ include_once '../includes/sidebar_supervisor.php';
                 <?php foreach (['Demo 1' => 'demo_1_status', 'Demo 2' => 'demo_2_status'] as $demo_label => $field_name): ?>
                     <div class="col-md-6">
                         <label class="form-label fw-bold" for="<?= $field_name; ?>"><?= $demo_label; ?> Status</label>
-                        <select class="form-select form-select-lg" name="<?= $field_name; ?>" id="<?= $field_name; ?>" required>
+                        <select class="form-select form-select-lg" name="<?= $field_name; ?>" id="<?= $field_name; ?>">
                             <option value="">-- Select Status --</option>
                             <option value="Passed" <?= $current_status[$demo_label] === 'Passed' ? 'selected' : ''; ?>>Passed</option>
                             <option value="Not Passed" <?= $current_status[$demo_label] === 'Not Passed' ? 'selected' : ''; ?>>Not Passed</option>

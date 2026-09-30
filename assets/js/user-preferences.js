@@ -1,5 +1,6 @@
 (function () {
     if (!document.body.classList.contains('user-portal')) return;
+    document.documentElement.classList.add('portal-scroll');
 
     const storageKey = 'spine-user-preferences';
     const translations = {
@@ -22,6 +23,7 @@
             'Settings': 'Settings',
             'Logout': 'Logout',
             'Main Page': 'Main Page',
+            'Home': 'Home',
             'Welcome': 'Welcome',
             'Signed in as': 'Signed in as',
             'Light': 'Light',
@@ -46,6 +48,7 @@
             'Settings': 'Tetapan',
             'Logout': 'Log Keluar',
             'Main Page': 'Halaman Utama',
+            'Home': 'Laman Utama',
             'Welcome': 'Selamat Datang',
             'Signed in as': 'Log masuk sebagai',
             'Light': 'Cerah',
@@ -535,7 +538,11 @@
             themeButton.addEventListener('click', function () {
                 preferences.theme = preferences.theme === 'dark' ? 'light' : 'dark';
                 savePreferences(preferences);
+                document.body.classList.add('theme-changing');
                 applyTheme(preferences.theme);
+                window.setTimeout(function () {
+                    document.body.classList.remove('theme-changing');
+                }, 420);
             });
         }
         if (languageSelect) {

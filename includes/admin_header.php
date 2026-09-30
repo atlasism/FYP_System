@@ -18,13 +18,13 @@ if (!function_exists('sanitize')) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../assets/user-preferences.css?v=8">
+    <link rel="stylesheet" href="../assets/user-preferences.css?v=9">
     <style>
         :root { --admin-sidebar: 272px; --admin-blue: #1f63aa; --admin-ink: #10243d; --admin-bg: #e9eef4; }
         body { margin: 0; background: var(--admin-bg); color: var(--admin-ink); font-family: "Segoe UI", sans-serif; }
         .admin-shell { min-height: 100vh; }
-        .admin-sidebar { position: fixed; inset: 0 auto 0 0; z-index: 1040; width: var(--admin-sidebar); padding: 22px 16px; background: linear-gradient(180deg, #10243d 0%, #183b63 100%); color: #fff; box-shadow: 8px 0 26px rgba(20, 35, 65, .12); transition: transform .25s ease, width .25s ease; }
-        .admin-brand { display: flex; align-items: center; gap: 12px; padding: 2px 10px 22px; color: #fff; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,.12); }
+        .admin-sidebar { position: fixed; inset: 0 auto 0 0; z-index: 1040; width: var(--admin-sidebar); padding: 0 16px 22px; background: linear-gradient(180deg, #10243d 0%, #183b63 100%); color: #fff; box-shadow: 8px 0 26px rgba(20, 35, 65, .12); transition: transform .25s ease, width .25s ease; }
+        .admin-brand { height: 82px; box-sizing: border-box; display: flex; align-items: center; gap: 14px; padding: 0 10px; color: #fff; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,.12); }
         .admin-brand-icon { width: 82px; height: 52px; flex: 0 0 82px; display: grid; place-items: center; font-size: 1.35rem; }
         .admin-brand-icon img { width: 100%; height: 100%; object-fit: contain; }
         .admin-brand strong { display: block; font-size: 1.3rem; line-height: 1.1; }
@@ -32,18 +32,21 @@ if (!function_exists('sanitize')) {
         .admin-department { margin: 20px 8px 18px; padding: 10px 12px; border-radius: 10px; color: #f0d0a8; background: rgba(180,119,67,.2); font-size: .78rem; font-weight: 700; }
         .admin-nav .nav-link { display: flex; align-items: center; gap: 13px; margin: 5px 0; padding: 12px 13px; color: #bdcbe1; border-radius: 11px; font-weight: 600; transition: .2s ease; }
         .admin-nav .nav-link i { width: 22px; text-align: center; font-size: 1.15rem; }
+        .admin-nav .nav-link > span,
+        .admin-logout > span,
+        .admin-department > span { transition: width .28s ease, max-width .28s ease, opacity .18s ease, visibility .18s ease; }
         .admin-nav .nav-link:hover, .admin-nav .nav-link.active { color: #fff; background: #2563eb; box-shadow: 0 8px 18px rgba(37,99,235,.28); }
         .admin-logout { position: absolute; right: 16px; bottom: 20px; left: 16px; }
         .admin-main { min-height: 100vh; margin-left: var(--admin-sidebar); }
         .admin-sidebar.collapsed { width: 82px; }
         .admin-sidebar.collapsed .admin-brand-icon { width: 48px; height: 48px; flex-basis: 48px; }
         .admin-sidebar.collapsed .admin-brand { justify-content: center; padding-left: 0; padding-right: 0; }
-        .admin-sidebar.collapsed .admin-brand > span:last-child, .admin-sidebar.collapsed .admin-department > span, .admin-sidebar.collapsed .admin-nav .nav-link > span, .admin-sidebar.collapsed .admin-logout > span { display: none; }
+        .admin-sidebar.collapsed .admin-brand > span:last-child, .admin-sidebar.collapsed .admin-department > span, .admin-sidebar.collapsed .admin-nav .nav-link > span, .admin-sidebar.collapsed .admin-logout > span { display: block; width: 0; max-width: 0; overflow: hidden; opacity: 0; visibility: hidden; transition: width .28s ease, max-width .28s ease, opacity .18s ease, visibility .18s ease; }
         .admin-sidebar.collapsed .admin-department { text-align: center; padding-left: 0; padding-right: 0; }
         .admin-sidebar.collapsed .admin-nav .nav-link, .admin-sidebar.collapsed .admin-logout { justify-content: center; gap: 0; }
         .admin-main.sidebar-collapsed { margin-left: 82px; }
-        .admin-topbar { position: sticky; top: 0; z-index: 1030; min-height: 72px; display: flex; align-items: center; justify-content: space-between; padding: 0 30px; color: #fff; background: #10243d; border-bottom: 1px solid rgba(255,255,255,.12); backdrop-filter: blur(12px); }
-        .admin-content { min-height: calc(100vh - 72px); padding: 28px 30px 46px; }
+        .admin-topbar { position: sticky; top: 0; z-index: 1030; height: 82px; min-height: 82px; box-sizing: border-box; display: flex; align-items: center; justify-content: space-between; padding: 0 30px; color: #fff; background: #10243d; border-bottom: 1px solid rgba(255,255,255,.12); backdrop-filter: blur(12px); }
+        .admin-content { min-height: calc(100vh - 82px); padding: 28px 30px 46px; }
         .admin-toggle { border: 0; background: transparent; color: #fff; font-size: 1.45rem; }
         .admin-topbar .text-muted { color: #c8d5e5 !important; }
         .admin-profile { display: flex; align-items: center; gap: 10px; }
@@ -90,6 +93,6 @@ if (!function_exists('sanitize')) {
     <main class="admin-main">
         <header class="admin-topbar">
             <button class="admin-toggle" id="adminSidebarToggle" type="button" aria-label="Toggle sidebar"><i class="bi bi-list"></i></button>
-            <div class="admin-profile"><div class="admin-theme-toggle appearance-controls"><button type="button" class="btn btn-outline-light" data-theme-toggle aria-label="Toggle dark mode" title="Light/Dark"><i data-theme-icon class="fas fa-moon"></i></button><select class="form-select form-select-sm" data-language-select aria-label="Language"><option value="en">EN</option><option value="ms">BM</option></select></div><a class="btn btn-outline-light btn-sm" href="../index.php"><i class="bi bi-house-door me-1"></i><span data-i18n="Main Page">Main Page</span></a><div class="text-end"><small class="text-muted d-block" data-i18n="Signed in as">Signed in as</small><strong><?= sanitize($_SESSION['full_name'] ?? 'Admin'); ?></strong></div><span class="admin-avatar"><i class="bi bi-person-fill"></i></span></div>
+            <div class="admin-profile"><div class="admin-theme-toggle appearance-controls"><button type="button" class="btn btn-outline-light" data-theme-toggle aria-label="Toggle dark mode" title="Light/Dark"><i data-theme-icon class="fas fa-moon"></i></button><select class="form-select form-select-sm" data-language-select aria-label="Language"><option value="en">EN</option><option value="ms">BM</option></select></div><a class="btn btn-outline-light btn-sm" href="../index.php"><i class="bi bi-house-door me-1"></i><span data-i18n="Home">Home</span></a><div class="text-end"><small class="text-muted d-block" data-i18n="Signed in as">Signed in as</small><strong><?= sanitize($_SESSION['full_name'] ?? 'Admin'); ?></strong></div><span class="admin-avatar"><i class="bi bi-person-fill"></i></span></div>
         </header>
         <section class="admin-content">

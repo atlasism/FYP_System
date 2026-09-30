@@ -334,6 +334,13 @@ if ($token === '' || !preg_match('/^[a-f0-9]{64}$/', $token)) {
         .panel-header { background: var(--panel-navy); color: #fff; }
         .panel-logo { width: 118px; height: 58px; object-fit: contain; }
         .panel-card { background: #fff; border: 1px solid var(--panel-line); border-radius: 4px; box-shadow: 0 8px 24px rgba(16,36,61,.08); }
+        html { scroll-behavior: smooth; }
+        body, a, button, input, select, textarea, .panel-card, .level-card, .aspect-tab, .score-choice { transition: background-color .22s ease, color .22s ease, border-color .22s ease, box-shadow .22s ease, transform .22s ease; }
+        @keyframes panel-content-enter { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        main { animation: panel-content-enter .32s cubic-bezier(.22,.61,.36,1) both; }
+        @media (hover: hover) and (pointer: fine) {
+            .panel-card:hover, .level-card:hover { transform: translateY(-3px); box-shadow: 0 12px 28px rgba(16,36,61,.14); }
+        }
         .panel-section-bar { color: #fff; background: var(--panel-blue); }
         .info-label { background: var(--panel-ice); font-weight: 700; }
         .group-row { border-bottom: 1px solid var(--panel-line); }

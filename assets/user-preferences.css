@@ -9,6 +9,40 @@ body.user-portal {
     transition: background-color .2s ease, color .2s ease;
 }
 
+html.portal-scroll {
+    scroll-behavior: smooth;
+}
+
+
+
+
+body.user-portal,
+body.user-portal #page-content,
+body.user-portal .admin-main,
+body.user-portal .card,
+body.user-portal .card-custom,
+body.user-portal .admin-card,
+body.user-portal .table,
+body.user-portal .list-group-item,
+body.user-portal .form-control,
+body.user-portal .form-select,
+body.user-portal textarea,
+body.user-portal .modal-content,
+body.user-portal .alert {
+    transition: background-color .22s ease, color .22s ease, border-color .22s ease, box-shadow .22s ease;
+}
+
+@keyframes portal-content-enter { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+body.user-portal #page-content > .p-4,
+body.user-portal .admin-content,
+body.user-portal > .container,
+body.user-portal > .container-fluid { animation: portal-content-enter .32s cubic-bezier(.22,.61,.36,1) both; }
+
+body.user-portal.theme-changing,
+body.user-portal.theme-changing * {
+    transition-duration: .38s !important;
+}
+
 body.user-portal > footer {
     background-color: #10243d !important;
     color: #f4f8fc;
@@ -151,8 +185,8 @@ body.user-portal .card:not(.admin-stat) {
     body.user-portal .card-custom:hover,
     body.user-portal .admin-card:hover,
     body.user-portal .card:not(.admin-stat):hover {
-        transform: translateY(-5px);
-        box-shadow: 0 16px 34px rgba(4, 16, 31, .22) !important;
+        transform: translateY(-4px);
+        box-shadow: 0 14px 30px rgba(4, 16, 31, .2) !important;
     }
 }
 

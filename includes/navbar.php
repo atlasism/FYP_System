@@ -15,7 +15,6 @@
         <?php if (isset($_SESSION['user_id'])): ?>
           <?php if ($_SESSION['role'] === 'Student'): ?>
             <li class="nav-item"><a class="nav-link" href="/fyp_system/student/dashboard.php" data-i18n="Dashboard">Dashboard</a></li>
-            <li class="nav-item"><a class="nav-link" href="/fyp_system/student/my_project.php" data-i18n="My Project">My Project</a></li>
             <li class="nav-item"><a class="nav-link" href="/fyp_system/student/upload_doc.php" data-i18n="Upload Documents">Upload Documents</a></li>
           <?php elseif ($_SESSION['role'] === 'Admin'): ?>
             <li class="nav-item"><a class="nav-link" href="/fyp_system/admin/dashboard.php">Admin Dashboard</a></li>

@@ -7,6 +7,11 @@
     <style>
         :root { --navy:#10243d; --blue:#1f63aa; --ice:#e9eef4; --line:#d8e0e8; --muted:#647589; --green:#17865c; }
         * { box-sizing:border-box; }
+        html { scroll-behavior:smooth; }
+        body, a, button, input, select, textarea, .project-card, .evaluation, .side, .level, .student { transition: background-color .22s ease, color .22s ease, border-color .22s ease, box-shadow .22s ease, transform .22s ease; }
+        @keyframes preview-content-enter { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        main { animation: preview-content-enter .32s cubic-bezier(.22,.61,.36,1) both; }
+        @media (hover:hover) and (pointer:fine) { .project-card:hover, .evaluation:hover, .side:hover { transform:translateY(-3px); box-shadow:0 12px 28px rgba(16,36,61,.13); } }
         body { margin:0; color:#172b42; background:#e7edf3; font-family:"Trebuchet MS",Arial,sans-serif; }
         .screen { width:1280px; min-height:800px; margin:0 auto; overflow:hidden; background:linear-gradient(145deg,#f7fbff,#edf4fa); }
         header { display:flex; align-items:center; justify-content:space-between; padding:20px 48px; color:#fff; background:var(--navy); }

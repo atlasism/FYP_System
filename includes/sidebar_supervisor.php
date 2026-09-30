@@ -22,7 +22,7 @@ if (!function_exists('sanitize')) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="../assets/user-preferences.css?v=8">
+    <link rel="stylesheet" href="../assets/user-preferences.css?v=9">
     
     <style>
         :root {
@@ -80,7 +80,13 @@ if (!function_exists('sanitize')) {
 
         #sidebar.collapsed .link-text,
         #sidebar.collapsed .brand-text {
-            display: none !important;
+            display: block !important;
+            width: 0;
+            max-width: 0;
+            overflow: hidden;
+            opacity: 0;
+            visibility: hidden;
+            transition: width .28s ease, max-width .28s ease, opacity .18s ease, visibility .18s ease;
         }
 
         #sidebar.collapsed .nav-link {
@@ -92,6 +98,11 @@ if (!function_exists('sanitize')) {
         #sidebar.collapsed .nav-link i {
             margin-right: 0 !important;
             font-size: 1.3rem;
+        }
+
+        #sidebar.collapsed .portal-brand {
+            justify-content: center !important;
+            gap: 0;
         }
 
         #sidebar .nav-link {
@@ -116,10 +127,19 @@ if (!function_exists('sanitize')) {
             font-size: 1.1rem;
         }
 
+        #sidebar .link-text,
+        #sidebar .brand-text {
+            transition: width .28s ease, max-width .28s ease, opacity .18s ease, visibility .18s ease;
+        }
+
         .portal-brand {
+            height: 82px;
             min-height: 82px;
+            box-sizing: border-box;
             padding: 14px 16px;
             border-bottom: 1px solid rgba(255,255,255,.12);
+            justify-content: flex-start !important;
+            gap: 14px;
         }
 
         .portal-brand img {
@@ -200,6 +220,8 @@ if (!function_exists('sanitize')) {
             position: sticky;
             top: 0;
             z-index: 1030;
+            height: 82px;
+            box-sizing: border-box;
             background: #10243d !important;
             border-color: rgba(255,255,255,.12) !important;
         }
@@ -218,6 +240,12 @@ if (!function_exists('sanitize')) {
         #page-content > .p-4 > .container-fluid > .mb-4 > h3,
         #page-content > .p-4 > .container-fluid > .mb-4 > h4 {
             color: var(--primary-color);
+        }
+        @media (min-width: 992px) {
+            #wrapper { display: block; }
+            #sidebar { position: fixed; top: 0; bottom: var(--footer-height); left: 0; height: calc(100vh - var(--footer-height)); min-height: 0; }
+            #page-content { width: calc(100% - var(--sidebar-width)); margin-left: var(--sidebar-width); }
+            #sidebar.collapsed ~ #page-content { width: calc(100% - var(--sidebar-collapsed-width)); margin-left: var(--sidebar-collapsed-width); }
         }
     </style>
 </head>
@@ -294,7 +322,7 @@ if (!function_exists('sanitize')) {
                     <button type="button" class="btn btn-outline-light" data-theme-toggle aria-label="Toggle dark mode" title="Light/Dark"><i data-theme-icon class="fas fa-moon"></i></button>
                     <select class="form-select form-select-sm" data-language-select aria-label="Language"><option value="en">EN</option><option value="ms">BM</option></select>
                 </div>
-                <a href="../index.php" class="btn btn-outline-primary btn-sm me-3"><i class="fas fa-home me-1"></i><span data-i18n="Main Page">Main Page</span></a>
+                <a href="../index.php" class="btn btn-outline-primary btn-sm me-3"><i class="fas fa-home me-1"></i><span data-i18n="Home">Home</span></a>
                 <a href="profile.php" class="text-decoration-none d-flex align-items-center profile-link">
                     <span class="me-3 fw-semibold text-muted"><span data-i18n="Welcome">Welcome</span>, <strong class="text-primary"><?= sanitize($_SESSION['full_name'] ?? 'Supervisor'); ?></strong></span>
                     <i class="fas fa-user-circle fa-2x text-primary"></i>

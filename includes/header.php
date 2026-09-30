@@ -16,6 +16,6 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/fyp_system/assets/style.css">
-    <?php if (isset($_SESSION['user_id']) && !in_array($current_page, ['index.php', 'login.php'], true)): ?><link rel="stylesheet" href="/fyp_system/assets/user-preferences.css?v=8"><?php endif; ?>
+    <?php if (isset($_SESSION['user_id']) && !in_array($current_page, ['index.php', 'login.php'], true)): ?><link rel="stylesheet" href="/fyp_system/assets/user-preferences.css?v=9"><?php endif; ?>
 </head>
 <body class="d-flex flex-column min-vh-100 <?= $current_page === 'login.php' ? 'login-page' : ($current_page === 'index.php' ? 'home-page' : 'site-page'); ?><?= isset($_SESSION['user_id']) && !in_array($current_page, ['index.php', 'login.php'], true) ? ' user-portal' : ''; ?>">

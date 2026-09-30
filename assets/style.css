@@ -1,4 +1,19 @@
 :root { --theme-navy: #10243d; --theme-blue: #1f63aa; --theme-bronze: #b47743; --theme-ice: #e9eef4; }
+html { scroll-behavior: smooth; }
+body, a, button, input, select, textarea, .card, .btn { transition: background-color .18s ease, color .18s ease, border-color .18s ease, box-shadow .18s ease; }
+@keyframes page-content-enter { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+body.site-page > .container,
+body.site-page > .container-fluid,
+body.home-page > .container,
+body.home-page > .container-fluid,
+body.site-page #page-content > .p-4,
+body.home-page #page-content > .p-4 { animation: page-content-enter .32s cubic-bezier(.22,.61,.36,1) both; }
+@media (hover: hover) and (pointer: fine) {
+	body.site-page .card-custom:hover,
+	body.site-page .card:not(.bg-primary):not(.bg-success):not(.bg-danger):not(.bg-warning):not(.bg-info):hover,
+	body.home-page .card-custom:hover,
+	body.home-page .card:hover { transform: translateY(-4px); box-shadow: 0 14px 30px rgba(4,16,31,.18); }
+}
 body.site-page { color: var(--theme-navy); background-color: var(--theme-ice) !important; background-image: none !important; }
 body.home-page { color: var(--theme-navy); background: linear-gradient(rgba(10,27,48,.84), rgba(10,27,48,.78)), url('image/background.png') center / cover fixed; }
 body.site-page, body.home-page { padding-bottom: 70px; }
