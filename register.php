@@ -145,7 +145,7 @@ include_once 'includes/navbar.php';
                         </div>
 
                         <div class="mb-3 col-md-6">
-                            <label class="form-label fw-bold">Programme / Course</label>
+                            <label class="form-label fw-bold">Program / Course</label>
                             <input type="text" class="form-control" value="<?= sanitize($it_program . ' | ' . $default_course_code . ' - Integrated Project'); ?>" readonly>
                         </div>
                     </div>

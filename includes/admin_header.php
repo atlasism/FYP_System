@@ -18,7 +18,7 @@ if (!function_exists('sanitize')) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../assets/user-preferences.css?v=9">
+    <link rel="stylesheet" href="../assets/user-preferences.css?v=20">
     <style>
         :root { --admin-sidebar: 272px; --admin-blue: #1f63aa; --admin-ink: #10243d; --admin-bg: #e9eef4; }
         body { margin: 0; background: var(--admin-bg); color: var(--admin-ink); font-family: "Segoe UI", sans-serif; }
@@ -93,6 +93,6 @@ if (!function_exists('sanitize')) {
     <main class="admin-main">
         <header class="admin-topbar">
             <button class="admin-toggle" id="adminSidebarToggle" type="button" aria-label="Toggle sidebar"><i class="bi bi-list"></i></button>
-            <div class="admin-profile"><div class="admin-theme-toggle appearance-controls"><button type="button" class="btn btn-outline-light" data-theme-toggle aria-label="Toggle dark mode" title="Light/Dark"><i data-theme-icon class="fas fa-moon"></i></button><select class="form-select form-select-sm" data-language-select aria-label="Language"><option value="en">EN</option><option value="ms">BM</option></select></div><a class="btn btn-outline-light btn-sm" href="../index.php"><i class="bi bi-house-door me-1"></i><span data-i18n="Home">Home</span></a><a href="profile.php" class="text-end text-white text-decoration-none"><small class="text-muted d-block" data-i18n="Signed in as">Signed in as</small><strong><?= sanitize($_SESSION['full_name'] ?? 'Admin'); ?></strong></a><a href="profile.php" class="admin-avatar text-decoration-none"><?php if (!empty($_SESSION['profile_picture'])): ?><img src="../uploads/profile/<?= rawurlencode($_SESSION['profile_picture']); ?>" alt="Profile picture" class="profile-avatar rounded-circle"><?php else: ?><i class="bi bi-person-fill"></i><?php endif; ?></a></div>
+            <div class="admin-profile"><div class="admin-theme-toggle appearance-controls"><button type="button" class="btn btn-outline-light" data-theme-toggle aria-label="Toggle dark mode" title="Light/Dark"><i data-theme-icon class="fas fa-moon"></i></button><div class="language-switch" data-language-switch aria-label="Language"><button type="button" data-language-option="en">EN</button><button type="button" data-language-option="ms">BM</button></div></div><a class="btn btn-outline-light btn-sm" href="../index.php"><i class="bi bi-house-door me-1"></i><span data-i18n="Home">Home</span></a><a href="profile.php" class="text-end text-white text-decoration-none"><small class="text-muted d-block" data-i18n="Signed in as">Signed in as</small><strong><?= sanitize($_SESSION['full_name'] ?? 'Admin'); ?></strong></a><a href="profile.php" class="admin-avatar text-decoration-none"><?php if (!empty($_SESSION['profile_picture'])): ?><img src="../uploads/profile/<?= rawurlencode($_SESSION['profile_picture']); ?>" alt="Profile picture" class="profile-avatar rounded-circle"><?php else: ?><i class="bi bi-person-fill"></i><?php endif; ?></a></div>
         </header>
         <section class="admin-content">

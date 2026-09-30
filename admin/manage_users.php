@@ -93,13 +93,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $error = 'Import failed. Confirm that student_import_migration.sql has been run, then try again.';
             }
         }
+    } elseif (($_POST['action'] ?? '') === 'delete_student') {
+        $student_id = (int) ($_POST['student_id'] ?? 0);
+        $dependency = $conn->prepare("SELECT (SELECT COUNT(*) FROM projects WHERE student_id = ?) + (SELECT COUNT(*) FROM project_members WHERE student_id = ?) + (SELECT COUNT(*) FROM supervisor_students WHERE student_id = ?) AS total");
+        $dependency->bind_param('iii', $student_id, $student_id, $student_id);
+        $dependency->execute();
+        $dependency_count = (int) $dependency->get_result()->fetch_assoc()['total'];
+        if ($dependency_count > 0) {
+            $error = 'This student cannot be deleted because the account is linked to a project or supervisor assignment.';
+        } else {
+            $delete = $conn->prepare("DELETE FROM users WHERE id = ? AND role = 'Student' AND department = 'JTMK'");
+            $delete->bind_param('i', $student_id);
+            if ($delete->execute() && $delete->affected_rows === 1) {
+                $message = 'Student account deleted successfully.';
+            } else {
+                $error = 'Unable to delete the selected student account.';
+            }
+        }
     } else {
         $error = 'Invalid user management action.';
     }
 }
 
 $student_count = (int) $conn->query("SELECT COUNT(*) AS total FROM users WHERE role = 'Student' AND department = 'JTMK'")->fetch_assoc()['total'];
-$student_result = $conn->query("SELECT full_name, ic_number, matric_no, email, academic_session FROM users WHERE role = 'Student' AND department = 'JTMK' ORDER BY full_name ASC");
+$student_result = $conn->query("SELECT id, full_name, ic_number, matric_no, email, academic_session FROM users WHERE role = 'Student' AND department = 'JTMK' ORDER BY full_name ASC");
 $students_by_session = [];
 while ($student = $student_result->fetch_assoc()) {
     $session = trim($student['academic_session'] ?? '') ?: 'Sesi tidak dinyatakan';
@@ -126,7 +143,7 @@ $session_sort_key = static function ($session) {
 uksort($students_by_session, static function ($left, $right) use ($session_sort_key) {
     [$left_year, $left_term] = $session_sort_key($left);
     [$right_year, $right_term] = $session_sort_key($right);
-    return ($right_year <=> $left_year) ?: ($left_term <=> $right_term) ?: strnatcasecmp($left, $right);
+    return ($right_year <=> $left_year) ?: ($right_term <=> $left_term) ?: strnatcasecmp($left, $right);
 });
 $supervisors = $conn->query("SELECT full_name, ic_number, email FROM users WHERE role = 'Supervisor' AND department = 'JTMK' ORDER BY full_name");
 
@@ -178,10 +195,10 @@ include_once '../includes/admin_header.php';
 
     <div class="card admin-card p-4 mb-4">
         <h5 class="fw-bold mb-3"><i class="bi bi-mortarboard-fill text-primary me-2"></i>Student JTMK</h5>
-        <div class="table-responsive"><table class="table table-hover align-middle"><thead class="table-light"><tr><th>Name</th><th>I/C No</th><th>Matrix No</th><th>Email</th><th>Academic Session</th></tr></thead><tbody>
+        <div class="table-responsive"><table class="table table-hover align-middle"><thead class="table-light"><tr><th>Name</th><th>I/C No</th><th>Matrix No</th><th>Email</th><th>Academic Session</th><th>Action</th></tr></thead><tbody>
         <?php foreach ($students_by_session as $session => $session_students): ?>
-            <tr class="table-primary"><th colspan="5" scope="rowgroup"><?= sanitize($session); ?><span class="badge bg-primary ms-2"><?= count($session_students); ?></span></th></tr>
-            <?php foreach ($session_students as $student): ?><tr><td class="fw-bold"><?= sanitize($student['full_name']); ?></td><td><?= sanitize($student['ic_number']); ?></td><td><?= sanitize($student['matric_no'] ?: '-'); ?></td><td><?= sanitize($student['email']); ?></td><td><?= sanitize($session === 'Sesi tidak dinyatakan' ? '-' : $session); ?></td></tr><?php endforeach; ?>
+            <tr class="table-primary"><th colspan="6" scope="rowgroup"><?= sanitize($session); ?><span class="badge bg-primary ms-2"><?= count($session_students); ?></span></th></tr>
+            <?php foreach ($session_students as $student): ?><tr><td class="fw-bold"><?= sanitize($student['full_name']); ?></td><td><?= sanitize($student['ic_number']); ?></td><td><?= sanitize($student['matric_no'] ?: '-'); ?></td><td><?= sanitize($student['email']); ?></td><td><?= sanitize($session === 'Sesi tidak dinyatakan' ? '-' : $session); ?></td><td class="text-nowrap"><a href="edit_student.php?id=<?= (int) $student['id']; ?>" class="btn btn-sm btn-outline-primary"><i class="fas fa-edit"></i> Edit</a> <form method="POST" class="d-inline" onsubmit="return confirm('Delete this student account?');"><input type="hidden" name="csrf_token" value="<?= sanitize($csrf_token); ?>"><input type="hidden" name="action" value="delete_student"><input type="hidden" name="student_id" value="<?= (int) $student['id']; ?>"><button type="submit" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i> Delete</button></form></td></tr><?php endforeach; ?>
         <?php endforeach; ?>
         </tbody></table></div>
     </div>

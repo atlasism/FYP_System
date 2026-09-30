@@ -59,6 +59,7 @@
     };
 
     Object.assign(translations.en, {
+        'JTMK Students': 'JTMK Students',
         'Project Registration': 'Project Registration',
         'Project Information': 'Project Information',
         'Project Description': 'Project Description',
@@ -74,6 +75,8 @@
         'Students': 'Students',
         'Lecturers / Supervisors': 'Lecturers / Supervisors',
         'Academic Session': 'Academic Session',
+        'IC Number': 'IC Number',
+        'Matric Number': 'Matric Number',
         'Here is the overview of your supervision activities, student progress, and final year project updates for this session.': 'Here is the overview of your supervision activities, student progress, and final year project updates for this session.',
         'Manage your supervised students, review pending project submissions, and evaluate academic milestones efficiently in one centralized place.': 'Manage your supervised students, review pending project submissions, and evaluate academic milestones efficiently in one centralized place.',
         'TOTAL STUDENTS': 'TOTAL STUDENTS',
@@ -88,7 +91,7 @@
         'Project Title': 'Project Title',
         'Project Category': 'Project Category',
         'Department': 'Department',
-        'Programme': 'Programme',
+        'Program': 'Program',
         'Course Code': 'Course Code',
         'Project Team': 'Project Team',
         'Project Details': 'Project Details',
@@ -101,7 +104,10 @@
         'No Projects / Students Supervised': 'No Projects / Students Supervised'
     });
     Object.assign(translations.ms, {
+        'JTMK Students': 'Pelajar JTMK',
         'Academic Session': 'Sesi Akademik',
+        'IC Number': 'Nombor IC',
+        'Matric Number': 'Nombor Matriks',
         'Here is the overview of your supervision activities, student progress, and final year project updates for this session.': 'Ini ialah ringkasan aktiviti penyeliaan, kemajuan pelajar dan kemas kini projek tahun akhir untuk sesi ini.',
         'Manage your supervised students, review pending project submissions, and evaluate academic milestones efficiently in one centralized place.': 'Urus pelajar seliaan, semak penghantaran projek yang belum selesai dan nilai pencapaian akademik dengan mudah di satu tempat.',
         'TOTAL STUDENTS': 'JUMLAH PELAJAR',
@@ -116,7 +122,7 @@
         'Project Title': 'Tajuk Projek',
         'Project Category': 'Kategori Projek',
         'Department': 'Jabatan',
-        'Programme': 'Program',
+        'Program': 'Program',
         'Course Code': 'Kod Kursus',
         'Project Team': 'Kumpulan Projek',
         'Project Details': 'Butiran Projek',
@@ -425,6 +431,68 @@
         'Password must contain at least 8 characters.': 'Kata laluan mesti mempunyai sekurang-kurangnya 8 aksara.'
     });
     Object.assign(translations.en, {
+        'Edit Student': 'Edit Student',
+        'Update student account information for JTMK.': 'Update student account information for JTMK.',
+        'Manage Users': 'Manage Users',
+        'Complete all required student fields with a valid email address.': 'Complete all required student fields with a valid email address.',
+        'Complete the IC number, matric number and student name fields.': 'Complete the IC number, matric number and student name fields.',
+        'Please enter a valid email address.': 'Please enter a valid email address.',
+        'The matric number can contain letters and numbers only.': 'The matric number can contain letters and numbers only.',
+        'The IC number, matric number or email is already in use.': 'The IC number, matric number or email is already in use.',
+        'Password must be at least 8 characters.': 'Password must be at least 8 characters.',
+        'Academic Session': 'Academic Session',
+        'Reset Password': 'Reset Password',
+        'Save Student': 'Save Student',
+        'Student account updated successfully.': 'Student account updated successfully.',
+        'Unable to update the student account.': 'Unable to update the student account.'
+    });
+    Object.assign(translations.ms, {
+        'Edit Student': 'Edit Pelajar',
+        'Update student account information for JTMK.': 'Kemas kini maklumat akaun pelajar JTMK.',
+        'Manage Users': 'Urus Pengguna',
+        'Complete all required student fields with a valid email address.': 'Lengkapkan semua medan pelajar dengan alamat e-mel yang sah.',
+        'Complete the IC number, matric number and student name fields.': 'Lengkapkan medan nombor IC, nombor matriks dan nama pelajar.',
+        'Please enter a valid email address.': 'Sila masukkan alamat e-mel yang sah.',
+        'The matric number can contain letters and numbers only.': 'Nombor matriks hanya boleh mengandungi huruf dan nombor.',
+        'The IC number, matric number or email is already in use.': 'Nombor IC, nombor matriks atau e-mel sudah digunakan.',
+        'Password must be at least 8 characters.': 'Kata laluan mesti mempunyai sekurang-kurangnya 8 aksara.',
+        'Academic Session': 'Sesi Akademik',
+        'Reset Password': 'Tetap Semula Kata Laluan',
+        'Save Student': 'Simpan Pelajar',
+        'Student account updated successfully.': 'Akaun pelajar berjaya dikemas kini.',
+        'Unable to update the student account.': 'Akaun pelajar tidak dapat dikemas kini.'
+    });
+    Object.assign(translations.en, {
+        'Find Student': 'Find Student',
+        'Search by student name, IC number, or matric number': 'Search by student name, IC number, or matric number',
+        'Type at least 2 characters...': 'Type at least 2 characters...',
+        'Search results will appear here.': 'Search results will appear here.',
+        'Import Student JTMK': 'Import Student JTMK',
+        'Upload CSV or XLSX with Name, IC No, Matric No, Session and Department columns. Only rows marked JTMK are imported; other departments are ignored.': 'Upload CSV or XLSX with Name, IC No, Matric No, Session and Department columns. Only rows marked JTMK are imported; other departments are ignored.',
+        'Account setup:': 'Account setup:',
+        'imported students use their IC number as their initial password. Passwords are stored as secure hashes; students should change the initial password after signing in.': 'imported students use their IC number as their initial password. Passwords are stored as secure hashes; students should change the initial password after signing in.',
+        'Student data file': 'Student data file',
+        'Import Students': 'Import Students',
+        'Skipped rows': 'Skipped rows',
+        'JTMK Users': 'JTMK Users',
+        'Lecturers / Supervisors': 'Lecturers / Supervisors'
+    });
+    Object.assign(translations.ms, {
+        'Find Student': 'Cari Pelajar',
+        'Search by student name, IC number, or matric number': 'Cari berdasarkan nama pelajar, nombor IC atau nombor matriks',
+        'Type at least 2 characters...': 'Taip sekurang-kurangnya 2 aksara...',
+        'Search results will appear here.': 'Hasil carian akan dipaparkan di sini.',
+        'Import Student JTMK': 'Import Pelajar JTMK',
+        'Upload CSV or XLSX with Name, IC No, Matric No, Session and Department columns. Only rows marked JTMK are imported; other departments are ignored.': 'Muat naik CSV atau XLSX yang mengandungi lajur Nama, No. IC, No. Matriks, Sesi dan Jabatan. Hanya rekod bertanda JTMK akan diimport; jabatan lain diabaikan.',
+        'Account setup:': 'Tetapan akaun:',
+        'imported students use their IC number as their initial password. Passwords are stored as secure hashes; students should change the initial password after signing in.': 'pelajar yang diimport menggunakan nombor IC sebagai kata laluan awal. Kata laluan disimpan sebagai hash selamat; pelajar perlu menukarnya selepas log masuk.',
+        'Student data file': 'Fail data pelajar',
+        'Import Students': 'Import Pelajar',
+        'Skipped rows': 'Rekod yang dilangkau',
+        'JTMK Users': 'Pengguna JTMK',
+        'Lecturers / Supervisors': 'Pensyarah / Penyelia'
+    });
+    Object.assign(translations.en, {
         'SPInE Student Project System': 'SPInE Student Project System',
         'JTMK | DFT50114 Integrated Project': 'JTMK | DFT50114 Integrated Project',
         'Top 5 Project Ranking': 'Top 5 Project Ranking',
@@ -574,13 +642,16 @@
             if (lookup[value]) element.setAttribute('placeholder', lookup[value]);
         });
         document.documentElement.lang = language === 'ms' ? 'ms' : 'en';
+        document.querySelectorAll('[data-language-option]').forEach(function (button) {
+            button.classList.toggle('active', button.dataset.languageOption === language);
+        });
     }
 
     function applyTheme(theme) {
         if (!isPortal) return;
         document.body.classList.toggle('portal-dark', theme === 'dark');
         document.querySelectorAll('[data-theme-icon]').forEach(function (icon) {
-            icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+            icon.className = theme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
         });
     }
 
@@ -609,9 +680,24 @@
                     window.requestAnimationFrame(function () {
                         document.body.classList.remove('language-changing');
                     });
-                }, 120);
+                }, 220);
             });
         }
+        document.querySelectorAll('[data-language-option]').forEach(function (button) {
+            button.addEventListener('click', function () {
+                const language = button.dataset.languageOption;
+                if (!language || language === preferences.language) return;
+                preferences.language = language;
+                savePreferences(preferences);
+                document.body.classList.add('language-changing');
+                window.setTimeout(function () {
+                    translatePage(preferences.language);
+                    window.requestAnimationFrame(function () {
+                        document.body.classList.remove('language-changing');
+                    });
+                }, 220);
+            });
+        });
     }
 
     const preferences = loadPreferences();

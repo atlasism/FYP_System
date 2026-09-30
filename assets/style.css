@@ -15,14 +15,20 @@ body.home-page #page-content > .p-4 { animation: page-content-enter .32s cubic-b
 	body.home-page .current-project-card:hover { transform: translateY(-4px); box-shadow: 0 14px 30px rgba(4,16,31,.2); }
 }
 .home-language-item { display: flex; align-items: center; margin-right: 8px; }
-.home-language-control { width: 62px; min-height: 32px; color: #fff; background-color: #10243d; border-color: rgba(255,255,255,.5); text-align: center; }
-.home-language-control option { color: #fff; background-color: #10243d; }
+.home-language-item .language-switch { margin-top: 1px; }
+.language-switch { display: inline-flex; align-items: center; flex: 0 0 auto; flex-wrap: nowrap; white-space: nowrap; padding: 2px; border: 1px solid rgba(255,255,255,.35); border-radius: 999px; background: rgba(255,255,255,.1); }
+.language-switch button { width: 32px; min-width: 32px; height: 24px; padding: 0; border: 0; border-radius: 999px; color: #d8e7f5; background: transparent; font-size: .7rem; font-weight: 800; line-height: 24px; transition: background-color .2s ease, color .2s ease, box-shadow .2s ease, transform .2s ease; }
+.language-switch button.active { color: #10243d; background: #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,.18); }
+@media (min-width: 768px) {
+	.navbar-nav { flex-wrap: nowrap; }
+	.navbar-nav .nav-link { white-space: nowrap; font-size: .92rem; }
+}
 body.site-page { color: var(--theme-navy); background-color: var(--theme-ice) !important; background-image: none !important; }
 body.home-page { color: var(--theme-navy); background: linear-gradient(rgba(10,27,48,.84), rgba(10,27,48,.78)), url('image/background.png') center / cover fixed; }
 body.home-page .navbar { background: linear-gradient(105deg, #0b2542 0%, #123d69 55%, #1f63aa 100%) !important; }
 body.language-changing > .container,
 body.language-changing > .container-fluid,
-body.language-changing #page-content > .p-4 { opacity: .45; transition: opacity .12s ease; }
+body.language-changing #page-content > .p-4 { opacity: .55; transition: opacity .22s ease; }
 body.site-page, body.home-page { padding-bottom: 70px; }
 body.site-page #page-content, body.site-page .container, body.site-page .container-fluid, body.home-page #page-content, body.home-page .container, body.home-page .container-fluid { background: transparent; }
 body.site-page .card-custom, body.site-page .card:not(.bg-primary):not(.bg-success):not(.bg-danger):not(.bg-warning):not(.bg-info) { background: rgba(255,255,255,.94); border: 1px solid rgba(255,255,255,.7); box-shadow: 0 14px 35px rgba(4,16,31,.18); }

@@ -22,7 +22,7 @@ if (!function_exists('sanitize')) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="../assets/user-preferences.css?v=9">
+    <link rel="stylesheet" href="../assets/user-preferences.css?v=13">
     
     <style>
         :root {
@@ -317,7 +317,7 @@ if (!function_exists('sanitize')) {
             <div class="ms-auto d-flex align-items-center">
                 <div class="appearance-controls">
                     <button type="button" class="btn btn-outline-light" data-theme-toggle aria-label="Toggle dark mode" title="Light/Dark"><i data-theme-icon class="fas fa-moon"></i></button>
-                    <select class="form-select form-select-sm" data-language-select aria-label="Language"><option value="en">EN</option><option value="ms">BM</option></select>
+                    <div class="language-switch" data-language-switch aria-label="Language"><button type="button" data-language-option="en">EN</button><button type="button" data-language-option="ms">BM</button></div>
                 </div>
                 <a href="../index.php" class="btn btn-outline-primary btn-sm me-3"><i class="fas fa-home me-1"></i><span data-i18n="Home">Home</span></a>
                 <a href="profile.php" class="text-decoration-none d-flex align-items-center profile-link">

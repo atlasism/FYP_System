@@ -47,8 +47,8 @@ body.language-changing #page-content > .p-4,
 body.language-changing .admin-content,
 body.language-changing > .container,
 body.language-changing > .container-fluid {
-    opacity: .45;
-    transition: opacity .12s ease;
+    opacity: .55;
+    transition: opacity .22s ease;
 }
 
 body.user-portal > footer {
@@ -241,8 +241,82 @@ body.user-portal.portal-dark .border-top {
     font-size: .8rem;
 }
 
+.appearance-controls [data-theme-toggle] {
+    width: 54px;
+    height: 30px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 2px;
+    border: 1px solid rgba(255,255,255,.45);
+    border-radius: 999px;
+    color: #10243d;
+    background: #d8e5f2;
+}
+
+.appearance-controls [data-theme-toggle] i {
+    width: 24px;
+    height: 24px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    color: #10243d;
+    background: #ffffff;
+    font-size: .75rem;
+    transition: transform .22s ease, background-color .22s ease, color .22s ease;
+}
+
+body.user-portal.portal-dark .appearance-controls [data-theme-toggle] {
+    justify-content: flex-start;
+    background: #2563a5;
+    border-color: rgba(255,255,255,.35);
+}
+
+body.user-portal.portal-dark .appearance-controls [data-theme-toggle] i {
+    color: #ffffff;
+    background: #10243d;
+}
+
 .appearance-controls .form-select {
     width: 62px;
+}
+
+.language-switch {
+    display: inline-flex;
+    align-items: center;
+    flex: 0 0 auto;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    padding: 2px;
+    border: 1px solid rgba(255,255,255,.35);
+    border-radius: 999px;
+    background: rgba(255,255,255,.1);
+}
+
+.language-switch button {
+    width: 32px;
+    min-width: 32px;
+    height: 24px;
+    padding: 0;
+    border: 0;
+    border-radius: 999px;
+    color: #d8e7f5;
+    background: transparent;
+    font-size: .7rem;
+    font-weight: 800;
+    line-height: 24px;
+    transition: background-color .2s ease, color .2s ease, box-shadow .2s ease, transform .2s ease;
+}
+
+.language-switch button.active {
+    color: #10243d;
+    background: #ffffff;
+    box-shadow: 0 2px 6px rgba(0,0,0,.18);
+}
+
+.admin-profile .language-switch {
+    flex: 0 0 auto;
+    margin-right: 2px;
 }
 
 .portal-dark .appearance-controls .form-select {

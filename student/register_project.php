@@ -39,14 +39,6 @@ if ($existing_stmt->get_result()->num_rows > 0) {
     exit();
 }
 
-$supervisors = [];
-$supervisor_result = $conn->query("SELECT id, full_name, department FROM users WHERE role = 'Supervisor' AND department = 'JTMK' ORDER BY full_name");
-if ($supervisor_result) {
-    while ($supervisor = $supervisor_result->fetch_assoc()) {
-        $supervisors[] = $supervisor;
-    }
-}
-
 $member_defaults = [1 => $current_student ?: [], 2 => [], 3 => []];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -54,12 +46,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $category = trim($_POST['category'] ?? '');
     $session = trim($_POST['session'] ?? '');
     $description = trim($_POST['description'] ?? '');
-    $supervisor_id = (int) ($_POST['supervisor_id'] ?? 0);
 
     if (!hash_equals($csrf_token, $_POST['csrf_token'] ?? '')) {
         $error = 'This form session is invalid. Please try again.';
-    } elseif (!$current_student || empty($title) || !in_array($category, $project_categories, true) || empty($session) || empty($description) || !$supervisor_id) {
-        $error = 'Please complete all required fields, including title, category, session, description, and supervisor.';
+    } elseif (!$current_student || empty($title) || !in_array($category, $project_categories, true) || empty($session) || empty($description)) {
+        $error = 'Please complete all required fields, including title, category, session and description.';
     } else {
         $member_ids = [$student_id];
         for ($member_number = 2; $member_number <= 3; $member_number++) {
@@ -80,20 +71,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         if ($error === '') {
-            $supervisor_stmt = $conn->prepare("SELECT id FROM users WHERE id = ? AND role = 'Supervisor' AND department = 'JTMK'");
-            $supervisor_stmt->bind_param("i", $supervisor_id);
-            $supervisor_stmt->execute();
-            if (!$supervisor_stmt->get_result()->fetch_assoc()) {
-                $error = 'The selected supervisor is invalid.';
-            }
-        }
-
-        if ($error === '') {
             $conn->begin_transaction();
             try {
                     $department = $jtmk_department;
-                    $project_stmt = $conn->prepare("INSERT INTO projects (student_id, created_by, supervisor_id, title, department, program_name, course_code, category, session, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-                    $project_stmt->bind_param("iiisssssss", $student_id, $student_id, $supervisor_id, $title, $department, $it_program, $course_code, $category, $session, $description);
+                    $project_stmt = $conn->prepare("INSERT INTO projects (student_id, created_by, supervisor_id, title, department, program_name, course_code, category, session, description) VALUES (?, ?, NULL, ?, ?, ?, ?, ?, ?, ?)");
+                    $project_stmt->bind_param("iisssssss", $student_id, $student_id, $title, $department, $it_program, $course_code, $category, $session, $description);
                 $project_stmt->execute();
                 $project_id = $conn->insert_id;
 
@@ -161,11 +143,10 @@ include_once '../includes/navbar.php';
                         <div class="col-12"><label class="form-label fw-bold">Project Title *</label><input type="text" name="title" class="form-control" required value="<?= sanitize($_POST['title'] ?? ''); ?>"></div>
                         <div class="col-md-6"><label class="form-label fw-bold">Project Category *</label><select name="category" class="form-select" required><option value="">-- Select JTMK IT Category --</option><?php foreach ($project_categories as $category_option): ?><option value="<?= sanitize($category_option); ?>" <?= (($_POST['category'] ?? '') === $category_option) ? 'selected' : ''; ?>><?= sanitize($category_option); ?></option><?php endforeach; ?></select></div>
                         <div class="col-md-3"><label class="form-label fw-bold">Department</label><input type="text" class="form-control" value="JTMK" readonly></div>
-                        <div class="col-md-5"><label class="form-label fw-bold">Programme</label><input type="text" class="form-control" value="<?= sanitize($it_program); ?>" readonly></div>
+                        <div class="col-md-5"><label class="form-label fw-bold">Program</label><input type="text" class="form-control" value="<?= sanitize($it_program); ?>" readonly></div>
                         <div class="col-md-4"><label class="form-label fw-bold">Course Code</label><input type="text" class="form-control" value="<?= sanitize($course_code . ' - Integrated Project'); ?>" readonly></div>
                         <div class="col-md-6"><label class="form-label fw-bold">Academic Session *</label><input type="text" name="session" class="form-control" value="<?= sanitize($_POST['session'] ?? 'I : 2026/2027'); ?>" required></div>
                         <div class="col-12"><label class="form-label fw-bold">Project Description *</label><textarea name="description" rows="5" class="form-control" required><?= sanitize($_POST['description'] ?? ''); ?></textarea></div>
-                        <div class="col-md-6"><label class="form-label fw-bold">Supervisor's Name *</label><select name="supervisor_id" class="form-select" required><option value="">-- Select JTMK Supervisor --</option><?php foreach ($supervisors as $supervisor): ?><option value="<?= (int) $supervisor['id']; ?>" <?= ((int) ($_POST['supervisor_id'] ?? 0) === (int) $supervisor['id']) ? 'selected' : ''; ?>><?= sanitize($supervisor['full_name'] . ' (JTMK)'); ?></option><?php endforeach; ?></select></div>
                     </div>
                     <button type="submit" class="btn btn-primary w-100 fw-bold py-2 mt-4"><i class="fas fa-paper-plane me-1"></i> Submit Project Registration</button>
                 </form>
