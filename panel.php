@@ -162,7 +162,7 @@ if ($token === '' || !preg_match('/^[a-f0-9]{64}$/', $token)) {
 <header class="panel-header py-3 mb-4">
     <div class="container d-flex align-items-center justify-content-between gap-3">
         <div><strong class="d-block fs-4">External Panel Evaluation</strong><small>Project Demonstration 3 | DFT50114</small></div>
-        <img src="assets/image/logo.png" class="panel-logo" alt="Politeknik Besut logo">
+        <img src="assets/image/logosistem.png" class="panel-logo" alt="Politeknik Besut logo">
     </div>
 </header>
 <main class="container pb-5">

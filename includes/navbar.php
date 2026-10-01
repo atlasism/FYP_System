@@ -1,7 +1,8 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm sticky-top">
   <div class="container">
     <a class="navbar-brand d-flex align-items-center" href="/fyp_system/index.php">
-      <img src="/fyp_system/assets/image/logo.png" alt="SPInE Politeknik Besut logo" height="40" class="me-2" onerror="this.style.display='none'">
+      <?php if ($current_page === 'index.php' && isset($_SESSION['user_id'])): ?><img src="/fyp_system/assets/image/logo.png" alt="Politeknik Besut logo" height="40" class="me-2" onerror="this.style.display='none'"><?php endif; ?>
+      <span class="brand-logosistem-badge me-2"><img src="/fyp_system/assets/image/logosistem.png" alt="SPInE Politeknik Besut logo" class="brand-logosistem" onerror="this.style.display='none'"></span>
       <span class="fw-bold text-wrap">SPInE Politeknik Besut</span>
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -32,6 +33,7 @@
           <li class="nav-item ms-lg-2">
             <a class="btn btn-primary btn-sm px-4 fw-semibold" href="/fyp_system/login.php"><i class="fas fa-sign-in-alt me-1"></i> Login</a>
           </li>
+          <?php if ($current_page === 'index.php'): ?><li class="nav-item ms-lg-2 d-flex align-items-center"><img src="/fyp_system/assets/image/logo.png" alt="Politeknik Besut logo" class="home-nav-logo" onerror="this.style.display='none'"></li><?php endif; ?>
         <?php endif; ?>
       </ul>
     </div>

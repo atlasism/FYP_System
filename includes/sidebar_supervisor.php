@@ -52,7 +52,7 @@ if (!function_exists('sanitize')) {
             align-self: flex-start;
             min-height: 100vh;
             height: 100vh;
-            background: #10243d;
+            background: linear-gradient(180deg, #2f7fc9 0%, #123d69 25%, #10243d 50%);
             box-shadow: 2px 0 10px rgba(0,0,0,0.05);
             transition: all 0.3s ease;
             z-index: 1000;
@@ -66,7 +66,7 @@ if (!function_exists('sanitize')) {
             position: fixed;
             inset: 0 auto 0 0;
             width: var(--sidebar-width);
-            background: #10243d;
+            background: linear-gradient(180deg, #2f7fc9 0%, #123d69 25%, #10243d 50%);
             z-index: -1;
         }
 
@@ -256,7 +256,7 @@ if (!function_exists('sanitize')) {
     <div id="sidebar">
         <div>
             <div class="portal-brand d-flex align-items-center justify-content-center">
-                <img src="../assets/image/logo.png" alt="Politeknik Besut logo">
+                <img src="../assets/image/logosistem.png" alt="Politeknik Besut logo">
                 <span class="fw-bold brand-text"><strong>SPInE</strong><small>POLITEKNIK BESUT</small></span>
             </div>
             

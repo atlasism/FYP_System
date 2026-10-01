@@ -23,7 +23,7 @@ if (!function_exists('sanitize')) {
         :root { --admin-sidebar: 272px; --admin-blue: #1f63aa; --admin-ink: #10243d; --admin-bg: #e9eef4; }
         body { margin: 0; background: var(--admin-bg); color: var(--admin-ink); font-family: "Segoe UI", sans-serif; }
         .admin-shell { min-height: 100vh; }
-        .admin-sidebar { position: fixed; inset: 0 auto 0 0; z-index: 1040; width: var(--admin-sidebar); padding: 0 16px 22px; background: linear-gradient(180deg, #10243d 0%, #183b63 100%); color: #fff; box-shadow: 8px 0 26px rgba(20, 35, 65, .12); transition: transform .25s ease, width .25s ease; }
+        .admin-sidebar { position: fixed; inset: 0 auto 0 0; z-index: 1040; width: var(--admin-sidebar); padding: 0 16px 22px; background: linear-gradient(180deg, #2f7fc9 0%, #123d69 25%, #10243d 50%); color: #fff; box-shadow: 8px 0 26px rgba(20, 35, 65, .12); transition: transform .25s ease, width .25s ease; }
         .admin-brand { height: 82px; box-sizing: border-box; display: flex; align-items: center; gap: 14px; padding: 0 10px; color: #fff; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,.12); }
         .admin-brand-icon { width: 82px; height: 52px; flex: 0 0 82px; display: grid; place-items: center; font-size: 1.35rem; }
         .admin-brand-icon img { width: 100%; height: 100%; object-fit: contain; }
@@ -76,7 +76,7 @@ if (!function_exists('sanitize')) {
 <div class="admin-shell">
     <aside class="admin-sidebar" id="adminSidebar">
         <a href="dashboard.php" class="admin-brand">
-            <span class="admin-brand-icon"><img src="../assets/image/logo.png" alt="SPInE logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';"><i class="bi bi-grid-1x2-fill" style="display:none;"></i></span>
+            <span class="admin-brand-icon"><img src="../assets/image/logosistem.png" alt="SPInE logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';"><i class="bi bi-grid-1x2-fill" style="display:none;"></i></span>
             <span><strong>SPInE</strong><small>Politeknik Besut</small></span>
         </a>
         <div class="admin-department"><i class="bi bi-building me-2"></i><span>JTMK | DFT50114</span></div>

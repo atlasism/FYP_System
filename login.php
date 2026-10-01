@@ -81,7 +81,7 @@ include_once 'includes/header.php';
                 
                 <!-- Title & Subtitle -->
                 <div class="text-center mb-4">
-                    <img src="assets/image/logo.png" class="login-brand-mark" alt="SPInE Politeknik Besut">
+                    <img src="assets/image/logosistem.png" class="login-brand-mark" alt="SPInE Politeknik Besut">
                     <h3 class="fw-bold mb-1">FYP Inventory<br>System</h3>
                     <small class="text-muted">Repository &amp; Management Platform</small>
                 </div>
