@@ -27,7 +27,7 @@ body.site-page { color: var(--theme-navy); background-color: var(--theme-ice) !i
 body.home-page { color: var(--theme-navy); background: linear-gradient(rgba(10,27,48,.84), rgba(10,27,48,.78)), url('image/background.png') center / cover fixed; }
 body.home-page .navbar { background: linear-gradient(105deg, #2f7fc9 0%, #123d69 50%, #0b2542 100%) !important; }
 .brand-logosistem-badge { display: inline-flex; align-items: center; justify-content: center; width: 46px; height: 46px; border-radius: 50%; background: #ffffff; flex: 0 0 auto; overflow: hidden; }
-.brand-logosistem { height: 44px; width: 44px; object-fit: cover; transform: scale(1.35); }
+.brand-logosistem { height: 44px; width: 44px; object-fit: cover; transform: scale(.85); }
 .home-nav-logo { height: 38px; width: auto; object-fit: contain; background: rgba(255,255,255,.92); border-radius: 8px; padding: 3px 6px; }
 .home-nav-logo-item { display: flex; align-items: center; }
 body.language-changing > .container,
