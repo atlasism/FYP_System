@@ -1,8 +1,8 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm sticky-top">
   <div class="container">
     <a class="navbar-brand d-flex align-items-center" href="/fyp_system/index.php">
-      <?php if ($current_page === 'index.php' && isset($_SESSION['user_id'])): ?><img src="/fyp_system/assets/image/logo.png" alt="Politeknik Besut logo" height="40" class="me-2" onerror="this.style.display='none'"><?php endif; ?>
       <span class="brand-logosistem-badge me-2"><img src="/fyp_system/assets/image/logosistem.png" alt="SPInE Politeknik Besut logo" class="brand-logosistem" onerror="this.style.display='none'"></span>
+      <?php if ($current_page === 'index.php'): ?><img src="/fyp_system/assets/image/logo.png" alt="Politeknik Besut logo" class="home-nav-logo me-2" onerror="this.style.display='none'"><?php endif; ?>
       <span class="fw-bold text-wrap">SPInE Politeknik Besut</span>
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -33,7 +33,14 @@
           <li class="nav-item ms-lg-2">
             <a class="btn btn-primary btn-sm px-4 fw-semibold" href="/fyp_system/login.php"><i class="fas fa-sign-in-alt me-1"></i> Login</a>
           </li>
-          <?php if ($current_page === 'index.php'): ?><li class="nav-item ms-lg-2 d-flex align-items-center"><img src="/fyp_system/assets/image/logo.png" alt="Politeknik Besut logo" class="home-nav-logo" onerror="this.style.display='none'"></li><?php endif; ?>
+          <li class="nav-item dropdown ms-lg-2">
+            <button class="btn btn-outline-light btn-sm dropdown-toggle px-3" type="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-book-open me-1"></i> User Manual</button>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><a class="dropdown-item" href="/fyp_system/assets/manuals/student_user_manual.pdf" target="_blank" rel="noopener"><i class="fas fa-user-graduate me-2 text-primary"></i>Student</a></li>
+              <li><a class="dropdown-item" href="/fyp_system/assets/manuals/supervisor_user_manual.pdf" target="_blank" rel="noopener"><i class="fas fa-chalkboard-teacher me-2 text-primary"></i>Supervisor</a></li>
+              <li><a class="dropdown-item" href="/fyp_system/assets/manuals/panel_user_manual.pdf" target="_blank" rel="noopener"><i class="fas fa-clipboard-check me-2 text-primary"></i>Panel</a></li>
+            </ul>
+          </li>
         <?php endif; ?>
       </ul>
     </div>

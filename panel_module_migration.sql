@@ -55,6 +55,16 @@ CREATE TABLE IF NOT EXISTS panel_session_projects (
     CONSTRAINT fk_panel_session_projects_project FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+CREATE TABLE IF NOT EXISTS panel_session_choices (
+    panel_session_id INT UNSIGNED NOT NULL,
+    project_id INT NOT NULL,
+    selected_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (panel_session_id, project_id),
+    KEY idx_panel_session_choices_project (project_id),
+    CONSTRAINT fk_panel_session_choices_session FOREIGN KEY (panel_session_id) REFERENCES panel_sessions(id) ON DELETE CASCADE,
+    CONSTRAINT fk_panel_session_choices_project FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 CREATE TABLE IF NOT EXISTS panel_assessors (
     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
     panel_session_id INT UNSIGNED NOT NULL,
@@ -142,6 +152,23 @@ UPDATE panel_evaluations pe
 JOIN panel_assessors pa ON pa.panel_session_id = pe.panel_session_id AND pa.panel_name = pe.panel_name
 SET pe.panel_assessor_id = pa.id
 WHERE pe.panel_assessor_id IS NULL;
+
+INSERT IGNORE INTO panel_session_choices (panel_session_id, project_id, selected_at)
+SELECT latest_eval.panel_session_id, p.id, COALESCE(p.panel_choice_at, CURRENT_TIMESTAMP)
+FROM projects p
+JOIN (
+        SELECT panel_session_id
+        FROM panel_evaluations
+        GROUP BY panel_session_id
+        ORDER BY MAX(created_at) DESC, panel_session_id DESC
+        LIMIT 1
+) latest_eval
+JOIN panel_session_projects psp ON psp.panel_session_id = latest_eval.panel_session_id AND psp.project_id = p.id
+WHERE p.is_panel_choice = 1
+    AND NOT EXISTS (
+            SELECT 1 FROM panel_session_choices existing_choice
+            WHERE existing_choice.project_id = p.id
+    );
 
 CREATE TABLE IF NOT EXISTS panel_student_marks (
     id INT UNSIGNED NOT NULL AUTO_INCREMENT,

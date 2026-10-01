@@ -28,7 +28,6 @@ $verification = [
     'Demo 1' => 'Pending',
     'Demo 2' => 'Pending'
 ];
-$verified_weeks = 0;
 if ($project_res->num_rows > 0) {
     $project = $project_res->fetch_assoc();
     $project_id = $project['project_id'];
@@ -41,10 +40,6 @@ if ($project_res->num_rows > 0) {
         $verification[$status['demo_type']] = $status['status'];
     }
 
-    $logbook_stmt = $conn->prepare("SELECT COUNT(*) AS verified_weeks FROM supervisor_logbook WHERE student_id = ? AND is_verified = 1");
-    $logbook_stmt->bind_param('i', $student_id);
-    $logbook_stmt->execute();
-    $verified_weeks = (int) ($logbook_stmt->get_result()->fetch_assoc()['verified_weeks'] ?? 0);
 }
 
 include_once '../includes/header.php';
@@ -55,27 +50,12 @@ include_once '../includes/sidebar_student.php'; // Sesuaikan dengan sidebar pela
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
             <h4 class="fw-bold text-primary mb-1"><i class="fas fa-flag-checkered me-2"></i>Milestone Verification Status</h4>
-            <p class="text-muted mb-0">Supervisor verification status for your project milestones and log book.</p>
+            <p class="text-muted mb-0">Semak status pengesahan Demo 1 dan Demo 2 bagi projek anda.</p>
         </div>
     </div>
 
     <div class="row">
-        <div class="col-lg-4 mb-4">
-            <div class="card border-0 shadow-sm rounded-3 bg-white h-100">
-                <div class="card-body text-center p-4 d-flex flex-column justify-content-between">
-                    <div>
-                        <span class="text-uppercase fw-bold text-muted small d-block mb-3">Log Book Verification</span>
-                        <h1 class="fw-bold text-primary display-4 mb-3"><?= $verified_weeks; ?><span class="fs-4 text-muted"> / 14 weeks</span></h1>
-                        <span class="badge <?= $verified_weeks === 14 ? 'bg-success' : 'bg-warning text-dark'; ?> px-3 py-2"><?= $verified_weeks === 14 ? 'Complete' : 'In Progress'; ?></span>
-                    </div>
-                    <div class="text-start mt-4 pt-3 border-top">
-                        <small class="text-muted">Your supervisor verifies weekly log book activities. No numerical marks are used.</small>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-8 mb-4">
+        <div class="col-12 mb-4">
             <div class="card border-0 shadow-sm rounded-3 bg-white">
                 <div class="card-header bg-light py-3">
                     <h5 class="fw-bold text-dark mb-0"><i class="fas fa-list-check me-2 text-primary"></i>Demo Milestone Status</h5>

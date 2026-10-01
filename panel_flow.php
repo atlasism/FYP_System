@@ -133,14 +133,14 @@ if ($token === '' || !preg_match('/^[a-f0-9]{64}$/', $token)) {
             $project_ids = [(int) $panel_session['project_id']];
         }
 
-        $project_stmt = $conn->prepare("SELECT p.id, p.title, p.session, p.course_code, p.student_id, p.is_panel_choice, sv.full_name AS supervisor_name, leader.full_name AS leader_name FROM projects p LEFT JOIN users sv ON sv.id = p.supervisor_id LEFT JOIN users leader ON leader.id = p.student_id WHERE p.id = ? AND p.department = 'JTMK' AND p.course_code = 'DFT50114' LIMIT 1");
+        $project_stmt = $conn->prepare("SELECT p.id, p.title, p.session, p.course_code, p.student_id, EXISTS(SELECT 1 FROM panel_session_choices psc WHERE psc.panel_session_id = ? AND psc.project_id = p.id) AS is_panel_choice, sv.full_name AS supervisor_name, leader.full_name AS leader_name FROM projects p LEFT JOIN users sv ON sv.id = p.supervisor_id LEFT JOIN users leader ON leader.id = p.student_id WHERE p.id = ? AND p.department = 'JTMK' AND p.course_code = 'DFT50114' LIMIT 1");
         $member_stmt = $conn->prepare("SELECT u.id, u.full_name, u.matric_no, u.class_name FROM project_members pm JOIN users u ON u.id = pm.student_id WHERE pm.project_id = ? ORDER BY CASE WHEN pm.member_order = 0 THEN 255 ELSE pm.member_order END, pm.id ASC");
-        $evaluation_stmt = $panel_assessor_id
-            ? $conn->prepare('SELECT id, student_scores_json FROM panel_evaluations WHERE panel_assessor_id = ? AND project_id = ? LIMIT 1')
+        $evaluation_stmt = $panel_assessor
+            ? $conn->prepare("SELECT id, student_scores_json FROM panel_evaluations WHERE project_id = ? AND LOWER(TRIM(panel_name)) = LOWER(TRIM(?)) AND LOWER(TRIM(COALESCE(panel_email, ''))) = LOWER(TRIM(?)) LIMIT 1")
             : null;
 
         foreach ($project_ids as $project_id) {
-            $project_stmt->bind_param('i', $project_id);
+            $project_stmt->bind_param('ii', $panel_session['id'], $project_id);
             $project_stmt->execute();
             $group = $project_stmt->get_result()->fetch_assoc();
             if (!$group) {
@@ -154,7 +154,9 @@ if ($token === '' || !preg_match('/^[a-f0-9]{64}$/', $token)) {
                 $group['members'][] = $member;
             }
             if ($evaluation_stmt) {
-                $evaluation_stmt->bind_param('ii', $panel_assessor_id, $project_id);
+                $assessor_name = $panel_assessor['panel_name'];
+                $assessor_email = $panel_assessor['panel_email'] ?? '';
+                $evaluation_stmt->bind_param('iss', $project_id, $assessor_name, $assessor_email);
                 $evaluation_stmt->execute();
                 $group['evaluation'] = $evaluation_stmt->get_result()->fetch_assoc();
             } else {
@@ -170,13 +172,40 @@ if ($token === '' || !preg_match('/^[a-f0-9]{64}$/', $token)) {
             } elseif (!isset($groups[$choice_project_id])) {
                 $error = 'The selected group is not included in this panel link.';
             } else {
-                $choice_stmt = $conn->prepare('UPDATE projects SET panel_choice_at = IF(is_panel_choice = 1, NULL, NOW()), is_panel_choice = IF(is_panel_choice = 1, 0, 1) WHERE id = ?');
-                $choice_stmt->bind_param('i', $choice_project_id);
-                if ($choice_stmt->execute()) {
+                $conn->begin_transaction();
+                try {
+                    $project_lock_stmt = $conn->prepare('SELECT id FROM projects WHERE id = ? FOR UPDATE');
+                    $project_lock_stmt->bind_param('i', $choice_project_id);
+                    $project_lock_stmt->execute();
+
+                    $existing_choice_stmt = $conn->prepare('SELECT project_id FROM panel_session_choices WHERE panel_session_id = ? AND project_id = ? FOR UPDATE');
+                    $existing_choice_stmt->bind_param('ii', $panel_session['id'], $choice_project_id);
+                    $existing_choice_stmt->execute();
+                    if ($existing_choice_stmt->get_result()->fetch_assoc()) {
+                        $choice_stmt = $conn->prepare('DELETE FROM panel_session_choices WHERE panel_session_id = ? AND project_id = ?');
+                    } else {
+                        $choice_stmt = $conn->prepare('INSERT INTO panel_session_choices (panel_session_id, project_id) VALUES (?, ?)');
+                    }
+                    if (!$choice_stmt) {
+                        throw new RuntimeException('Panel choice update could not be prepared.');
+                    }
+                    $choice_stmt->bind_param('ii', $panel_session['id'], $choice_project_id);
+                    if (!$choice_stmt->execute()) {
+                        throw new RuntimeException('Panel choice update failed.');
+                    }
+
+                    $project_choice_stmt = $conn->prepare('UPDATE projects SET is_panel_choice = EXISTS(SELECT 1 FROM panel_session_choices WHERE project_id = ?), panel_choice_at = (SELECT MAX(selected_at) FROM panel_session_choices WHERE project_id = ?) WHERE id = ?');
+                    $project_choice_stmt->bind_param('iii', $choice_project_id, $choice_project_id, $choice_project_id);
+                    if (!$project_choice_stmt->execute()) {
+                        throw new RuntimeException('Project choice status update failed.');
+                    }
+                    $conn->commit();
                     header('Location: panel.php?token=' . urlencode($token) . '&choice_saved=1');
                     exit();
+                } catch (Throwable $exception) {
+                    $conn->rollback();
+                    $error = 'Unable to update Panel\'s Choice.';
                 }
-                $error = 'Unable to update Panel\'s Choice.';
             }
         }
 
@@ -240,8 +269,21 @@ if ($token === '' || !preg_match('/^[a-f0-9]{64}$/', $token)) {
                     $score_json = json_encode(['members' => $members, 'aspects' => $aspect_scores, 'results' => $results], JSON_UNESCAPED_UNICODE);
                     $average_score = $score_count ? round($score_sum / $score_count, 2) : 0;
                     $assessor_string = $assessor_type;
+                    $duplicate_panel_evaluation = false;
                     $conn->begin_transaction();
                     try {
+                        $project_lock_stmt = $conn->prepare('SELECT id FROM projects WHERE id = ? FOR UPDATE');
+                        $project_lock_stmt->bind_param('i', $selected_project_id);
+                        $project_lock_stmt->execute();
+
+                        $duplicate_stmt = $conn->prepare("SELECT id FROM panel_evaluations WHERE project_id = ? AND LOWER(TRIM(panel_name)) = LOWER(TRIM(?)) AND LOWER(TRIM(COALESCE(panel_email, ''))) = LOWER(TRIM(?)) LIMIT 1");
+                        $duplicate_stmt->bind_param('iss', $selected_project_id, $panel_name, $panel_email);
+                        $duplicate_stmt->execute();
+                        if ($duplicate_stmt->get_result()->fetch_assoc()) {
+                            $duplicate_panel_evaluation = true;
+                            throw new RuntimeException('Duplicate panel evaluation.');
+                        }
+
                         $save_stmt = $conn->prepare('INSERT INTO panel_evaluations (panel_session_id, panel_assessor_id, project_id, panel_name, panel_email, assessor_types, student_scores_json, comments, average_score) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)');
                         $save_stmt->bind_param('iiisssssd', $panel_session['id'], $panel_assessor_id, $selected_project_id, $panel_name, $panel_email, $assessor_string, $score_json, $comments, $average_score);
                         if (!$save_stmt->execute()) {
@@ -312,7 +354,9 @@ if ($token === '' || !preg_match('/^[a-f0-9]{64}$/', $token)) {
                         exit();
                     } catch (Throwable $exception) {
                         $conn->rollback();
-                        $error = 'Unable to save the evaluation. Please contact the administrator.';
+                        $error = $duplicate_panel_evaluation
+                            ? 'You have already assessed this group using the same panel name and email, even through another QR batch.'
+                            : 'Unable to save the evaluation. Please contact the administrator.';
                     }
                 }
             }
