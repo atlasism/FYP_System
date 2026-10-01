@@ -23,9 +23,9 @@
             <li class="nav-item"><a class="nav-link" href="/fyp_system/supervisor/dashboard.php" data-i18n="Dashboard">Dashboard</a></li>
           <?php endif; ?>
           <li class="nav-item ms-lg-2 d-flex align-items-center">
-            <?php if ($current_page !== 'index.php'): ?><div class="appearance-controls">
-              <button type="button" class="btn btn-outline-light" data-theme-toggle aria-label="Toggle dark mode" title="Light/Dark"><i data-theme-icon class="fas fa-moon"></i></button>
+            <?php if ($current_page !== 'index.php'): ?><div class="appearance-controls appearance-controls-vertical">
               <div class="language-switch" data-language-switch aria-label="Language"><button type="button" data-language-option="en">EN</button><button type="button" data-language-option="ms">BM</button></div>
+              <button type="button" class="btn btn-outline-light" data-theme-toggle aria-label="Toggle dark mode" title="Light/Dark"><i data-theme-icon class="fas fa-moon"></i></button>
             </div><?php endif; ?>
             <a class="btn btn-outline-light btn-sm px-3" href="/fyp_system/logout.php"><i class="fas fa-sign-out-alt me-1"></i> <span data-i18n="Logout">Logout</span> (<?= sanitize($_SESSION['username']); ?>)</a>
           </li>

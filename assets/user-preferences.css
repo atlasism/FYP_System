@@ -222,8 +222,9 @@ body.user-portal.portal-dark .border-top {
 
 .appearance-controls {
     display: inline-flex;
+    flex-direction: column;
     align-items: center;
-    gap: 6px;
+    gap: 4px;
     margin-right: 14px;
     flex: 0 0 auto;
     flex-wrap: nowrap;
@@ -316,7 +317,7 @@ body.user-portal.portal-dark .appearance-controls [data-theme-toggle] i {
 
 .admin-profile .language-switch {
     flex: 0 0 auto;
-    margin-right: 2px;
+    margin-right: 0;
 }
 
 .portal-dark .appearance-controls .form-select {

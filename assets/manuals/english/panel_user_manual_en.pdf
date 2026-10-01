@@ -46,11 +46,12 @@ endobj
 endobj
 5 0 obj
 <<
-/Length 6525
+/Length 6560
 >>
 stream
 q
 1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+q
 q
 34.98592 0 0 28 237.2721 799.8898 cm
 /FormXob.79ec4a0c0a432712efb2cd38239cc267 Do
@@ -59,166 +60,166 @@ q
 75.74539 0 0 28 282.2581 799.8898 cm
 /FormXob.1d47323d4ccf2bd4c2cecb8ace295016 Do
 Q
+Q
 q
-1 0 0 1 59.85827 766.1969 cm
+1 0 0 1 59.85827 737.8504 cm
 q
 .337255 .384314 .45098 rg
 BT 1 0 0 1 0 4 Tm 160.5171 0 Td /F2+0 9 Tf 13 TL (SPInE STUDENT PROJECT SYSTEM) Tj T* -160.5171 0 Td ET
 Q
 Q
 q
-1 0 0 1 59.85827 750.5276 cm
+1 0 0 1 59.85827 722.1811 cm
 Q
 q
-1 0 0 1 59.85827 724.5276 cm
+1 0 0 1 59.85827 696.1811 cm
 q
 .070588 .239216 .411765 rg
-BT 1 0 0 1 0 5 Tm 66.26244 0 Td /F3+0 21 Tf 26 TL (PANDUAN PENGGUNA PENYELIA) Tj T* -66.26244 0 Td ET
+BT 1 0 0 1 0 5 Tm 121.6951 0 Td /F3+0 21 Tf 26 TL (PANEL USER MANUAL) Tj T* -121.6951 0 Td ET
 Q
 Q
 q
-1 0 0 1 59.85827 706.5276 cm
+1 0 0 1 59.85827 678.1811 cm
 q
 .337255 .384314 .45098 rg
-BT 1 0 0 1 0 4 Tm 201.1006 0 Td /F2+0 9 Tf 13 TL (JTMK | DFT50114) Tj T* -201.1006 0 Td ET
+BT 1 0 0 1 0 4 Tm 154.5823 0 Td /F2+0 9 Tf 13 TL (EXTERNAL PANEL | DEMO 3 DFT50114) Tj T* -154.5823 0 Td ET
 Q
 Q
 q
-1 0 0 1 59.85827 668.5276 cm
+1 0 0 1 59.85827 654.1811 cm
 q
 .141176 .196078 .278431 rg
-BT 1 0 0 1 0 18.5 Tm /F2+0 9.5 Tf 14 TL (Panduan langkah demi langkah untuk memantau kumpulan, menyemak dokumen dan mengemas kini status) Tj T* (Demo pelajar seliaan.) Tj T* ET
+BT 1 0 0 1 0 4.5 Tm /F2+0 9.5 Tf 14 TL (A complete guide to opening a QR link, selecting groups, using Panel's Choice, and submitting Demo 3 scores.) Tj T* ET
 Q
 Q
 q
-1 0 0 1 59.85827 642.5276 cm
-q
-.121569 .388235 .666667 rg
-BT 1 0 0 1 0 4 Tm /F3+0 12 Tf 16 TL (1. Log masuk dan Papan Pemuka \(Dashboard\)) Tj T* ET
-Q
-Q
-q
-1 0 0 1 59.85827 609.9276 cm
-q
-BT 1 0 0 1 10 17.6 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Log masuk menggunakan akaun berperanan Penyelia \(Supervisor\). Pastikan nama akaun yang dipaparkan betul) Tj T* 8 0 Td (sebelum menyemak rekod pelajar.) Tj T* ET
-Q
-Q
-q
-1 0 0 1 59.85827 577.3276 cm
-q
-BT 1 0 0 1 10 17.6 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Papan Pemuka \(Dashboard\) menunjukkan jumlah pelajar dan kumpulan seliaan serta ringkasan Recent Student) Tj T* 8 0 Td (Submissions & Groups. Ringkasan ini bukan senarai penuh.) Tj T* ET
-Q
-Q
-q
-1 0 0 1 59.85827 544.7276 cm
-q
-BT 1 0 0 1 10 17.6 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Tekan View All atau buka Kumpulan Seliaan \(Supervised Projects\) untuk mencari kumpulan tertentu. Gunakan menu) Tj T* 8 0 Td (tepi untuk bertukar halaman.) Tj T* ET
-Q
-Q
-q
-1 0 0 1 59.85827 518.7276 cm
+1 0 0 1 59.85827 628.1811 cm
 q
 .121569 .388235 .666667 rg
-BT 1 0 0 1 0 4 Tm /F3+0 12 Tf 16 TL (2. Cari dan semak kumpulan seliaan) Tj T* ET
+BT 1 0 0 1 0 4 Tm /F3+0 12 Tf 16 TL (1. Open the QR link and register) Tj T* ET
 Q
 Q
 q
-1 0 0 1 59.85827 486.1276 cm
+1 0 0 1 59.85827 595.5811 cm
 q
-BT 1 0 0 1 10 17.6 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Buka Kumpulan Seliaan \(Supervised Projects\). Senarai menunjukkan tajuk projek, ketua, ahli dan nombor matrik,) Tj T* 8 0 Td (kategori, sesi serta jabatan.) Tj T* ET
+BT 1 0 0 1 10 17.6 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Scan the QR code or open the link provided by the administrator. Each QR shows only the groups assigned to that) Tj T* 8 0 Td (batch and remains valid until its expiry date.) Tj T* ET
 Q
 Q
 q
-1 0 0 1 59.85827 453.5276 cm
+1 0 0 1 59.85827 562.9811 cm
 q
-BT 1 0 0 1 10 17.6 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Gunakan carian untuk mencari tajuk projek, nama pelajar atau nombor matrik. Tekan Search Project untuk menapis) Tj T* 8 0 Td (senarai.) Tj T* ET
+BT 1 0 0 1 10 17.6 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Enter your Panel Name. Enter an email if requested; it is optional unless the form marks it as required. Select) Tj T* 8 0 Td (Continue to Groups.) Tj T* ET
 Q
 Q
 q
-1 0 0 1 59.85827 434.2276 cm
+1 0 0 1 59.85827 530.3811 cm
 q
-BT 1 0 0 1 10 4.3 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Jika kumpulan tiada dalam senarai, minta pentadbir mengesahkan penugasan penyelia.) Tj T* 8 0 Td ET
+BT 1 0 0 1 10 17.6 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Use the same name and email throughout your evaluations. The system uses these details to identify your) Tj T* 8 0 Td (submissions across QR links.) Tj T* ET
 Q
 Q
 q
-1 0 0 1 59.85827 408.2276 cm
+1 0 0 1 59.85827 511.0811 cm
 q
-.121569 .388235 .666667 rg
-BT 1 0 0 1 0 4 Tm /F3+0 12 Tf 16 TL (3. Semak dokumen pelajar) Tj T* ET
+BT 1 0 0 1 10 4.3 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 If the panel places for a QR are full, the link has expired, or no groups are listed, contact the administrator.) Tj T* 8 0 Td ET
 Q
 Q
 q
-1 0 0 1 59.85827 388.9276 cm
-q
-BT 1 0 0 1 10 4.3 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Buka Semakan Dokumen \(Review Documents\) dan pilih projek daripada senarai kumpulan seliaan.) Tj T* 8 0 Td ET
-Q
-Q
-q
-1 0 0 1 59.85827 356.3276 cm
-q
-BT 1 0 0 1 10 17.6 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Jadual menunjukkan kategori, nama fail, status dan tarikh muat naik. Jika tiada fail, sistem memaparkan No) Tj T* 8 0 Td (documents submitted.) Tj T* ET
-Q
-Q
-q
-1 0 0 1 59.85827 337.0276 cm
-q
-BT 1 0 0 1 10 4.3 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Tekan View untuk membuka dokumen dalam tab baharu. Kembali ke senarai projek untuk memilih kumpulan lain.) Tj T* 8 0 Td ET
-Q
-Q
-q
-1 0 0 1 59.85827 304.4276 cm
-q
-BT 1 0 0 1 10 17.6 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Halaman ini untuk melihat dokumen sahaja. Tiada borang markah angka atau kawalan untuk mengubah status) Tj T* 8 0 Td (dokumen.) Tj T* ET
-Q
-Q
-q
-1 0 0 1 59.85827 278.4276 cm
+1 0 0 1 59.85827 485.0811 cm
 q
 .121569 .388235 .666667 rg
-BT 1 0 0 1 0 4 Tm /F3+0 12 Tf 16 TL (4. Kemas kini status Demo 1 dan Demo 2) Tj T* ET
+BT 1 0 0 1 0 4 Tm /F3+0 12 Tf 16 TL (2. Group list and Panel's Choice) Tj T* ET
 Q
 Q
 q
-1 0 0 1 59.85827 245.8276 cm
+1 0 0 1 59.85827 465.7811 cm
 q
-BT 1 0 0 1 10 17.6 Tm -8 0 Td -0.022267 Tw 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Buka Pengesahan Pelajar \(Student Verification\). Senarai memaparkan nama, nombor matrik, sesi dan status Demo 1) Tj T* 0 Tw 8 0 Td (serta Demo 2.) Tj T* ET
+BT 1 0 0 1 10 4.3 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Group List shows the projects included in the QR. Check the title, leader, and members before opening a group.) Tj T* 8 0 Td ET
 Q
 Q
 q
-1 0 0 1 59.85827 213.2276 cm
+1 0 0 1 59.85827 433.1811 cm
 q
-BT 1 0 0 1 10 17.6 Tm -8 0 Td -0.019289 Tw 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Tekan Milestones pada baris pelajar yang betul. Pilih Passed \(Lulus\) atau Not Passed \(Belum Lulus\) bagi Demo yang) Tj T* 0 Tw 8 0 Td (telah disemak.) Tj T* ET
+BT 1 0 0 1 10 17.6 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Select Assess Group to open the scoring form. A Complete label means your identity has already submitted an) Tj T* 8 0 Td (evaluation for that group.) Tj T* ET
 Q
 Q
 q
-1 0 0 1 59.85827 180.6276 cm
+1 0 0 1 59.85827 400.5811 cm
 q
-BT 1 0 0 1 10 17.6 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Jika hanya satu Demo perlu dikemas kini, pilih statusnya dan biarkan pilihan yang satu lagi kosong. Sistem hanya) Tj T* 8 0 Td (menyimpan status yang dipilih.) Tj T* ET
+BT 1 0 0 1 10 17.6 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Select the star icon to add a project to Panel's Choice. Select it again to remove the choice. The star is saved for that) Tj T* 8 0 Td (QR batch.) Tj T* ET
 Q
 Q
 q
-1 0 0 1 59.85827 161.3276 cm
+1 0 0 1 59.85827 367.9811 cm
 q
-BT 1 0 0 1 10 4.3 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Tekan Save Status dan tunggu mesej berjaya. Kembali ke senarai untuk mengesahkan status terkini.) Tj T* 8 0 Td ET
+BT 1 0 0 1 10 17.6 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 The star is a favourite selection, not a mark. Selecting a star does not submit scores, and submitting scores does not) Tj T* 8 0 Td (automatically select a star.) Tj T* ET
 Q
 Q
 q
-1 0 0 1 59.85827 128.7276 cm
-q
-BT 1 0 0 1 10 17.6 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Pengesahan milestone ialah status, bukan markah angka. Pelajar melihat status yang sama pada halaman) Tj T* 8 0 Td (Evaluation Marks.) Tj T* ET
-Q
-Q
-q
-1 0 0 1 59.85827 102.7276 cm
+1 0 0 1 59.85827 341.9811 cm
 q
 .121569 .388235 .666667 rg
-BT 1 0 0 1 0 4 Tm /F3+0 12 Tf 16 TL (5. Markah dan status milestone) Tj T* ET
+BT 1 0 0 1 0 4 Tm /F3+0 12 Tf 16 TL (3. Complete the Demo 3 scoring form) Tj T* ET
 Q
 Q
 q
-1 0 0 1 59.85827 70.12756 cm
+1 0 0 1 59.85827 309.3811 cm
 q
-BT 1 0 0 1 10 17.6 Tm -8 0 Td -0.074709 Tw 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Markah Demo 3 dimasukkan oleh panel luar melalui pautan QR. Semakan dokumen dan status Demo 1/Demo 2 ialah) Tj T* 0 Tw 8 0 Td (aliran kerja yang berasingan.) Tj T* ET
+BT 1 0 0 1 10 17.6 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Check the project title, supervisor, student names, and matric numbers. If the wrong group is shown, return to the list) Tj T* 8 0 Td (and open the correct one.) Tj T* ET
+Q
+Q
+q
+1 0 0 1 59.85827 276.7811 cm
+q
+BT 1 0 0 1 10 17.6 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 There are eight criteria. For every criterion, select a score of 1, 2, 3, or 4 for every student in the group. All students) Tj T* 8 0 Td (must have a score for every criterion.) Tj T* ET
+Q
+Q
+q
+1 0 0 1 59.85827 244.1811 cm
+q
+BT 1 0 0 1 10 17.6 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Use Criteria 1 to 8 tabs, Previous, or Next Criteria to move through the form. The progress bar shows how many) Tj T* 8 0 Td (criteria are complete.) Tj T* ET
+Q
+Q
+q
+1 0 0 1 59.85827 211.5811 cm
+q
+BT 1 0 0 1 10 17.6 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Read the performance descriptions shown under each criterion before selecting a score. Do not choose a number) Tj T* 8 0 Td (without checking the rubric description.) Tj T* ET
+Q
+Q
+q
+1 0 0 1 59.85827 192.2811 cm
+q
+BT 1 0 0 1 10 4.3 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Add Comments / Feedback if needed. Comments do not replace the criterion scores.) Tj T* 8 0 Td ET
+Q
+Q
+q
+1 0 0 1 59.85827 166.2811 cm
+q
+.121569 .388235 .666667 rg
+BT 1 0 0 1 0 4 Tm /F3+0 12 Tf 16 TL (4. The eight criteria and score calculation) Tj T* ET
+Q
+Q
+q
+1 0 0 1 59.85827 133.6811 cm
+q
+BT 1 0 0 1 10 17.6 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Project achievement and objective: assess how much of the project is complete and whether its objectives are) Tj T* 8 0 Td (achieved.) Tj T* ET
+Q
+Q
+q
+1 0 0 1 59.85827 114.3811 cm
+q
+BT 1 0 0 1 10 4.3 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 User Requirements: check how well the identified user requirements are met.) Tj T* 8 0 Td ET
+Q
+Q
+q
+1 0 0 1 59.85827 95.0811 cm
+q
+BT 1 0 0 1 10 4.3 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Construction and functionality: assess how the system was built and how it works.) Tj T* 8 0 Td ET
+Q
+Q
+q
+1 0 0 1 59.85827 75.7811 cm
+q
+BT 1 0 0 1 10 4.3 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Feasibility: assess whether the project can be built and implemented.) Tj T* 8 0 Td ET
 Q
 Q
  
@@ -918,11 +919,12 @@ endobj
 endobj
 25 0 obj
 <<
-/Length 3120
+/Length 4376
 >>
 stream
 q
 1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+q
 q
 34.98592 0 0 28 237.2721 799.8898 cm
 /FormXob.79ec4a0c0a432712efb2cd38239cc267 Do
@@ -931,66 +933,97 @@ q
 75.74539 0 0 28 282.2581 799.8898 cm
 /FormXob.1d47323d4ccf2bd4c2cecb8ace295016 Do
 Q
+Q
 q
-1 0 0 1 59.85827 752.5969 cm
+1 0 0 1 59.85827 737.5504 cm
 q
-BT 1 0 0 1 10 17.6 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Pelajar boleh melihat status Demo 1 dan Demo 2 pada Evaluation Marks. Gunakan Student Verification untuk) Tj T* 8 0 Td (mengemas kini status selepas membuat semakan.) Tj T* ET
+BT 1 0 0 1 10 4.3 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Originality: consider whether the project idea is genuine and not copied.) Tj T* 8 0 Td ET
 Q
 Q
 q
-1 0 0 1 59.85827 719.9969 cm
+1 0 0 1 59.85827 718.2504 cm
 q
-BT 1 0 0 1 10 17.6 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Borang Project Marks / Evaluate Project tidak tersedia melalui laluan semasa dan mungkin menghala semula ke) Tj T* 8 0 Td (Student Verification. Jangan gunakan Passed atau Not Passed sebagai ganti markah angka.) Tj T* ET
+BT 1 0 0 1 10 4.3 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Marketability: consider evidence such as market surveys, clients, laboratory tests, MyIPO, or testimonials.) Tj T* 8 0 Td ET
 Q
 Q
 q
-1 0 0 1 59.85827 693.9969 cm
+1 0 0 1 59.85827 698.9504 cm
+q
+BT 1 0 0 1 10 4.3 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Creativity: assess the originality and inventiveness of the ideas.) Tj T* 8 0 Td ET
+Q
+Q
+q
+1 0 0 1 59.85827 679.6504 cm
+q
+BT 1 0 0 1 10 4.3 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 System Security, Features and Testing: assess user controls, validation, features, and testing evidence.) Tj T* 8 0 Td ET
+Q
+Q
+q
+1 0 0 1 59.85827 647.0504 cm
+q
+BT 1 0 0 1 10 17.6 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Each criterion contributes 12.5% to the total score out of 100. The system calculates the Demo 3 score out of 15) Tj T* 8 0 Td (automatically; do not calculate or enter the total manually.) Tj T* ET
+Q
+Q
+q
+1 0 0 1 59.85827 621.0504 cm
 q
 .121569 .388235 .666667 rg
-BT 1 0 0 1 0 4 Tm /F3+0 12 Tf 16 TL (6. Projek lepas dan tarikh akhir) Tj T* ET
+BT 1 0 0 1 0 4 Tm /F3+0 12 Tf 16 TL (5. Save scores and finish the batch) Tj T* ET
 Q
 Q
 q
-1 0 0 1 59.85827 674.6969 cm
+1 0 0 1 59.85827 601.7504 cm
 q
-BT 1 0 0 1 10 4.3 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Buka Projek Lepas \(Past Projects\) untuk melihat rekod projek terdahulu.) Tj T* 8 0 Td ET
+BT 1 0 0 1 10 4.3 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Before submitting, confirm all eight criteria have scores for every student and that the correct group is open.) Tj T* 8 0 Td ET
 Q
 Q
 q
-1 0 0 1 59.85827 655.3969 cm
+1 0 0 1 59.85827 569.1504 cm
 q
-BT 1 0 0 1 10 4.3 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Buka Peringatan Tarikh Akhir \(Deadline Reminders\) untuk menyemak jadual yang diterbitkan pentadbir.) Tj T* 8 0 Td ET
+BT 1 0 0 1 10 17.6 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Select Done - Save Scores. Wait for the Scores saved message. If the system asks for more scores, return to the) Tj T* 8 0 Td (incomplete criteria.) Tj T* ET
 Q
 Q
 q
-1 0 0 1 59.85827 622.7969 cm
+1 0 0 1 59.85827 536.5504 cm
 q
-BT 1 0 0 1 10 17.6 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Jika pelajar tiada dalam senarai atau status kelihatan salah, semak nombor matrik dan minta pentadbir menyemak) Tj T* 8 0 Td (rekod penugasan.) Tj T* ET
+BT 1 0 0 1 10 17.6 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Return to Group List and continue with projects not marked Complete. Do not submit another evaluation for a group) Tj T* 8 0 Td (already assessed.) Tj T* ET
 Q
 Q
 q
-1 0 0 1 59.85827 596.7969 cm
+1 0 0 1 59.85827 503.9504 cm
+q
+BT 1 0 0 1 10 17.6 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 When every group in the QR batch is complete, the page shows Evaluation Complete or a Done button. Select Done) Tj T* 8 0 Td (if it appears.) Tj T* ET
+Q
+Q
+q
+1 0 0 1 59.85827 477.9504 cm
 q
 .121569 .388235 .666667 rg
-BT 1 0 0 1 0 4 Tm /F3+0 12 Tf 16 TL (7. Senarai semak penyelia) Tj T* ET
+BT 1 0 0 1 0 4 Tm /F3+0 12 Tf 16 TL (6. Troubleshooting and duplicate evaluations) Tj T* ET
 Q
 Q
 q
-1 0 0 1 59.85827 564.1969 cm
+1 0 0 1 59.85827 445.3504 cm
 q
-BT 1 0 0 1 10 17.6 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Sebelum simpan status, pastikan pelajar dan Demo yang dipilih betul. Pilih Passed atau Not Passed berdasarkan) Tj T* 8 0 Td (semakan.) Tj T* ET
+BT 1 0 0 1 10 17.6 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 The same panel name and email cannot assess the same group more than once, even through another QR. If the) Tj T* 8 0 Td (system says the group has already been assessed, the evaluation is already recorded.) Tj T* ET
 Q
 Q
 q
-1 0 0 1 59.85827 531.5969 cm
+1 0 0 1 59.85827 426.0504 cm
 q
-BT 1 0 0 1 10 17.6 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Semasa menyemak dokumen, pastikan fail boleh dibuka dan kategorinya betul. Review Documents hanya untuk) Tj T* 8 0 Td (melihat fail.) Tj T* ET
+BT 1 0 0 1 10 4.3 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 If the form will not save, check that every student has eight scores. Read the error message before trying again.) Tj T* 8 0 Td ET
 Q
 Q
 q
-1 0 0 1 59.85827 498.9969 cm
+1 0 0 1 59.85827 406.7504 cm
 q
-BT 1 0 0 1 10 17.6 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Log keluar selepas selesai, terutama pada komputer bersama. Jika halaman tidak tersedia, catat menu dan mesej) Tj T* 8 0 Td (yang dipaparkan lalu maklumkan pentadbir.) Tj T* ET
+BT 1 0 0 1 10 4.3 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 If the page stops after saving, return to Group List and check for Complete before submitting anything again.) Tj T* 8 0 Td ET
+Q
+Q
+q
+1 0 0 1 59.85827 387.4504 cm
+q
+BT 1 0 0 1 10 4.3 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 If a group is missing, use the QR for the correct batch or contact the administrator. Do not use an expired QR link.) Tj T* 8 0 Td ET
 Q
 Q
  
@@ -1234,31 +1267,31 @@ xref
 0000000120 00000 n 
 0000000169 00000 n 
 0000000556 00000 n 
-0000007133 00000 n 
-0000258012 00000 n 
-0000327992 00000 n 
-0000536035 00000 n 
-0000573474 00000 n 
-0000573582 00000 n 
-0000573690 00000 n 
-0000574786 00000 n 
-0000575029 00000 n 
-0000613541 00000 n 
-0000614294 00000 n 
-0000615385 00000 n 
-0000615628 00000 n 
-0000654078 00000 n 
-0000654824 00000 n 
-0000655958 00000 n 
-0000656213 00000 n 
-0000686593 00000 n 
-0000687345 00000 n 
-0000687734 00000 n 
-0000690907 00000 n 
-0000691015 00000 n 
-0000692106 00000 n 
-0000692349 00000 n 
-0000730799 00000 n 
+0000007168 00000 n 
+0000258047 00000 n 
+0000328027 00000 n 
+0000536070 00000 n 
+0000573509 00000 n 
+0000573617 00000 n 
+0000573725 00000 n 
+0000574821 00000 n 
+0000575064 00000 n 
+0000613576 00000 n 
+0000614329 00000 n 
+0000615420 00000 n 
+0000615663 00000 n 
+0000654113 00000 n 
+0000654859 00000 n 
+0000655993 00000 n 
+0000656248 00000 n 
+0000686628 00000 n 
+0000687380 00000 n 
+0000687769 00000 n 
+0000692198 00000 n 
+0000692306 00000 n 
+0000693397 00000 n 
+0000693640 00000 n 
+0000732090 00000 n 
 trailer
 <<
 /Size 31
@@ -1266,5 +1299,5 @@ trailer
 /Info 1 0 R
 >>
 startxref
-731545
+732836
 %%EOF

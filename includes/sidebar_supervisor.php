@@ -330,9 +330,9 @@ if (!function_exists('sanitize')) {
                 <i class="fas fa-bars"></i>
             </button>
             <div class="ms-auto d-flex align-items-center">
-                <div class="appearance-controls">
-                    <button type="button" class="btn btn-outline-light" data-theme-toggle aria-label="Toggle dark mode" title="Light/Dark"><i data-theme-icon class="fas fa-moon"></i></button>
+                <div class="appearance-controls appearance-controls-vertical">
                     <div class="language-switch" data-language-switch aria-label="Language"><button type="button" data-language-option="en">EN</button><button type="button" data-language-option="ms">BM</button></div>
+                    <button type="button" class="btn btn-outline-light" data-theme-toggle aria-label="Toggle dark mode" title="Light/Dark"><i data-theme-icon class="fas fa-moon"></i></button>
                 </div>
                 <a href="../index.php" class="btn btn-outline-primary btn-sm me-3"><i class="fas fa-home me-1"></i><span data-i18n="Home">Home</span></a>
                 <a href="profile.php" class="text-decoration-none d-flex align-items-center profile-link">

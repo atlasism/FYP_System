@@ -46,11 +46,12 @@ endobj
 endobj
 5 0 obj
 <<
-/Length 6525
+/Length 6613
 >>
 stream
 q
 1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+q
 q
 34.98592 0 0 28 237.2721 799.8898 cm
 /FormXob.79ec4a0c0a432712efb2cd38239cc267 Do
@@ -59,166 +60,141 @@ q
 75.74539 0 0 28 282.2581 799.8898 cm
 /FormXob.1d47323d4ccf2bd4c2cecb8ace295016 Do
 Q
+Q
 q
-1 0 0 1 59.85827 766.1969 cm
+1 0 0 1 59.85827 737.8504 cm
 q
 .337255 .384314 .45098 rg
 BT 1 0 0 1 0 4 Tm 160.5171 0 Td /F2+0 9 Tf 13 TL (SPInE STUDENT PROJECT SYSTEM) Tj T* -160.5171 0 Td ET
 Q
 Q
 q
-1 0 0 1 59.85827 750.5276 cm
+1 0 0 1 59.85827 722.1811 cm
 Q
 q
-1 0 0 1 59.85827 724.5276 cm
+1 0 0 1 59.85827 696.1811 cm
 q
 .070588 .239216 .411765 rg
-BT 1 0 0 1 0 5 Tm 66.26244 0 Td /F3+0 21 Tf 26 TL (PANDUAN PENGGUNA PENYELIA) Tj T* -66.26244 0 Td ET
+BT 1 0 0 1 0 5 Tm 107.6985 0 Td /F3+0 21 Tf 26 TL (STUDENT USER MANUAL) Tj T* -107.6985 0 Td ET
 Q
 Q
 q
-1 0 0 1 59.85827 706.5276 cm
+1 0 0 1 59.85827 678.1811 cm
 q
 .337255 .384314 .45098 rg
 BT 1 0 0 1 0 4 Tm 201.1006 0 Td /F2+0 9 Tf 13 TL (JTMK | DFT50114) Tj T* -201.1006 0 Td ET
 Q
 Q
 q
-1 0 0 1 59.85827 668.5276 cm
+1 0 0 1 59.85827 640.1811 cm
 q
 .141176 .196078 .278431 rg
-BT 1 0 0 1 0 18.5 Tm /F2+0 9.5 Tf 14 TL (Panduan langkah demi langkah untuk memantau kumpulan, menyemak dokumen dan mengemas kini status) Tj T* (Demo pelajar seliaan.) Tj T* ET
+BT 1 0 0 1 0 18.5 Tm -0.12971 Tw /F2+0 9.5 Tf 14 TL (A step-by-step guide to registering a project, managing your group, submitting documents, and checking progress) Tj T* 0 Tw (in SPInE.) Tj T* ET
 Q
 Q
 q
-1 0 0 1 59.85827 642.5276 cm
-q
-.121569 .388235 .666667 rg
-BT 1 0 0 1 0 4 Tm /F3+0 12 Tf 16 TL (1. Log masuk dan Papan Pemuka \(Dashboard\)) Tj T* ET
-Q
-Q
-q
-1 0 0 1 59.85827 609.9276 cm
-q
-BT 1 0 0 1 10 17.6 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Log masuk menggunakan akaun berperanan Penyelia \(Supervisor\). Pastikan nama akaun yang dipaparkan betul) Tj T* 8 0 Td (sebelum menyemak rekod pelajar.) Tj T* ET
-Q
-Q
-q
-1 0 0 1 59.85827 577.3276 cm
-q
-BT 1 0 0 1 10 17.6 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Papan Pemuka \(Dashboard\) menunjukkan jumlah pelajar dan kumpulan seliaan serta ringkasan Recent Student) Tj T* 8 0 Td (Submissions & Groups. Ringkasan ini bukan senarai penuh.) Tj T* ET
-Q
-Q
-q
-1 0 0 1 59.85827 544.7276 cm
-q
-BT 1 0 0 1 10 17.6 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Tekan View All atau buka Kumpulan Seliaan \(Supervised Projects\) untuk mencari kumpulan tertentu. Gunakan menu) Tj T* 8 0 Td (tepi untuk bertukar halaman.) Tj T* ET
-Q
-Q
-q
-1 0 0 1 59.85827 518.7276 cm
+1 0 0 1 59.85827 614.1811 cm
 q
 .121569 .388235 .666667 rg
-BT 1 0 0 1 0 4 Tm /F3+0 12 Tf 16 TL (2. Cari dan semak kumpulan seliaan) Tj T* ET
+BT 1 0 0 1 0 4 Tm /F3+0 12 Tf 16 TL (1. Sign in and use the Dashboard) Tj T* ET
 Q
 Q
 q
-1 0 0 1 59.85827 486.1276 cm
+1 0 0 1 59.85827 581.5811 cm
 q
-BT 1 0 0 1 10 17.6 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Buka Kumpulan Seliaan \(Supervised Projects\). Senarai menunjukkan tajuk projek, ketua, ahli dan nombor matrik,) Tj T* 8 0 Td (kategori, sesi serta jabatan.) Tj T* ET
+BT 1 0 0 1 10 17.6 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Open SPInE and select Login. Enter your registered student account. If you cannot access your account, contact the) Tj T* 8 0 Td (system administrator and do not share your password.) Tj T* ET
 Q
 Q
 q
-1 0 0 1 59.85827 453.5276 cm
+1 0 0 1 59.85827 548.9811 cm
 q
-BT 1 0 0 1 10 17.6 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Gunakan carian untuk mencari tajuk projek, nama pelajar atau nombor matrik. Tekan Search Project untuk menapis) Tj T* 8 0 Td (senarai.) Tj T* ET
+BT 1 0 0 1 10 17.6 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 After signing in, open Dashboard from the side menu. Project Status shows Not Registered if you have no project, In) Tj T* 8 0 Td (Progress while work is ongoing, or Complete & Ready when the project record is marked complete.) Tj T* ET
 Q
 Q
 q
-1 0 0 1 59.85827 434.2276 cm
+1 0 0 1 59.85827 516.3811 cm
 q
-BT 1 0 0 1 10 4.3 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Jika kumpulan tiada dalam senarai, minta pentadbir mengesahkan penugasan penyelia.) Tj T* 8 0 Td ET
+BT 1 0 0 1 10 17.6 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Total Score and Project Rank appear when results are available. Before marks are recorded, the page may show Not) Tj T* 8 0 Td (Evaluated Yet or a dash.) Tj T* ET
 Q
 Q
 q
-1 0 0 1 59.85827 408.2276 cm
+1 0 0 1 59.85827 483.7811 cm
 q
-.121569 .388235 .666667 rg
-BT 1 0 0 1 0 4 Tm /F3+0 12 Tf 16 TL (3. Semak dokumen pelajar) Tj T* ET
+BT 1 0 0 1 10 17.6 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 The document status area shows Uploaded or Not Uploaded for each category. The project summary shows your) Tj T* 8 0 Td (title, session, and supervisor when assigned.) Tj T* ET
 Q
 Q
 q
-1 0 0 1 59.85827 388.9276 cm
-q
-BT 1 0 0 1 10 4.3 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Buka Semakan Dokumen \(Review Documents\) dan pilih projek daripada senarai kumpulan seliaan.) Tj T* 8 0 Td ET
-Q
-Q
-q
-1 0 0 1 59.85827 356.3276 cm
-q
-BT 1 0 0 1 10 17.6 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Jadual menunjukkan kategori, nama fail, status dan tarikh muat naik. Jika tiada fail, sistem memaparkan No) Tj T* 8 0 Td (documents submitted.) Tj T* ET
-Q
-Q
-q
-1 0 0 1 59.85827 337.0276 cm
-q
-BT 1 0 0 1 10 4.3 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Tekan View untuk membuka dokumen dalam tab baharu. Kembali ke senarai projek untuk memilih kumpulan lain.) Tj T* 8 0 Td ET
-Q
-Q
-q
-1 0 0 1 59.85827 304.4276 cm
-q
-BT 1 0 0 1 10 17.6 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Halaman ini untuk melihat dokumen sahaja. Tiada borang markah angka atau kawalan untuk mengubah status) Tj T* 8 0 Td (dokumen.) Tj T* ET
-Q
-Q
-q
-1 0 0 1 59.85827 278.4276 cm
+1 0 0 1 59.85827 457.7811 cm
 q
 .121569 .388235 .666667 rg
-BT 1 0 0 1 0 4 Tm /F3+0 12 Tf 16 TL (4. Kemas kini status Demo 1 dan Demo 2) Tj T* ET
+BT 1 0 0 1 0 4 Tm /F3+0 12 Tf 16 TL (2. Register a project or join a group) Tj T* ET
 Q
 Q
 q
-1 0 0 1 59.85827 245.8276 cm
+1 0 0 1 59.85827 438.4811 cm
 q
-BT 1 0 0 1 10 17.6 Tm -8 0 Td -0.022267 Tw 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Buka Pengesahan Pelajar \(Student Verification\). Senarai memaparkan nama, nombor matrik, sesi dan status Demo 1) Tj T* 0 Tw 8 0 Td (serta Demo 2.) Tj T* ET
+BT 1 0 0 1 10 4.3 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Open My Project. If you are not yet in a group, choose Create New Project or Join Existing Project.) Tj T* 8 0 Td ET
 Q
 Q
 q
-1 0 0 1 59.85827 213.2276 cm
+1 0 0 1 59.85827 405.8811 cm
 q
-BT 1 0 0 1 10 17.6 Tm -8 0 Td -0.019289 Tw 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Tekan Milestones pada baris pelajar yang betul. Pilih Passed \(Lulus\) atau Not Passed \(Belum Lulus\) bagi Demo yang) Tj T* 0 Tw 8 0 Td (telah disemak.) Tj T* ET
+BT 1 0 0 1 10 17.6 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 For a new project, enter a clear title, select the closest category, and describe the problem, objectives, and proposed) Tj T* 8 0 Td (solution. The academic session is supplied by the system.) Tj T* ET
 Q
 Q
 q
-1 0 0 1 59.85827 180.6276 cm
+1 0 0 1 59.85827 373.2811 cm
 q
-BT 1 0 0 1 10 17.6 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Jika hanya satu Demo perlu dikemas kini, pilih statusnya dan biarkan pilihan yang satu lagi kosong. Sistem hanya) Tj T* 8 0 Td (menyimpan status yang dipilih.) Tj T* ET
+BT 1 0 0 1 10 17.6 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Tick the declaration confirming the title is original and has not been registered by another group. Review the details,) Tj T* 8 0 Td (then select Register Project.) Tj T* ET
 Q
 Q
 q
-1 0 0 1 59.85827 161.3276 cm
+1 0 0 1 59.85827 340.6811 cm
 q
-BT 1 0 0 1 10 4.3 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Tekan Save Status dan tunggu mesej berjaya. Kembali ke senarai untuk mengesahkan status terkini.) Tj T* 8 0 Td ET
+BT 1 0 0 1 10 17.6 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 To join a group, select a project with an available place and select Join This Group. The list shows current) Tj T* 8 0 Td (membership. A group can have up to three students.) Tj T* ET
 Q
 Q
 q
-1 0 0 1 59.85827 128.7276 cm
+1 0 0 1 59.85827 294.7811 cm
 q
-BT 1 0 0 1 10 17.6 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Pengesahan milestone ialah status, bukan markah angka. Pelajar melihat status yang sama pada halaman) Tj T* 8 0 Td (Evaluation Marks.) Tj T* ET
+BT 1 0 0 1 10 30.9 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 A student can belong to only one project group. After registration, My Project shows the title, category, your Leader or) Tj T* 8 0 Td (Member role, and group members. If you already belong to a group, the page shows group details instead of the) Tj T* (registration form.) Tj T* ET
 Q
 Q
 q
-1 0 0 1 59.85827 102.7276 cm
+1 0 0 1 59.85827 248.8811 cm
+q
+BT 1 0 0 1 10 30.9 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Project categories include Multimedia and Animation, Internet of Things, Artificial Intelligence, Software Application,) Tj T* 8 0 Td (Web Application, Mobile Application, Networking System, Hardware Design, Robotic Programming, Information) Tj T* (System, Security System, Data Management & Visualization, and Data Analysis.) Tj T* ET
+Q
+Q
+q
+1 0 0 1 59.85827 222.8811 cm
 q
 .121569 .388235 .666667 rg
-BT 1 0 0 1 0 4 Tm /F3+0 12 Tf 16 TL (5. Markah dan status milestone) Tj T* ET
+BT 1 0 0 1 0 4 Tm /F3+0 12 Tf 16 TL (3. Upload and check project documents) Tj T* ET
 Q
 Q
 q
-1 0 0 1 59.85827 70.12756 cm
+1 0 0 1 59.85827 190.2811 cm
 q
-BT 1 0 0 1 10 17.6 Tm -8 0 Td -0.074709 Tw 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Markah Demo 3 dimasukkan oleh panel luar melalui pautan QR. Semakan dokumen dan status Demo 1/Demo 2 ialah) Tj T* 0 Tw 8 0 Td (aliran kerja yang berasingan.) Tj T* ET
+BT 1 0 0 1 10 17.6 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Open Upload Documents. You must belong to a project group before uploading. Select a document category, choose) Tj T* 8 0 Td (a PDF, DOCX, or ZIP file, then select Upload Now. Follow the file-size limit shown on screen.) Tj T* ET
+Q
+Q
+q
+1 0 0 1 59.85827 144.3811 cm
+q
+BT 1 0 0 1 10 30.9 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Categories and weights shown by the system are Proposal Presentation 10%; Demo 1 10%; Demo 2 10%; Demo 3) Tj T* 8 0 Td -0.105318 Tw (15%; Final Presentation - Poster 15%; Final Presentation 15%; and Technical Report 15%. The interface may identify) Tj T* 0 Tw (these with rubric codes A to F.) Tj T* ET
+Q
+Q
+q
+1 0 0 1 59.85827 111.7811 cm
+q
+BT 1 0 0 1 10 17.6 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Each document category is submitted once per group. If another member has already submitted a category, that) Tj T* 8 0 Td (option is disabled for the rest of the group.) Tj T* ET
+Q
+Q
+q
+1 0 0 1 59.85827 79.1811 cm
+q
+BT 1 0 0 1 10 17.6 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Submitted Documents List shows the category, status, and upload date. Pending means awaiting review; Approved) Tj T* 8 0 Td (means accepted; Rejected means action is required. Select Download to retrieve a submitted file.) Tj T* ET
 Q
 Q
  
@@ -918,11 +894,12 @@ endobj
 endobj
 25 0 obj
 <<
-/Length 3120
+/Length 4617
 >>
 stream
 q
 1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+q
 q
 34.98592 0 0 28 237.2721 799.8898 cm
 /FormXob.79ec4a0c0a432712efb2cd38239cc267 Do
@@ -931,66 +908,98 @@ q
 75.74539 0 0 28 282.2581 799.8898 cm
 /FormXob.1d47323d4ccf2bd4c2cecb8ace295016 Do
 Q
+Q
 q
-1 0 0 1 59.85827 752.5969 cm
+1 0 0 1 59.85827 724.2504 cm
 q
-BT 1 0 0 1 10 17.6 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Pelajar boleh melihat status Demo 1 dan Demo 2 pada Evaluation Marks. Gunakan Student Verification untuk) Tj T* 8 0 Td (mengemas kini status selepas membuat semakan.) Tj T* ET
+BT 1 0 0 1 10 17.6 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 If the wrong category was selected or the file is missing from the list, read the on-screen message and check the) Tj T* 8 0 Td (status before trying again. Avoid uploading repeated copies.) Tj T* ET
 Q
 Q
 q
-1 0 0 1 59.85827 719.9969 cm
-q
-BT 1 0 0 1 10 17.6 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Borang Project Marks / Evaluate Project tidak tersedia melalui laluan semasa dan mungkin menghala semula ke) Tj T* 8 0 Td (Student Verification. Jangan gunakan Passed atau Not Passed sebagai ganti markah angka.) Tj T* ET
-Q
-Q
-q
-1 0 0 1 59.85827 693.9969 cm
+1 0 0 1 59.85827 698.2504 cm
 q
 .121569 .388235 .666667 rg
-BT 1 0 0 1 0 4 Tm /F3+0 12 Tf 16 TL (6. Projek lepas dan tarikh akhir) Tj T* ET
+BT 1 0 0 1 0 4 Tm /F3+0 12 Tf 16 TL (4. Check marks and Demo status) Tj T* ET
 Q
 Q
 q
-1 0 0 1 59.85827 674.6969 cm
+1 0 0 1 59.85827 665.6504 cm
 q
-BT 1 0 0 1 10 4.3 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Buka Projek Lepas \(Past Projects\) untuk melihat rekod projek terdahulu.) Tj T* 8 0 Td ET
+BT 1 0 0 1 10 17.6 Tm -8 0 Td -0.070083 Tw 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Open Evaluation Marks to view the supervisor verification status for Demo 1 and Demo 2. Pending means no decision) Tj T* 0 Tw 8 0 Td (has been saved; Passed means passed; Not Passed means not passed.) Tj T* ET
 Q
 Q
 q
-1 0 0 1 59.85827 655.3969 cm
+1 0 0 1 59.85827 633.0504 cm
 q
-BT 1 0 0 1 10 4.3 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Buka Peringatan Tarikh Akhir \(Deadline Reminders\) untuk menyemak jadual yang diterbitkan pentadbir.) Tj T* 8 0 Td ET
+BT 1 0 0 1 10 17.6 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 This page shows milestone status, not a breakdown of all numerical marks. Total project marks and rank are shown) Tj T* 8 0 Td (on the Dashboard when results are available.) Tj T* ET
 Q
 Q
 q
-1 0 0 1 59.85827 622.7969 cm
+1 0 0 1 59.85827 600.4504 cm
 q
-BT 1 0 0 1 10 17.6 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Jika pelajar tiada dalam senarai atau status kelihatan salah, semak nombor matrik dan minta pentadbir menyemak) Tj T* 8 0 Td (rekod penugasan.) Tj T* ET
+BT 1 0 0 1 10 17.6 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Demo 3 marks come from an external panel evaluation through a QR link. Uploading a document alone does not) Tj T* 8 0 Td (create a Demo 3 score.) Tj T* ET
 Q
 Q
 q
-1 0 0 1 59.85827 596.7969 cm
+1 0 0 1 59.85827 567.8504 cm
+q
+BT 1 0 0 1 10 17.6 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 If a status does not match your understanding or marks are not yet available, check again later or contact your) Tj T* 8 0 Td (supervisor.) Tj T* ET
+Q
+Q
+q
+1 0 0 1 59.85827 541.8504 cm
 q
 .121569 .388235 .666667 rg
-BT 1 0 0 1 0 4 Tm /F3+0 12 Tf 16 TL (7. Senarai semak penyelia) Tj T* ET
+BT 1 0 0 1 0 4 Tm /F3+0 12 Tf 16 TL (5. Deadlines, groups, and past projects) Tj T* ET
 Q
 Q
 q
-1 0 0 1 59.85827 564.1969 cm
+1 0 0 1 59.85827 509.2504 cm
 q
-BT 1 0 0 1 10 17.6 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Sebelum simpan status, pastikan pelajar dan Demo yang dipilih betul. Pilih Passed atau Not Passed berdasarkan) Tj T* 8 0 Td (semakan.) Tj T* ET
+BT 1 0 0 1 10 17.6 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Open Deadline Reminders to see the document type, instructions, due date, and time. Active means the deadline is) Tj T* 8 0 Td (open; Expired means it has passed; Waiting for Admin means it has not been announced.) Tj T* ET
 Q
 Q
 q
-1 0 0 1 59.85827 531.5969 cm
+1 0 0 1 59.85827 489.9504 cm
 q
-BT 1 0 0 1 10 17.6 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Semasa menyemak dokumen, pastikan fail boleh dibuka dan kategorinya betul. Review Documents hanya untuk) Tj T* 8 0 Td (melihat fail.) Tj T* ET
+BT 1 0 0 1 10 4.3 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Deadlines do not automatically determine marks. Check both the date and exact time for each document.) Tj T* 8 0 Td ET
 Q
 Q
 q
-1 0 0 1 59.85827 498.9969 cm
+1 0 0 1 59.85827 457.3504 cm
 q
-BT 1 0 0 1 10 17.6 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Log keluar selepas selesai, terutama pada komputer bersama. Jika halaman tidak tersedia, catat menu dan mesej) Tj T* 8 0 Td (yang dipaparkan lalu maklumkan pentadbir.) Tj T* ET
+BT 1 0 0 1 10 17.6 Tm -8 0 Td -0.060126 Tw 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Open Group List to find projects by title, student name, or matric number. Select Search to filter and Reset to clear the) Tj T* 0 Tw 8 0 Td (search.) Tj T* ET
+Q
+Q
+q
+1 0 0 1 59.85827 424.7504 cm
+q
+BT 1 0 0 1 10 17.6 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Past Projects Archive is for viewing earlier projects as references. Do not confuse an archived project with your) Tj T* 8 0 Td (current group.) Tj T* ET
+Q
+Q
+q
+1 0 0 1 59.85827 398.7504 cm
+q
+.121569 .388235 .666667 rg
+BT 1 0 0 1 0 4 Tm /F3+0 12 Tf 16 TL (6. Student checklist and help) Tj T* ET
+Q
+Q
+q
+1 0 0 1 59.85827 366.1504 cm
+q
+BT 1 0 0 1 10 17.6 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Before finishing, confirm you are in the correct group, all members are listed, required documents have been) Tj T* 8 0 Td (uploaded, and each upload status is correct.) Tj T* ET
+Q
+Q
+q
+1 0 0 1 59.85827 333.5504 cm
+q
+BT 1 0 0 1 10 17.6 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 Check Dashboard and Reminders regularly. Keep a copy of original files and tell your supervisor if the title, members,) Tj T* 8 0 Td (or project category needs correction.) Tj T* ET
+Q
+Q
+q
+1 0 0 1 59.85827 314.2504 cm
+q
+BT 1 0 0 1 10 4.3 Tm -8 0 Td 13.3 TL .141176 .196078 .278431 rg /F2+0 9 Tf 13.3 TL (\001 If an error appears, note the page name and message. Select Logout after using a shared computer.) Tj T* 8 0 Td ET
 Q
 Q
  
@@ -1234,31 +1243,31 @@ xref
 0000000120 00000 n 
 0000000169 00000 n 
 0000000556 00000 n 
-0000007133 00000 n 
-0000258012 00000 n 
-0000327992 00000 n 
-0000536035 00000 n 
-0000573474 00000 n 
-0000573582 00000 n 
-0000573690 00000 n 
-0000574786 00000 n 
-0000575029 00000 n 
-0000613541 00000 n 
-0000614294 00000 n 
-0000615385 00000 n 
-0000615628 00000 n 
-0000654078 00000 n 
-0000654824 00000 n 
-0000655958 00000 n 
-0000656213 00000 n 
-0000686593 00000 n 
-0000687345 00000 n 
-0000687734 00000 n 
-0000690907 00000 n 
-0000691015 00000 n 
-0000692106 00000 n 
-0000692349 00000 n 
-0000730799 00000 n 
+0000007221 00000 n 
+0000258100 00000 n 
+0000328080 00000 n 
+0000536123 00000 n 
+0000573562 00000 n 
+0000573670 00000 n 
+0000573778 00000 n 
+0000574874 00000 n 
+0000575117 00000 n 
+0000613629 00000 n 
+0000614382 00000 n 
+0000615473 00000 n 
+0000615716 00000 n 
+0000654166 00000 n 
+0000654912 00000 n 
+0000656046 00000 n 
+0000656301 00000 n 
+0000686681 00000 n 
+0000687433 00000 n 
+0000687822 00000 n 
+0000692492 00000 n 
+0000692600 00000 n 
+0000693691 00000 n 
+0000693934 00000 n 
+0000732384 00000 n 
 trailer
 <<
 /Size 31
@@ -1266,5 +1275,5 @@ trailer
 /Info 1 0 R
 >>
 startxref
-731545
+733130
 %%EOF
