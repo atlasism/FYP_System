@@ -142,10 +142,22 @@ if (!function_exists('sanitize')) {
             gap: 14px;
         }
 
-        .portal-brand img {
-            width: 82px;
+        .portal-brand-badge {
+            width: 52px;
             height: 52px;
-            object-fit: contain;
+            flex: 0 0 52px;
+            border-radius: 50%;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .portal-brand img {
+            width: 40px;
+            height: 40px;
+            object-fit: cover;
         }
 
         .portal-brand .brand-text {
@@ -222,7 +234,7 @@ if (!function_exists('sanitize')) {
             z-index: 1030;
             height: 82px;
             box-sizing: border-box;
-            background: #10243d !important;
+            background: linear-gradient(90deg, #2f7fc9 0%, #123d69 18%, #10243d 45%) !important;
             border-color: rgba(255,255,255,.12) !important;
         }
 
@@ -256,7 +268,7 @@ if (!function_exists('sanitize')) {
     <div id="sidebar">
         <div>
             <div class="portal-brand d-flex align-items-center justify-content-center">
-                <img src="../assets/image/logosistem.png" alt="Politeknik Besut logo">
+                <span class="portal-brand-badge"><img src="../assets/image/logosistem.png" alt="Politeknik Besut logo"></span>
                 <span class="fw-bold brand-text"><strong>SPInE</strong><small>POLITEKNIK BESUT</small></span>
             </div>
             

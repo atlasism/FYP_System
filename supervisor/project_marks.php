@@ -144,7 +144,7 @@ include_once '../includes/sidebar_supervisor.php';
                                 <div class="col-6">
                                     <small class="text-muted d-block" style="font-size: 11px;">Total Marks</small>
                                     <span class="badge bg-info text-dark px-3 py-2 fs-6 w-100 text-center">
-                                        <?= number_format($g['total_score'] ?? 0, 1); ?> / 100%
+                                        <?= number_format($g['total_score'] ?? 0, 0); ?> / 100%
                                     </span>
                                 </div>
                                 <div class="col-6">

@@ -173,7 +173,7 @@ include_once '../includes/sidebar_supervisor.php';
                     <div class="p-3 bg-light rounded-3 border">
                         <small class="text-muted fw-bold d-block mb-1 text-uppercase" style="font-size: 11px;">Total Overall Score</small>
                         <h1 class="fw-bold text-primary mb-0" id="display_total_score">
-                            <?= number_format($marks['total_score'] ?? 0, 1); ?> <span class="fs-5 text-muted">/ 100%</span>
+                            <?= number_format($marks['total_score'] ?? 0, 0); ?> <span class="fs-5 text-muted">/ 100%</span>
                         </h1>
                         <span class="badge bg-secondary mt-2" id="score_status_badge">
                             <?= isset($marks['total_score']) && $marks['total_score'] > 0 ? 'Evaluated' : 'Not Fully Graded'; ?>

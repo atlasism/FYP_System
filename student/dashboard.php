@@ -1,6 +1,7 @@
 <?php
 require_once '../config/database.php';
 require_once '../includes/auth_check.php';
+require_once '../includes/ranking.php';
 check_access(['Student']);
 
 $student_id = $_SESSION['user_id'];
@@ -24,40 +25,14 @@ $rank = '-';
 $total_projects_count = 0;
 
 if ($project) {
-    // Ambil jumlah markah projek ini dari jadual evaluations/marks (guna COALESCE jika nama lajur berbeza)
-    // Query ini mengira markah terkumpul atau purata markah projek
-    $stmt_score = $conn->prepare("
-        SELECT SUM(marks) as total_marks 
-        FROM project_evaluations 
-        WHERE project_id = ?
-    ");
-    
-    // Jika jadual anda guna nama lain (cth: evaluations), sesuaikan query di atas. 
-    // Sebagai fallback, jika lajur total_score wujud terus di jadual projects:
-    if (isset($project['total_score'])) {
-        $total_score = $project['total_score'];
-    } else if ($stmt_score) {
-        $stmt_score->bind_param("i", $project['id']);
-        $stmt_score->execute();
-        $res_score = $stmt_score->get_result()->fetch_assoc();
-        $total_score = $res_score['total_marks'] ?? null;
-    }
-
-    // Kira Kedudukan (Rank) projek berbanding projek-projek lain mengikut sesi
-    $stmt_rank = $conn->prepare("
-        SELECT id, total_score,
-               RANK() OVER (ORDER BY COALESCE(total_score, 0) DESC) as project_rank
-        FROM projects
-        WHERE session = ?
-    ");
-    if ($stmt_rank) {
-        $stmt_rank->bind_param("s", $project['session']);
-        $stmt_rank->execute();
-        $res_rank = $stmt_rank->get_result();
-        $total_projects_count = $res_rank->num_rows;
-        while ($r = $res_rank->fetch_assoc()) {
-            if ($r['id'] == $project['id']) {
-                $rank = '#' . $r['project_rank'];
+    // Markah & kedudukan diambil dari keputusan panel luar (sama sumber dengan ranking di Home)
+    $ranking_data = get_project_rankings($conn);
+    if ($ranking_data['available']) {
+        $total_projects_count = count($ranking_data['rows']);
+        foreach ($ranking_data['rows'] as $ranked_project) {
+            if ((int) $ranked_project['id'] === (int) $project['id']) {
+                $total_score = $ranked_project['avg_total_score'];
+                $rank = '#' . $ranked_project['rank'];
                 break;
             }
         }
@@ -137,7 +112,7 @@ include_once '../includes/sidebar_student.php';
                 <div>
                     <small class="text-muted fw-bold d-block mb-1">TOTAL SCORE</small>
                     <h4 class="fw-bold mb-0 text-success">
-                        <?= ($total_score !== null) ? number_format($total_score, 1) . ' <small class="fs-6 text-muted">/ 100</small>' : '<span class="fs-6 text-muted fw-normal">Not Evaluated Yet</span>'; ?>
+                        <?= ($total_score !== null) ? number_format($total_score, 0) . ' <small class="fs-6 text-muted">/ 100</small>' : '<span class="fs-6 text-muted fw-normal">Not Evaluated Yet</span>'; ?>
                     </h4>
                 </div>
                 <div class="bg-success bg-opacity-10 p-3 rounded-circle text-success">

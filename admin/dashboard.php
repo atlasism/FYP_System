@@ -87,7 +87,7 @@ include_once '../includes/admin_header.php';
                             <span class="podium-medal">#<?= (int) $ranking['rank']; ?></span>
                             <strong class="d-block text-truncate" title="<?= sanitize($ranking['title']); ?>"><?= sanitize($ranking['title']); ?></strong>
                             <small class="d-block text-muted">Group <?= (int) $ranking['project_group_no']; ?> · <?= sanitize($ranking['leader_name'] ?? '-'); ?></small>
-                            <span class="badge bg-primary mt-2"><?= number_format($ranking['avg_total_score'], 2); ?> pts</span>
+                            <span class="badge bg-primary mt-2"><?= number_format($ranking['avg_total_score'], 0); ?> pts</span>
                         </div>
                         <div class="podium-bar podium-bar-<?= $podium_position; ?>"></div>
                     </div>
@@ -98,7 +98,7 @@ include_once '../includes/admin_header.php';
                     <?php foreach (array_slice($top_rankings, 3) as $ranking): ?>
                         <div class="list-group-item d-flex justify-content-between align-items-center">
                             <div><span class="badge bg-secondary me-2">#<?= (int) $ranking['rank']; ?></span><strong><?= sanitize($ranking['title']); ?></strong><small class="text-muted d-block ms-4">Group <?= (int) $ranking['project_group_no']; ?> · <?= sanitize($ranking['leader_name'] ?? '-'); ?></small></div>
-                            <span class="badge bg-primary"><?= number_format($ranking['avg_total_score'], 2); ?> pts</span>
+                            <span class="badge bg-primary"><?= number_format($ranking['avg_total_score'], 0); ?> pts</span>
                         </div>
                     <?php endforeach; ?>
                 </div>

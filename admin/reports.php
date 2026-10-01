@@ -93,8 +93,8 @@ include_once '../includes/admin_header.php';
                                         <td><?= sanitize($ranking['leader_name'] ?? '-'); ?></td>
                                         <td><?= (int) $ranking['member_count']; ?></td>
                                         <td><?= (int) $ranking['evaluation_count']; ?></td>
-                                        <td class="fw-bold"><?= number_format($ranking['avg_total_score'], 2); ?></td>
-                                        <td><?= number_format($ranking['avg_demo3_score'], 2); ?></td>
+                                        <td class="fw-bold"><?= number_format($ranking['avg_total_score'], 0); ?></td>
+                                        <td><?= number_format($ranking['avg_demo3_score'], 0); ?></td>
                                     </tr>
                                 <?php endforeach; ?>
                             </tbody>
@@ -142,8 +142,8 @@ include_once '../includes/admin_header.php';
                                                                             <td><?= sanitize($member['full_name'] ?? '-'); ?></td>
                                                                             <td><?= sanitize($member['matric_no'] ?? '-'); ?></td>
                                                                             <?php foreach (range(0, 7) as $aspect_index): ?><td class="text-center"><?= sanitize($evaluation['aspects'][$aspect_index][$member_id] ?? $evaluation['aspects'][$aspect_index][(int) $member['id']] ?? '-'); ?></td><?php endforeach; ?>
-                                                                            <td class="text-center fw-bold"><?= number_format((float) ($result['total_score'] ?? 0), 2); ?></td>
-                                                                            <td class="text-center fw-bold"><?= number_format((float) ($result['demo3_score'] ?? 0), 2); ?></td>
+                                                                            <td class="text-center fw-bold"><?= number_format((float) ($result['total_score'] ?? 0), 0); ?></td>
+                                                                            <td class="text-center fw-bold"><?= number_format((float) ($result['demo3_score'] ?? 0), 0); ?></td>
                                                                         </tr>
                                                                     <?php endforeach; ?>
                                                                 </tbody>
