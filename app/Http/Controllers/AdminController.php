@@ -31,16 +31,16 @@ class AdminController extends Controller
     {
         $data = $request->validate([
             'full_name' => ['required', 'string', 'max:100'], 'email' => ['required', 'email', 'max:100', 'unique:users,email'],
-            'ic_number' => ['required', 'string', 'max:30'], 'matric_no' => ['nullable', 'string', 'max:30'],
+            'ic_number' => ['required', 'string', 'max:30', 'unique:users,ic_number'],
+            'matric_no' => ['required_if:role,Student', 'nullable', 'string', 'max:30', 'unique:users,matric_no'],
             'role' => ['required', Rule::in(['Student', 'Supervisor', 'Admin', 'Panel'])],
-            'password' => ['required', 'string', 'min:8'],
         ]);
         $username = $data['ic_number'];
         if (User::query()->where('username', $username)->exists()) {
             return back()->withErrors(['ic_number' => 'This IC number is already used as an account username.'])->withInput();
         }
         User::query()->create([
-            ...$data, 'username' => $username, 'password' => Hash::make($data['password']),
+            ...$data, 'username' => $username, 'password' => Hash::make($data['ic_number']),
             'department' => 'JTMK', 'program_name' => 'JTMK - Information Technology', 'course_code' => 'DFT50114',
         ]);
 

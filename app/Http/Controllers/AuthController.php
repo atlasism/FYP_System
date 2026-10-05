@@ -7,7 +7,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules\Password as PasswordRule;
 use Illuminate\View\View;
 
 class AuthController extends Controller
@@ -25,22 +24,26 @@ class AuthController extends Controller
         ]);
 
         $account = User::query()
-            ->where('email', $credentials['identifier'])
-            ->orWhere('ic_number', $credentials['identifier'])
-            ->first();
+            ->where(function ($query) use ($credentials) {
+                $query->where(function ($students) use ($credentials) {
+                    $students->where('role', 'Student')->where('matric_no', $credentials['identifier']);
+                })->orWhere(function ($staff) use ($credentials) {
+                    $staff->whereIn('role', ['Supervisor', 'Admin', 'Panel'])
+                        ->where('email', $credentials['identifier']);
+                });
+            })->first();
 
-        $storedPassword = (string) ($account?->password ?? '');
-        $isRecognizedHash = password_get_info($storedPassword)['algoName'] !== 'unknown';
-        $valid = $account && ($isRecognizedHash
-            ? Hash::check($credentials['password'], $storedPassword)
-            : hash_equals($storedPassword, $credentials['password']));
+        $valid = $account && filled($account->ic_number)
+            && hash_equals((string) $account->ic_number, $credentials['password']);
 
         if (! $valid) {
-            return back()->withErrors(['identifier' => 'The email or IC number and password do not match.'])->onlyInput('identifier');
+            return back()->withErrors(['identifier' => 'The matric number or staff email and IC password do not match.'])->onlyInput('identifier');
         }
 
-        if (! $isRecognizedHash) {
-            $account->password = Hash::make($credentials['password']);
+        // Existing accounts may still have legacy passwords. Replace them after
+        // their first successful IC login so the database stores only a hash.
+        if (! Hash::check($credentials['password'], (string) $account->password)) {
+            $account->password = Hash::make($account->ic_number);
             $account->save();
         }
 
@@ -62,13 +65,12 @@ class AuthController extends Controller
             'ic_number' => ['required', 'string', 'max:30', 'unique:users,ic_number'],
             'matric_no' => ['required', 'string', 'max:30', 'unique:users,matric_no'],
             'email' => ['required', 'email', 'max:100', 'unique:users,email'],
-            'password' => ['required', 'confirmed', PasswordRule::min(8)],
         ]);
 
         $account = User::query()->create([
             ...$data,
             'username' => $data['ic_number'],
-            'password' => Hash::make($data['password']),
+            'password' => Hash::make($data['ic_number']),
             'role' => 'Student',
             'department' => 'JTMK',
             'program_name' => 'JTMK - Information Technology',

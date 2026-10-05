@@ -33,8 +33,8 @@ For hosted deployments, configure the server's own MySQL host, database, usernam
 
 ## Converted application flows
 
-- Public SPInE landing page, student registration, sign-in by email or IC number, and sign-out
-- Legacy password verification with automatic bcrypt upgrade after successful sign-in
+- Public SPInE landing page, student registration, and sign-out
+- Students sign in with matric number and IC number as password; supervisors, admins, and panel members sign in with email and IC number as password. Existing password hashes are replaced with IC hashes after a successful sign-in.
 - Role-specific Student, Supervisor, Admin, and Panel dashboards
 - Student project/team registration and private PDF, DOCX, or ZIP submission upload
 - Supervisor dashboard and scoped document status review
