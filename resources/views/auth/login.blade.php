@@ -1,6 +1,15 @@
 @extends('layouts.app')
-@section('title', 'Sign in')
+@section('title', 'Login')
 @section('content')
-<section class="auth-wrap"><div class="auth-aside"><span class="eyebrow">WELCOME BACK</span><h1>Pick up where<br><em>your project left off.</em></h1><p>Sign in using the email address or IC number connected to your account.</p><a href="{{ route('home') }}">← Back to SPInE</a></div>
-<form class="form-card" method="post" action="{{ route('login') }}">@csrf<span class="eyebrow">ACCOUNT ACCESS</span><h2>Sign in</h2><label>Email address or IC number<input name="identifier" value="{{ old('identifier') }}" required autocomplete="username" autofocus></label><label>Password<input name="password" type="password" required autocomplete="current-password"></label><button class="button primary full" type="submit">Continue to dashboard</button><p class="form-foot">New student? <a href="{{ route('register') }}">Create an account</a></p></form></section>
+<section class="login-glass" aria-labelledby="login-title">
+    <div class="login-brand"><img src="{{ asset('brand/logosistem.png') }}" alt="SPInE Politeknik Besut"><h1 id="login-title">FYP Inventory<br>System</h1><small>Repository &amp; Management Platform</small></div>
+    <form method="post" action="{{ route('login') }}">@csrf
+        <label class="login-label" for="identifier">IC Number</label>
+        <div class="input-group"><span><i class="fa-solid fa-id-card"></i></span><input id="identifier" name="identifier" value="{{ old('identifier') }}" placeholder="Enter your IC number or email" required autocomplete="username" autofocus></div>
+        <label class="login-label" for="password">Password</label>
+        <div class="input-group"><span><i class="fa-solid fa-lock"></i></span><input id="password" name="password" type="password" placeholder="Enter your password" required autocomplete="current-password"></div>
+        <button class="login-submit" type="submit"><i class="fa-solid fa-right-to-bracket"></i> Login</button>
+    </form>
+    <div class="login-foot"><small>&copy; {{ date('Y') }} Politeknik Besut</small><a href="{{ route('home') }}"><i class="fa-solid fa-arrow-left"></i> Back to Home</a></div>
+</section>
 @endsection

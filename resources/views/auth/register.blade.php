@@ -1,6 +1,16 @@
 @extends('layouts.app')
-@section('title', 'Student registration')
+@section('title', 'Student Registration')
 @section('content')
-<section class="auth-wrap"><div class="auth-aside"><span class="eyebrow">STUDENT ACCESS</span><h1>Start your<br><em>project journey.</em></h1><p>Create a student account with your institutional details. Staff accounts are managed by an administrator.</p><a href="{{ route('home') }}">← Back to SPInE</a></div>
-<form class="form-card" method="post" action="{{ route('register') }}">@csrf<span class="eyebrow">NEW ACCOUNT</span><h2>Student registration</h2><label>Full name<input name="full_name" value="{{ old('full_name') }}" required maxlength="100"></label><div class="form-row"><label>IC number<input name="ic_number" value="{{ old('ic_number') }}" required maxlength="30"></label><label>Matric number<input name="matric_no" value="{{ old('matric_no') }}" required maxlength="30"></label></div><label>Institutional email<input name="email" type="email" value="{{ old('email') }}" required maxlength="100"></label><div class="form-row"><label>Password<input name="password" type="password" required minlength="8" autocomplete="new-password"></label><label>Confirm password<input name="password_confirmation" type="password" required minlength="8" autocomplete="new-password"></label></div><button class="button primary full" type="submit">Create student account</button><p class="form-foot">Already registered? <a href="{{ route('login') }}">Sign in</a></p></form></section>
+<section class="register-card panel-card">
+    <div class="register-heading"><i class="fa-solid fa-user-plus"></i><h1>New Account Registration</h1><small>SPInE Portal Politeknik Besut</small></div>
+    <form method="post" action="{{ route('register') }}">@csrf
+        <div class="form-row"><label class="full-field">Full Name <span class="required">*</span><input name="full_name" value="{{ old('full_name') }}" placeholder="E.g: AMINAH JUNAIDI" required maxlength="100"></label></div>
+        <div class="form-row"><label>IC <span class="required">*</span><input name="ic_number" value="{{ old('ic_number') }}" placeholder="E.g: 340101011234" required maxlength="30"></label><label>Matrix No <span class="required">*</span><input name="matric_no" value="{{ old('matric_no') }}" placeholder="E.g: 34DIT2xFxxx" required maxlength="30"></label></div>
+        <div class="form-row"><label class="full-field">Email <span class="required">*</span><input name="email" type="email" value="{{ old('email') }}" placeholder="name@gmail.com" required maxlength="100"></label></div>
+        <div class="form-row"><label>Password <span class="required">*</span><input name="password" type="password" placeholder="At least 8 characters" required minlength="8" autocomplete="new-password"></label><label>Confirm Password <span class="required">*</span><input name="password_confirmation" type="password" placeholder="Repeat password" required minlength="8" autocomplete="new-password"></label></div>
+        <div class="form-row"><label>Role<input value="Student" readonly></label><label>Department<input value="JTMK - Department of Information and Communication Technology" readonly></label></div>
+        <button class="button primary full" type="submit"><i class="fa-solid fa-user-plus"></i> Register New Account</button>
+    </form>
+    <div class="register-foot"><small>Already have an account?</small><a href="{{ route('login') }}">Login</a></div>
+</section>
 @endsection

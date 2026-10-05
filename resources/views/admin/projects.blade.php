@@ -4,7 +4,7 @@
 <div class="page-heading">
     <div><span class="eyebrow">ADMINISTRATION</span><h1>Projects</h1><p>Review project registrations and update their workflow status.</p></div>
 </div>
-@include('admin.nav')
+
 <section class="panel-card">
     <div class="table-scroll">
         <table>
