@@ -80,16 +80,20 @@ class PortalController extends Controller
         return view('portal.student', compact('user', 'project', 'team', 'documents', 'deadlines', 'marks'));
     }
 
-    public function createProject(): View
+    public function createProject(): View|RedirectResponse
     {
-        abort_if($this->studentProject(auth()->id()), 409, 'You are already part of a project.');
+        if ($this->studentProject(auth()->id())) {
+            return redirect()->route('student.dashboard')->with('status', 'You are already part of a project. Your current project is shown below.');
+        }
 
         return view('portal.project-create', ['categories' => self::CATEGORIES]);
     }
 
     public function storeProject(Request $request): RedirectResponse
     {
-        abort_if($this->studentProject(auth()->id()), 409, 'You are already part of a project.');
+        if ($this->studentProject(auth()->id())) {
+            return redirect()->route('student.dashboard')->with('status', 'You are already part of a project. Your current project is shown below.');
+        }
         $data = $request->validate([
             'title' => ['required', 'string', 'max:255'],
             'category' => ['required', Rule::in(self::CATEGORIES)],

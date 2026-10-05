@@ -25,7 +25,11 @@
             <nav class="sidebar-nav" aria-label="{{ $role }} navigation">
                 <a @class(['active' => request()->routeIs('*.dashboard')]) href="{{ route('dashboard') }}"><i class="fa-solid fa-gauge-high"></i> Dashboard</a>
                 @if($role === 'Student')
-                    <a @class(['active' => request()->routeIs('student.projects.create')]) href="{{ route('student.projects.create') }}"><i class="fa-solid fa-folder-plus"></i> Register Project</a>
+                    @if(isset($project) && $project)
+                        <a href="{{ route('student.dashboard') }}#project"><i class="fa-solid fa-folder-open"></i> My Project</a>
+                    @else
+                        <a @class(['active' => request()->routeIs('student.projects.create')]) href="{{ route('student.projects.create') }}"><i class="fa-solid fa-folder-plus"></i> Register Project</a>
+                    @endif
                     <a href="{{ route('student.dashboard') }}#submissions"><i class="fa-solid fa-file-arrow-up"></i> Upload Documents</a>
                     <a href="{{ route('student.dashboard') }}#assessment"><i class="fa-solid fa-chart-simple"></i> Marks & Deadlines</a>
                 @elseif($role === 'Supervisor')
