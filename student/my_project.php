@@ -14,6 +14,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'Student') {
 $student_id = $_SESSION['user_id'];
 $message = '';
 $error = '';
+$project_session = 'Session 1 2026/2027';
 $jtmk_categories = [
     'Multimedia and animation', 'Internet of Things (IOT)', 'Artificial Intelligent (AI)',
     'Software application', 'Web application', 'Mobile application', 'Networking system',
@@ -79,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$my_project) {
         // --- PROSES CIPTA PROJEK BAHARU ---
         $title          = trim($_POST['title']);
         $category       = trim($_POST['category']);
-        $session_val    = trim($_POST['session']);
+        $session_val    = $project_session;
         $description    = trim($_POST['description']);
         $declaration    = isset($_POST['declaration']) ? true : false;
 
@@ -244,7 +245,7 @@ include_once '../includes/sidebar_student.php';
                     </div>
                     <div class="col-md-4">
                         <label class="form-label fw-bold">Academic Session</label>
-                        <input type="text" name="session" class="form-control bg-light" value="I : 2024/2025" readonly>
+                        <input type="text" name="session" class="form-control bg-light" value="<?= htmlspecialchars($project_session, ENT_QUOTES, 'UTF-8'); ?>" readonly>
                     </div>
                 </div>
 

@@ -149,4 +149,10 @@ include_once '../includes/sidebar_supervisor.php';
     </div>
 </div>
 
+<script>
+    // Modal dalam sel jadual terperangkap di bawah backdrop; pindahkan ke body supaya boleh diklik.
+    document.querySelectorAll('[id^="editModal"]').forEach(function (modal) {
+        document.body.appendChild(modal);
+    });
+</script>
 <?php include_once '../includes/footer.php'; ?>

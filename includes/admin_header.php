@@ -20,10 +20,10 @@ if (!function_exists('sanitize')) {
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../assets/user-preferences.css?v=20">
     <style>
-        :root { --admin-sidebar: 272px; --admin-blue: #1f63aa; --admin-ink: #10243d; --admin-bg: #e9eef4; }
+        :root { --admin-sidebar: 272px; --footer-height: 50px; --admin-blue: #1f63aa; --admin-ink: #10243d; --admin-bg: #e9eef4; }
         body { margin: 0; background: var(--admin-bg); color: var(--admin-ink); font-family: "Segoe UI", sans-serif; }
         .admin-shell { min-height: 100vh; }
-        .admin-sidebar { position: fixed; inset: 0 auto 0 0; z-index: 1040; width: var(--admin-sidebar); padding: 0 16px 22px; background: linear-gradient(180deg, #2f7fc9 0%, #123d69 25%, #10243d 50%); color: #fff; box-shadow: 8px 0 26px rgba(20, 35, 65, .12); transition: transform .25s ease, width .25s ease; }
+        .admin-sidebar { position: fixed; inset: 0 auto var(--footer-height) 0; z-index: 1040; width: var(--admin-sidebar); padding: 0 16px 22px; background: linear-gradient(180deg, #2f7fc9 0%, #123d69 25%, #10243d 50%); color: #fff; box-shadow: 8px 0 26px rgba(20, 35, 65, .12); transition: transform .25s ease, width .25s ease; }
         .admin-brand { height: 82px; box-sizing: border-box; display: flex; align-items: center; gap: 14px; padding: 0 10px; color: #fff; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,.12); }
         .admin-brand-icon { width: 52px; height: 52px; flex: 0 0 52px; border-radius: 50%; background: #ffffff; display: grid; place-items: center; font-size: 1.35rem; overflow: hidden; }
         .admin-brand-icon img { width: 40px; height: 40px; object-fit: cover; }
@@ -37,7 +37,7 @@ if (!function_exists('sanitize')) {
         .admin-department > span { transition: width .28s ease, max-width .28s ease, opacity .18s ease, visibility .18s ease; }
         .admin-nav .nav-link:hover, .admin-nav .nav-link.active { color: #fff; background: #2563eb; box-shadow: 0 8px 18px rgba(37,99,235,.28); }
         .admin-logout { position: absolute; right: 16px; bottom: 20px; left: 16px; }
-        .admin-main { min-height: 100vh; margin-left: var(--admin-sidebar); }
+        .admin-main { min-height: 100vh; margin-left: var(--admin-sidebar); padding-bottom: var(--footer-height); }
         .admin-sidebar.collapsed { width: 82px; }
         .admin-sidebar.collapsed .admin-brand-icon { width: 48px; height: 48px; flex-basis: 48px; }
         .admin-sidebar.collapsed .admin-brand { justify-content: center; padding-left: 0; padding-right: 0; }

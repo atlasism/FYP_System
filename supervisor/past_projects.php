@@ -13,7 +13,6 @@ if (!function_exists('sanitize')) {
 $keyword    = trim($_GET['keyword'] ?? '');
 $category   = trim($_GET['category'] ?? '');
 $session    = trim($_GET['session'] ?? '');
-$department = trim($_GET['department'] ?? '');
 
 // Bina asas query untuk arkib projek lepas (diselaraskan menggunakan jadual projects dan mengambil cover image daripada project_documents)
 $sql = "
@@ -54,13 +53,6 @@ if (!empty($session)) {
     $sql .= " AND p.session LIKE ?";
     $params[] = "%$session%";
     $types .= "s";
-}
-
-if (!empty($department) && $department !== '-- All Dept --') {
-    $sql .= " AND (p.department = ? OR u_leader.department = ?)";
-    $params[] = $department;
-    $params[] = $department;
-    $types .= "ss";
 }
 
 $sql .= " ORDER BY p.project_group_no ASC";
@@ -113,17 +105,10 @@ include_once '../includes/sidebar_supervisor.php';
                     <option value="Rekabentuk Kraf & Visual" <?= ($category == 'Rekabentuk Kraf & Visual') ? 'selected' : ''; ?>>Rekabentuk Kraf & Visual</option>
                 </select>
             </div>
-            <div class="col-md-2">
-                <input type="text" class="form-control" name="session" placeholder="Session (e.g. I : 2024/2025)" value="<?= sanitize($session); ?>">
+            <div class="col-md-3">
+                <input type="text" class="form-control" name="session" placeholder="Project Session (e.g. Session 1 2026/2027)" value="<?= sanitize($session); ?>">
             </div>
             <div class="col-md-2">
-                <select class="form-select" name="department">
-                    <option value="">-- All Dept --</option>
-                    <option value="JTMK" <?= ($department == 'JTMK') ? 'selected' : ''; ?>>JTMK</option>
-                    <option value="JRKV" <?= ($department == 'JRKV') ? 'selected' : ''; ?>>JRKV</option>
-                </select>
-            </div>
-            <div class="col-md-1">
                 <button type="submit" class="btn btn-primary w-100 fw-bold">
                     <i class="fas fa-search"></i>
                 </button>
@@ -161,7 +146,7 @@ include_once '../includes/sidebar_supervisor.php';
 
                             <div class="card-body d-flex flex-column">
                                 <div class="mb-2">
-                                    <span class="badge bg-light text-dark border me-1"><i class="fas fa-calendar-alt me-1 text-muted"></i> <?= sanitize($row['session'] ?? '-'); ?></span>
+                                    <span class="badge bg-light text-dark border me-1"><i class="fas fa-calendar-alt me-1 text-muted"></i> Project Session: <?= sanitize($row['session'] ?? '-'); ?></span>
                                     <span class="badge bg-info text-dark"><?= sanitize($row['department'] ?? '-'); ?></span>
                                 </div>
 
@@ -199,7 +184,7 @@ include_once '../includes/sidebar_supervisor.php';
                                     <div class="col-md-6">
                                         <p class="mb-1 small text-muted"><strong>Category:</strong> <span class="badge bg-secondary"><?= sanitize($row['category']); ?></span></p>
                                         <p class="mb-1 small text-muted"><strong>Department:</strong> <span class="badge bg-info text-dark"><?= sanitize($row['department'] ?? '-'); ?></span></p>
-                                        <p class="mb-1 small text-muted"><strong>Activity Session:</strong> <?= sanitize($row['session']); ?></p>
+                                        <p class="mb-1 small text-muted"><strong>Project Session:</strong> <?= sanitize($row['session']); ?></p>
                                     </div>
                                     <div class="col-md-6">
                                         <p class="mb-1 small text-muted"><strong>Supervisor:</strong> <?= sanitize($row['supervisor_name'] ?? '-'); ?></p>

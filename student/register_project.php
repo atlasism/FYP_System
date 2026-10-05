@@ -8,6 +8,7 @@ $error = '';
 $jtmk_department = 'JTMK';
 $it_program = 'JTMK - Information Technology';
 $course_code = 'DFT50114';
+$project_session = 'Session 1 2026/2027';
 $project_categories = [
     'Multimedia and animation',
     'Internet of Things (IOT)',
@@ -44,7 +45,7 @@ $member_defaults = [1 => $current_student ?: [], 2 => [], 3 => []];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $title = trim($_POST['title'] ?? '');
     $category = trim($_POST['category'] ?? '');
-    $session = trim($_POST['session'] ?? '');
+    $session = $project_session;
     $description = trim($_POST['description'] ?? '');
 
     if (!hash_equals($csrf_token, $_POST['csrf_token'] ?? '')) {
@@ -145,7 +146,7 @@ include_once '../includes/navbar.php';
                         <div class="col-md-3"><label class="form-label fw-bold">Department</label><input type="text" class="form-control" value="JTMK" readonly></div>
                         <div class="col-md-5"><label class="form-label fw-bold">Program</label><input type="text" class="form-control" value="<?= sanitize($it_program); ?>" readonly></div>
                         <div class="col-md-4"><label class="form-label fw-bold">Course Code</label><input type="text" class="form-control" value="<?= sanitize($course_code . ' - Integrated Project'); ?>" readonly></div>
-                        <div class="col-md-6"><label class="form-label fw-bold">Academic Session *</label><input type="text" name="session" class="form-control" value="<?= sanitize($_POST['session'] ?? 'I : 2026/2027'); ?>" required></div>
+                        <div class="col-md-6"><label class="form-label fw-bold">Project Session *</label><input type="text" name="session" class="form-control" value="<?= sanitize($project_session); ?>" readonly required></div>
                         <div class="col-12"><label class="form-label fw-bold">Project Description *</label><textarea name="description" rows="5" class="form-control" required><?= sanitize($_POST['description'] ?? ''); ?></textarea></div>
                     </div>
                     <button type="submit" class="btn btn-primary w-100 fw-bold py-2 mt-4"><i class="fas fa-paper-plane me-1"></i> Submit Project Registration</button>

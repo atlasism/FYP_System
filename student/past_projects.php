@@ -155,7 +155,7 @@ include_once '../includes/sidebar_student.php';
                             <!-- Kandungan Kad -->
                             <div class="p-3">
                                 <small class="text-muted fw-bold d-block mb-1">
-                                    <i class="fas fa-calendar-alt me-1"></i>Session: <?= sanitize($p['session'] ?? '-'); ?> 
+                                    <i class="fas fa-calendar-alt me-1"></i>Project Session: <?= sanitize($p['session'] ?? '-'); ?>
                                     <?php if (!empty($p['department'])): ?>
                                         | <span class="badge bg-info text-dark"><?= sanitize($p['department']); ?></span>
                                     <?php endif; ?>
@@ -199,7 +199,7 @@ include_once '../includes/sidebar_student.php';
                                     <div class="col-md-6">
                                         <p class="mb-1 small text-muted"><strong>Category:</strong> <span class="badge bg-secondary"><?= sanitize($p['category']); ?></span></p>
                                         <p class="mb-1 small text-muted"><strong>Department:</strong> <span class="badge bg-info text-dark"><?= sanitize($p['department'] ?? '-'); ?></span></p>
-                                        <p class="mb-1 small text-muted"><strong>Activity Session:</strong> <?= sanitize($p['session']); ?></p>
+                                        <p class="mb-1 small text-muted"><strong>Project Session:</strong> <?= sanitize($p['session']); ?></p>
                                     </div>
                                     <div class="col-md-6">
                                         <p class="mb-1 small text-muted"><strong>Supervisor:</strong> <?= sanitize($p['supervisor_name'] ?? '-'); ?></p>

@@ -235,7 +235,7 @@
         'No Preview Available': 'No Preview Available',
         'View Details': 'View Details',
         'Category:': 'Category:',
-        'Activity Session:': 'Activity Session:',
+        'Project Session:': 'Project Session:',
         'Project Leader:': 'Project Leader:',
         'Project Description / Abstract:': 'Project Description / Abstract:',
         'Project Team Members:': 'Project Team Members:',
@@ -261,7 +261,7 @@
         'No Preview Available': 'Tiada Pratonton',
         'View Details': 'Lihat Butiran',
         'Category:': 'Kategori:',
-        'Activity Session:': 'Sesi Aktiviti:',
+        'Project Session:': 'Sesi Projek:',
         'Project Leader:': 'Ketua Projek:',
         'Project Description / Abstract:': 'Penerangan / Abstrak Projek:',
         'Project Team Members:': 'Ahli Kumpulan Projek:',
@@ -275,7 +275,7 @@
     Object.assign(translations.en, {
         'Reset Filter': 'Reset Filter',
         'Keyword / title...': 'Keyword / title...',
-        'Session (e.g. I : 2024/2025)': 'Session (e.g. I : 2024/2025)',
+        'Project Session (e.g. Session 1 2026/2027)': 'Project Session (e.g. Session 1 2026/2027)',
         'Records shown:': 'Records shown:',
         'projects found.': 'projects found.',
         'Supervisor N/A': 'Supervisor N/A',
@@ -285,7 +285,7 @@
     Object.assign(translations.ms, {
         'Reset Filter': 'Tetap Semula Penapis',
         'Keyword / title...': 'Kata kunci / tajuk...',
-        'Session (e.g. I : 2024/2025)': 'Sesi (contoh: I : 2024/2025)',
+        'Project Session (e.g. Session 1 2026/2027)': 'Sesi Projek (contoh: Session 1 2026/2027)',
         'Records shown:': 'Rekod dipaparkan:',
         'projects found.': 'projek ditemui.',
         'Supervisor N/A': 'Penyelia Tiada',
@@ -631,7 +631,7 @@
             if (!text) return;
             let translated = text;
             replacements.forEach(function (replacement) {
-                if (replacement[0] && replacement[0] !== replacement[1]) {
+                if (replacement[0] && replacement[0] !== replacement[1] && !replacement[1].includes(replacement[0])) {
                     translated = translated.split(replacement[0]).join(replacement[1]);
                 }
             });

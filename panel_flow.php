@@ -375,7 +375,7 @@ if ($token === '' || !preg_match('/^[a-f0-9]{64}$/', $token)) {
     <style>
         :root { --panel-blue: #1f63aa; --panel-navy: #10243d; --panel-ice: #e9eef4; --panel-line: #d6dee8; }
         body { margin: 0; color: var(--panel-navy); background: var(--panel-ice); font-family: Arial, sans-serif; }
-        .panel-header { background: var(--panel-navy); color: #fff; }
+        .panel-header { background: var(--panel-navy); color: #fff; position: sticky; top: 0; z-index: 1030; }
         .panel-logo { width: 118px; height: 58px; object-fit: contain; }
         .panel-card { background: #fff; border: 1px solid var(--panel-line); border-radius: 4px; box-shadow: 0 8px 24px rgba(16,36,61,.08); }
         html { scroll-behavior: smooth; }
