@@ -130,6 +130,18 @@ INSERT INTO import_fyp_project_supervisors (group_no, supervisor_no) VALUES
 (7, 6), (8, 4), (9, 7), (10, 6), (11, 8), (12, 9),
 (13, 10), (14, 7), (15, 10), (16, 8), (17, 9), (18, 2);
 
+-- The source import numbers differ from the PDF group order. Keep the source
+-- keys for member/supervisor joins, then assign the PDF number to projects.
+DROP TEMPORARY TABLE IF EXISTS import_pdf_group_numbers;
+CREATE TEMPORARY TABLE import_pdf_group_numbers (
+    import_group_no TINYINT NOT NULL PRIMARY KEY,
+    pdf_group_no TINYINT NOT NULL UNIQUE
+) ENGINE=InnoDB;
+INSERT INTO import_pdf_group_numbers (import_group_no, pdf_group_no) VALUES
+(1, 18), (2, 16), (3, 17), (4, 6), (5, 8), (6, 11),
+(7, 7), (8, 5), (9, 14), (10, 15), (11, 1), (12, 4),
+(13, 9), (14, 10), (15, 2), (16, 13), (17, 12), (18, 3);
+
 -- Reuse the two demonstration projects from seed_fixed_jtmk_users_projects.sql.
 UPDATE projects p
 JOIN import_fyp_students leader ON leader.member_no = 1
@@ -229,16 +241,16 @@ WHERE NOT EXISTS (SELECT 1 FROM projects p WHERE p.title = ip.title);
 -- Align an existing project with the listed leader when its title already exists.
 UPDATE projects p
 JOIN import_fyp_projects ip ON ip.title = p.title
+JOIN import_pdf_group_numbers pdf ON pdf.import_group_no = ip.group_no
 JOIN import_fyp_students leader ON leader.group_no = ip.group_no AND leader.member_no = 1
 JOIN users leader_user ON leader_user.matric_no = leader.matric_no
 SET p.student_id = leader_user.id,
     p.created_by = leader_user.id,
-  p.project_group_no = ip.group_no,
+    p.project_group_no = pdf.pdf_group_no,
     p.department = 'JTMK',
     p.program_name = 'JTMK - Information Technology',
     p.course_code = 'DFT50114',
     p.category = ip.category,
-    p.project_group_no = ip.group_no,
     p.session = 'Session 1 2026/2027',
     p.description = ip.description;
 
@@ -323,19 +335,21 @@ WHERE stale_student.matric_no = '34DIT24F1060'
 
 COMMIT;
 
-SELECT ip.group_no, ip.title, COUNT(DISTINCT pm.student_id) AS imported_members
+SELECT pdf.pdf_group_no AS group_no, ip.title, COUNT(DISTINCT pm.student_id) AS imported_members
 FROM import_fyp_projects ip
+JOIN import_pdf_group_numbers pdf ON pdf.import_group_no = ip.group_no
 JOIN projects p ON p.title = ip.title
 LEFT JOIN project_members pm ON pm.project_id = p.id
-GROUP BY ip.group_no, ip.title
-ORDER BY ip.group_no;
+GROUP BY pdf.pdf_group_no, ip.title
+ORDER BY pdf.pdf_group_no;
 
-SELECT ip.group_no, ip.title, sv.full_name AS supervisor_name, COUNT(DISTINCT student.id) AS assigned_students
+SELECT pdf.pdf_group_no AS group_no, ip.title, sv.full_name AS supervisor_name, COUNT(DISTINCT student.id) AS assigned_students
 FROM import_fyp_projects ip
+JOIN import_pdf_group_numbers pdf ON pdf.import_group_no = ip.group_no
 JOIN projects p ON p.title = ip.title
 JOIN users sv ON sv.id = p.supervisor_id
 LEFT JOIN supervisor_students ss ON ss.supervisor_id = sv.id
 LEFT JOIN import_fyp_students s ON s.group_no = ip.group_no
 LEFT JOIN users student ON student.matric_no = s.matric_no AND student.id = ss.student_id
-GROUP BY ip.group_no, ip.title, sv.full_name
-ORDER BY ip.group_no;
+GROUP BY pdf.pdf_group_no, ip.title, sv.full_name
+ORDER BY pdf.pdf_group_no;

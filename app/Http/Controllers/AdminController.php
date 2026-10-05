@@ -84,7 +84,9 @@ class AdminController extends Controller
     public function projects(): View
     {
         $projects = DB::table('projects as p')->leftJoin('users as u', 'u.id', '=', 'p.student_id')
-            ->select('p.*', 'u.full_name as leader_name')->orderByDesc('p.created_at')->paginate(25);
+            ->select('p.*', 'u.full_name as leader_name')
+            ->orderByRaw('CASE WHEN p.project_group_no IS NULL THEN 1 ELSE 0 END')
+            ->orderBy('p.project_group_no')->orderBy('p.id')->paginate(25);
 
         return view('admin.projects', compact('projects'));
     }

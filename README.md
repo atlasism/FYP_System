@@ -27,6 +27,10 @@ Laravel 13 requires PHP 8.3 or newer; this project deliberately sets both its Co
 
 The project-table migrations are non-destructive on rollback because these tables can contain records imported from the legacy system. Drop or rebuild a database only after taking and checking a backup.
 
+The group-number migration aligns the 18 JTMK teams in Session 1 2026/2027 with the supplied `00 DFT50194 Senarai Nama Projek & Pelajar.pdf` order. The imported application records use course code `DFT50114`, so the migration matches teams by student matric number and changes only `project_group_no`. After pulling this change on another laptop, run `php artisan migrate` against that laptop's database. The legacy import and reorder SQL files contain the same group mapping for manual imports.
+
+For hosted deployments, configure the server's own MySQL host, database, username, and password in its private `.env`; the Laragon defaults from `.env.example` are only for a local machine. Run migrations on the hosted database after its connection is verified, and set `APP_DEBUG=false` before making the site public.
+
 ## Converted application flows
 
 - Public SPInE landing page, student registration, sign-in by email or IC number, and sign-out

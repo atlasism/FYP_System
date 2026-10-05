@@ -138,7 +138,9 @@ class PortalController extends Controller
         $students = DB::table('supervisor_students as ss')->join('users as u', 'u.id', '=', 'ss.student_id')
             ->where('ss.supervisor_id', $supervisorId)->select('u.*', 'ss.session')->orderBy('u.full_name')->get();
         $projects = DB::table('projects as p')->leftJoin('users as u', 'u.id', '=', 'p.student_id')
-            ->where('p.supervisor_id', $supervisorId)->select('p.*', 'u.full_name as leader_name')->orderByDesc('p.created_at')->get();
+            ->where('p.supervisor_id', $supervisorId)->select('p.*', 'u.full_name as leader_name')
+            ->orderByRaw('CASE WHEN p.project_group_no IS NULL THEN 1 ELSE 0 END')
+            ->orderBy('p.project_group_no')->orderBy('p.id')->get();
         $documents = DB::table('project_documents as d')->join('projects as p', 'p.id', '=', 'd.project_id')
             ->where('p.supervisor_id', $supervisorId)->select('d.*', 'p.title as project_title')->orderByDesc('d.uploaded_at')->get();
 
