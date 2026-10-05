@@ -38,11 +38,33 @@ class PortalController extends Controller
 
     public function home(): View
     {
-        $projects = DB::table('projects')->where('status', 'Approved')->count();
-        $students = User::query()->where('role', 'Student')->count();
-        $announcement = DB::table('system_settings')->where('setting_key', 'announcement_text')->value('setting_value');
+        $announcement = DB::table('system_settings')->where('setting_key', 'announcement_text')->value('setting_value') ?: 'No current announcements.';
+        $topRankings = DB::table('projects as p')
+            ->join('panel_evaluations as pe', 'pe.project_id', '=', 'p.id')
+            ->join('panel_student_marks as psm', 'psm.panel_evaluation_id', '=', 'pe.id')
+            ->leftJoin('users as leader', 'leader.id', '=', 'p.student_id')
+            ->where('p.department', 'JTMK')->where('p.course_code', 'DFT50114')
+            ->select('p.id', 'p.project_group_no', 'p.title', 'leader.full_name as leader_name')
+            ->selectRaw('AVG(psm.total_score) as avg_total_score, AVG(psm.demo3_score) as avg_demo3_score')
+            ->groupBy('p.id', 'p.project_group_no', 'p.title', 'leader.full_name')
+            ->orderByDesc('avg_total_score')->orderByDesc('avg_demo3_score')->limit(5)->get();
+        $panelChoices = DB::table('projects as p')
+            ->leftJoin('users as leader', 'leader.id', '=', 'p.student_id')
+            ->leftJoin('project_members as pm', 'pm.project_id', '=', 'p.id')
+            ->where('p.department', 'JTMK')->where('p.course_code', 'DFT50114')->where('p.is_panel_choice', 1)
+            ->select('p.id', 'p.project_group_no', 'p.title', 'p.session', 'leader.full_name as leader_name')
+            ->selectRaw('COUNT(DISTINCT pm.student_id) as member_count')
+            ->groupBy('p.id', 'p.project_group_no', 'p.title', 'p.session', 'leader.full_name')
+            ->orderBy('p.project_group_no')->get();
+        $deadlines = DB::table('submission_deadlines')->orderBy('due_date')->orderBy('id')->get()
+            ->sortBy(fn ($deadline) => ($deadline->due_date === null || str_starts_with($deadline->due_date, '0000-00-00') ? '9999-12-31' : $deadline->due_date).sprintf('%010d', $deadline->id))
+            ->values();
+        $currentProjects = DB::table('projects as p')->join('users as u', 'u.id', '=', 'p.student_id')
+            ->where(function ($query) { $query->whereNull('p.is_complete_for_evaluation')->orWhere('p.is_complete_for_evaluation', 0); })
+            ->where(function ($query) { $query->whereNull('p.status')->orWhere('p.status', '<>', 'Completed'); })
+            ->select('p.*', 'u.full_name')->orderBy('p.project_group_no')->limit(6)->get();
 
-        return view('home', compact('projects', 'students', 'announcement'));
+        return view('home', compact('announcement', 'topRankings', 'panelChoices', 'deadlines', 'currentProjects'));
     }
 
     public function studentDashboard(): View

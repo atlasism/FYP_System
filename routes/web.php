@@ -6,6 +6,14 @@ use App\Http\Controllers\PortalController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [PortalController::class, 'home'])->name('home');
+Route::get('/manuals/{role}', function (string $role) {
+    $manuals = ['student' => 'student_user_manual.pdf', 'supervisor' => 'supervisor_user_manual.pdf', 'panel' => 'panel_user_manual.pdf'];
+    abort_unless(isset($manuals[$role]), 404);
+    $path = base_path('legacy/assets/manuals/'.$manuals[$role]);
+    abort_unless(is_file($path), 404);
+
+    return response()->file($path, ['Content-Type' => 'application/pdf']);
+})->where('role', 'student|supervisor|panel')->name('manuals.show');
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
     Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:5,1');
