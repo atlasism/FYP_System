@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && (isset($_POST['generate_panel_qr'])
         $error = 'No DFT50114 project groups are available.';
     } else {
         $is_shared_request = isset($_POST['generate_shared_qr']);
-        $raw_total_panels = $is_shared_request ? 2 : filter_var($_POST['total_panels'] ?? null, FILTER_VALIDATE_INT);
+        $raw_total_panels = filter_var($_POST['total_panels'] ?? null, FILTER_VALIDATE_INT);
         $raw_qr_count = $is_shared_request ? 1 : filter_var($_POST['qr_count'] ?? null, FILTER_VALIDATE_INT);
         if ($raw_total_panels === false || $raw_total_panels < 2 || $raw_total_panels > 255 || $raw_qr_count === false || $raw_qr_count < 1 || $raw_qr_count > count($projects)) {
             $error = 'Enter valid panel and QR batch counts. Each batch needs at least 2 panel members.';
@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && (isset($_POST['generate_panel_qr'])
             $generation_qr_count = $raw_qr_count;
             $generation_group_sizes = !$is_shared_request && is_array($_POST['group_sizes'] ?? null) ? array_values($_POST['group_sizes']) : [count($projects)];
             $generation_panel_counts = $is_shared_request
-                ? [2]
+                ? [$generation_total_panels]
                 : (is_array($_POST['panel_counts'] ?? null) ? array_values($_POST['panel_counts']) : []);
             $groups_by_batch = array_fill(0, $generation_qr_count, []);
             $allocated_panels = 0;
@@ -115,7 +115,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && (isset($_POST['generate_panel_qr'])
                 foreach ($groups_by_batch as $batch_index => $project_chunk) {
                     $token = bin2hex(random_bytes(32));
                     $first_project_id = $project_chunk[0]['id'];
-                    $assigned_panel_count = $is_shared_request ? 0 : (int) $generation_panel_counts[$batch_index];
+                    $assigned_panel_count = (int) $generation_panel_counts[$batch_index];
                     $session_stmt->bind_param('isii', $first_project_id, $token, $admin_id, $assigned_panel_count);
                     if (!$session_stmt->execute()) {
                         throw new RuntimeException('Unable to create the panel QR session.');
@@ -150,7 +150,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && (isset($_POST['generate_panel_qr'])
                 }
                 unset($range);
                 $message = $is_shared_request
-                    ? 'QR generated for all ' . count($projects) . ' groups. All panel members can use this link for 7 days.'
+                    ? 'QR generated for all ' . count($projects) . ' groups, with a limit of ' . $generation_total_panels . ' panel members for 7 days.'
                     : count($generated_ranges) . ' QR batches generated for ' . count($projects) . ' groups. Each QR can be shared by its assigned panel members and is valid for 7 days.';
             } catch (Throwable $exception) {
                 $conn->rollback();
@@ -201,10 +201,16 @@ include_once '../includes/admin_header.php';
         <div class="col-lg-7">
             <div class="card admin-card p-4">
                 <h5 class="fw-bold mb-1">Generate Panel Access</h5>
-                <p class="text-muted small mb-3">Generate one QR for all groups. Every panel can use the same code.</p>
+                <p class="text-muted small mb-3">Generate one QR for all groups and set the maximum number of panel members who can register with it.</p>
                 <?php if ($projects): ?>
                     <form method="POST">
                         <input type="hidden" name="csrf_token" value="<?= sanitize($csrf_token); ?>">
+                        <div class="row g-3 align-items-end mb-3">
+                            <div class="col-sm-6">
+                                <label class="form-label fw-bold" for="shared_total_panels">Maximum panel members</label>
+                                <input type="number" class="form-control" id="shared_total_panels" name="total_panels" min="2" max="255" value="<?= $total_panels; ?>" required>
+                            </div>
+                        </div>
                         <button type="submit" name="generate_shared_qr" value="1" class="btn btn-primary fw-bold"><i class="bi bi-qr-code me-2"></i>Generate QR</button>
                     </form>
                     <details class="mt-4" <?= $qr_mode === 'split' && $error ? 'open' : ''; ?>>
