@@ -42,6 +42,9 @@
                     <a @class(['active' => request()->routeIs('admin.reports')]) href="{{ route('admin.reports') }}"><i class="fa-solid fa-chart-column"></i> Reports</a>
                     <a @class(['active' => request()->routeIs('admin.settings')]) href="{{ route('admin.settings') }}"><i class="fa-solid fa-gear"></i> Settings</a>
                 @endif
+                @if(in_array($role, ['Student', 'Admin'], true))
+                    <a @class(['active' => request()->routeIs('password.*')]) href="{{ route('password.edit') }}"><i class="fa-solid fa-key"></i> Change Password</a>
+                @endif
             </nav>
             <form class="sidebar-logout" method="post" action="{{ route('logout') }}">@csrf<button type="submit"><i class="fa-solid fa-right-from-bracket"></i> Logout</button></form>
         </aside>

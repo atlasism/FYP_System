@@ -24,15 +24,17 @@ class RoleLoginTest extends TestCase
         ]);
     }
 
-    public function test_student_uses_matric_number_and_ic_password_only(): void
+    public function test_student_uses_ic_number_as_login_id_and_initial_password(): void
     {
         $student = $this->account('Student', 'student');
 
         $this->post('/login', ['identifier' => $student->email, 'password' => $student->ic_number])
             ->assertSessionHasErrors('identifier');
-        $this->post('/login', ['identifier' => $student->matric_no, 'password' => 'old-shared-password'])
-            ->assertSessionHasErrors('identifier');
         $this->post('/login', ['identifier' => $student->matric_no, 'password' => $student->ic_number])
+            ->assertSessionHasErrors('identifier');
+        $this->post('/login', ['identifier' => $student->ic_number, 'password' => 'old-shared-password'])
+            ->assertSessionHasErrors('identifier');
+        $this->post('/login', ['identifier' => $student->ic_number, 'password' => $student->ic_number])
             ->assertRedirect(route('dashboard'));
 
         $this->assertAuthenticatedAs($student);
@@ -78,5 +80,64 @@ class RoleLoginTest extends TestCase
 
         $account = User::query()->where('email', 'new-supervisor@example.test')->firstOrFail();
         $this->assertTrue(Hash::check($account->ic_number, $account->password));
+    }
+
+    public function test_student_can_change_password_and_ic_stops_working(): void
+    {
+        $student = $this->account('Student', 'changing-student');
+        $newPassword = 'PrivateStudentPassword2026!';
+
+        $this->actingAs($student)->get('/account/password')->assertOk()->assertSee('Change Password');
+        $this->put('/account/password', [
+            'current_password' => 'wrong-password',
+            'password' => $newPassword,
+            'password_confirmation' => $newPassword,
+        ])->assertSessionHasErrors('current_password');
+        $this->put('/account/password', [
+            'current_password' => $student->ic_number,
+            'password' => $newPassword,
+            'password_confirmation' => $newPassword,
+        ])->assertRedirect(route('password.edit'));
+
+        $this->assertTrue(Hash::check($newPassword, $student->fresh()->password));
+        $this->assertNotNull($student->fresh()->password_changed_at);
+        $this->put('/account/password', [
+            'current_password' => $student->ic_number,
+            'password' => 'AnotherPrivatePassword2026!',
+            'password_confirmation' => 'AnotherPrivatePassword2026!',
+        ])->assertSessionHasErrors('current_password');
+        $this->post('/logout');
+        $this->post('/login', ['identifier' => $student->ic_number, 'password' => $student->ic_number])
+            ->assertSessionHasErrors('identifier');
+        $this->post('/login', ['identifier' => $student->ic_number, 'password' => $newPassword])
+            ->assertRedirect(route('dashboard'));
+        $this->assertAuthenticatedAs($student);
+    }
+
+    public function test_admin_can_change_password_while_email_remains_login_id(): void
+    {
+        $admin = $this->account('Admin', 'changing-admin');
+        $newPassword = 'PrivateAdminPassword2026!';
+
+        $this->actingAs($admin)->put('/account/password', [
+            'current_password' => $admin->ic_number,
+            'password' => $newPassword,
+            'password_confirmation' => $newPassword,
+        ])->assertRedirect(route('password.edit'));
+
+        $this->post('/logout');
+        $this->post('/login', ['identifier' => $admin->email, 'password' => $admin->ic_number])
+            ->assertSessionHasErrors('identifier');
+        $this->post('/login', ['identifier' => $admin->ic_number, 'password' => $newPassword])
+            ->assertSessionHasErrors('identifier');
+        $this->post('/login', ['identifier' => $admin->email, 'password' => $newPassword])
+            ->assertRedirect(route('dashboard'));
+        $this->assertAuthenticatedAs($admin);
+    }
+
+    public function test_supervisor_cannot_open_password_change_page(): void
+    {
+        $this->actingAs($this->account('Supervisor', 'no-password-change'))
+            ->get('/account/password')->assertForbidden();
     }
 }

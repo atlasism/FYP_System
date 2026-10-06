@@ -23,6 +23,7 @@ class User extends Authenticatable
     {
         return [
             'created_at' => 'datetime',
+            'password_changed_at' => 'datetime',
         ];
     }
 

@@ -26,23 +26,26 @@ class AuthController extends Controller
         $account = User::query()
             ->where(function ($query) use ($credentials) {
                 $query->where(function ($students) use ($credentials) {
-                    $students->where('role', 'Student')->where('matric_no', $credentials['identifier']);
+                    $students->where('role', 'Student')->where('ic_number', $credentials['identifier']);
                 })->orWhere(function ($staff) use ($credentials) {
                     $staff->whereIn('role', ['Supervisor', 'Admin', 'Panel'])
                         ->where('email', $credentials['identifier']);
                 });
             })->first();
 
-        $valid = $account && filled($account->ic_number)
-            && hash_equals((string) $account->ic_number, $credentials['password']);
+        $usesPrivatePassword = $account && in_array($account->role, ['Student', 'Admin'], true)
+            && $account->password_changed_at !== null;
+        $valid = $account && ($usesPrivatePassword
+            ? Hash::check($credentials['password'], (string) $account->password)
+            : (filled($account->ic_number) && hash_equals((string) $account->ic_number, $credentials['password'])));
 
         if (! $valid) {
-            return back()->withErrors(['identifier' => 'The matric number or staff email and IC password do not match.'])->onlyInput('identifier');
+            return back()->withErrors(['identifier' => 'The IC number or staff email and password do not match.'])->onlyInput('identifier');
         }
 
         // Existing accounts may still have legacy passwords. Replace them after
         // their first successful IC login so the database stores only a hash.
-        if (! Hash::check($credentials['password'], (string) $account->password)) {
+        if (! $usesPrivatePassword && ! Hash::check($credentials['password'], (string) $account->password)) {
             $account->password = Hash::make($account->ic_number);
             $account->save();
         }

@@ -34,7 +34,7 @@ For hosted deployments, configure the server's own MySQL host, database, usernam
 ## Converted application flows
 
 - Public SPInE landing page, student registration, and sign-out
-- Students sign in with matric number and IC number as password; supervisors, admins, and panel members sign in with email and IC number as password. Existing password hashes are replaced with IC hashes after a successful sign-in.
+- Students sign in with their IC number as both the ID and initial password. Supervisors, admins, and panel members sign in with email and their IC number as the initial password. Students and admins can change their password from the portal sidebar; after changing it, their IC number no longer works as a password. Run migrations before using this flow.
 - Role-specific Student, Supervisor, Admin, and Panel dashboards
 - Student project/team registration and private PDF, DOCX, or ZIP submission upload
 - Supervisor dashboard and scoped document status review

@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PortalController;
+use App\Http\Controllers\PasswordController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [PortalController::class, 'home'])->name('home');
@@ -24,6 +25,10 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/dashboard', [PortalController::class, 'dashboard'])->name('dashboard');
+    Route::middleware('role:Student,Admin')->group(function () {
+        Route::get('/account/password', [PasswordController::class, 'edit'])->name('password.edit');
+        Route::put('/account/password', [PasswordController::class, 'update'])->middleware('throttle:5,1')->name('password.update');
+    });
     Route::get('/documents/{document}/download', [PortalController::class, 'downloadDocument'])->whereNumber('document')->name('documents.download');
 
     Route::prefix('student')->name('student.')->middleware('role:Student')->group(function () {
