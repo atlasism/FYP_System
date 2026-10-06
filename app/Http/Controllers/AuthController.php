@@ -25,16 +25,20 @@ class AuthController extends Controller
 
         $account = User::query()
             ->where(function ($query) use ($credentials) {
-                $query->where(function ($students) use ($credentials) {
-                    $students->where('role', 'Student')->where('ic_number', $credentials['identifier']);
-                })->orWhere(function ($staff) use ($credentials) {
-                    $staff->whereIn('role', ['Supervisor', 'Admin', 'Panel'])
+                $query->where(function ($icLogin) use ($credentials) {
+                    $icLogin->where(function ($students) use ($credentials) {
+                        $students->where('role', 'Student')->where('ic_number', $credentials['identifier']);
+                    })->orWhere(function ($staff) use ($credentials) {
+                        $staff->whereIn('role', ['Supervisor', 'Admin'])
+                            ->where('ic_number', $credentials['identifier']);
+                    });
+                })->orWhere(function ($staffEmail) use ($credentials) {
+                    $staffEmail->whereIn('role', ['Supervisor', 'Admin', 'Panel'])
                         ->where('email', $credentials['identifier']);
                 });
             })->first();
 
-        $usesPrivatePassword = $account && in_array($account->role, ['Student', 'Admin'], true)
-            && $account->password_changed_at !== null;
+        $usesPrivatePassword = $account && $account->password_changed_at !== null;
         $valid = $account && ($usesPrivatePassword
             ? Hash::check($credentials['password'], (string) $account->password)
             : (filled($account->ic_number) && hash_equals((string) $account->ic_number, $credentials['password'])));

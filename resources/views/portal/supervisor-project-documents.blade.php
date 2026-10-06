@@ -1,0 +1,8 @@
+@extends('layouts.app')
+@section('title', 'Review Documents')
+@section('content')
+<div class="supervisor-project-document-heading"><div><h1><i class="fa-solid fa-file-lines"></i> Review Documents</h1><p>Read-only document review for JTMK projects. No numerical marks or grades are entered here.</p></div></div>
+<div class="supervisor-project-document-title"><h2>{{ $projectRecord->title }}</h2><span class="department-chip">{{ $projectRecord->category }}</span><a class="button secondary compact" href="{{ route('supervisor.documents.index') }}"><i class="fa-solid fa-arrow-left"></i> Projects</a></div>
+<div class="supervisor-info-note"><i class="fa-solid fa-circle-info"></i> Document viewing only. Milestone results are managed separately as Passed or Not Passed.</div>
+<section class="supervisor-document-table"><div class="table-scroll"><table><thead><tr><th>Category</th><th>File</th><th>Status</th><th>Uploaded</th><th>Action</th></tr></thead><tbody>@forelse($documents as $document)<tr><td><strong>{{ $document->doc_type }}</strong></td><td>{{ $document->original_name ?: basename($document->file_path) }}</td><td><span class="supervisor-status {{ strtolower($document->status) }}">{{ $document->status }}</span></td><td>{{ $document->uploaded_at ? \Illuminate\Support\Carbon::parse($document->uploaded_at)->format('d/m/Y h:i A') : '—' }}</td><td><a class="button secondary compact" href="{{ route('supervisor.documents.view', [$projectRecord->id, $document->id]) }}" target="_blank" rel="noopener"><i class="fa-regular fa-eye"></i> View</a></td></tr>@empty<tr><td colspan="5" class="supervisor-empty">No documents have been submitted for this project.</td></tr>@endforelse</tbody></table></div></section>
+@endsection

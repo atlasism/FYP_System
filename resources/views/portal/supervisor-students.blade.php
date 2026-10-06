@@ -1,0 +1,7 @@
+@extends('layouts.app')
+@section('title', 'Student Verification')
+@section('content')
+<div class="supervisor-page-heading"><div><h1><i class="fa-solid fa-user-graduate"></i> Assigned Students</h1><p>Verify Demo 1 / Demo 2 milestone status.</p></div></div>
+<div class="supervisor-info-note"><i class="fa-solid fa-circle-info"></i> Supervisor actions are verification only. No numerical marks or grades are entered here.</div>
+<section class="panel-card supervisor-table-card"><div class="table-scroll"><table><thead><tr><th>Student</th><th>Matric No</th><th>Session</th><th>Demo 1</th><th>Demo 2</th><th>Actions</th></tr></thead><tbody>@forelse($students as $student)<tr><td><strong>{{ $student->full_name }}</strong><small class="table-sub">{{ $student->department ?: 'JTMK' }}{{ $student->program_name ? ' | '.$student->program_name : '' }}</small></td><td>{{ $student->matric_no ?: '—' }}</td><td>{{ $student->session ?: '—' }}</td>@foreach([$student->demo1_status ?: 'Pending', $student->demo2_status ?: 'Pending'] as $status)<td><span class="supervisor-status {{ strtolower(str_replace(' ', '-', $status)) }}">{{ $status }}</span></td>@endforeach<td><a class="button primary compact" href="{{ route('supervisor.students.milestones', $student->id) }}"><i class="fa-solid fa-flag"></i> Milestones</a></td></tr>@empty<tr><td colspan="6" class="supervisor-empty">No assigned students found.</td></tr>@endforelse</tbody></table></div></section>
+@endsection

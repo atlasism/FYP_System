@@ -1,5 +1,5 @@
 <?php
-require_once 'config/database.php';
+require_once __DIR__ . '/config/database.php';
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -408,7 +408,7 @@ if ($token === '' || !preg_match('/^[a-f0-9]{64}$/', $token)) {
     </style>
 </head>
 <body>
-<header class="panel-header py-3 mb-4"><div class="container d-flex align-items-center justify-content-between gap-3"><div><strong class="d-block fs-4">Panel Evaluation</strong><small>Project Demonstration 3 | DFT50114</small></div><img src="assets/image/logosistem.png" class="panel-logo" alt="Politeknik Besut"></div></header>
+<header class="panel-header py-3 mb-4"><div class="container d-flex align-items-center justify-content-between gap-3"><div><strong class="d-block fs-4">Panel Evaluation</strong><small>Project Demonstration 3 | DFT50114</small></div><img src="/brand/logosistem.png" class="panel-logo" alt="Politeknik Besut"></div></header>
 <main class="container pb-5">
     <?php if ($error && !$panel_session): ?>
         <div class="alert alert-danger"><?= sanitize($error); ?></div>

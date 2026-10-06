@@ -1,0 +1,189 @@
+/* Cross-document transition for same-origin portal navigation (Chromium/modern browsers). */
+@view-transition { navigation: auto; }
+::view-transition-old(root) {
+    animation: portal-route-out 160ms ease both;
+}
+::view-transition-new(root) {
+    animation: portal-route-in 260ms cubic-bezier(.2,.7,.2,1) both;
+}
+@keyframes portal-route-out {
+    to { opacity: 0; transform: translateY(-3px); }
+}
+@keyframes portal-route-in {
+    from { opacity: 0; transform: translateY(7px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes portal-content-enter {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.portal-page .page-shell > * {
+    animation: portal-content-enter 420ms cubic-bezier(.2,.7,.2,1) both;
+}
+
+.portal-page .page-shell > *:nth-child(2) { animation-delay: 45ms; }
+.portal-page .page-shell > *:nth-child(3) { animation-delay: 90ms; }
+.portal-page .page-shell > *:nth-child(4) { animation-delay: 135ms; }
+
+.portal-page .panel-card,
+.portal-page .form-card,
+.portal-page .stat-card,
+.portal-page .white-card,
+.portal-page .student-status-card,
+.portal-page .archive-project-card,
+.portal-page .supervisor-archive-card,
+.portal-page .supervisor-review-list,
+.portal-page .supervisor-document-table,
+.portal-page .supervisor-student-summary,
+.portal-page .supervisor-search-card {
+    transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
+}
+
+.portal-page .panel-card:hover,
+.portal-page .form-card:hover,
+.portal-page .stat-card:hover,
+.portal-page .white-card:hover,
+.portal-page .student-status-card:hover,
+.portal-page .archive-project-card:hover,
+.portal-page .supervisor-archive-card:hover,
+.portal-page .supervisor-review-list:hover,
+.portal-page .supervisor-document-table:hover,
+.portal-page .supervisor-student-summary:hover,
+.portal-page .supervisor-search-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 30px rgba(16,36,61,.14);
+}
+
+.portal-page .supervisor-archive-card:hover {
+    border-color: rgba(31,99,170,.22);
+}
+
+.portal-page .student-document-item,
+.portal-page .group-member-chip,
+.portal-page .deadline-state,
+.portal-page .milestone-status,
+.portal-page .document-status,
+.portal-page .supervisor-review-project-link,
+.portal-page .supervisor-review-project summary,
+.portal-page .supervisor-date,
+.portal-page .supervisor-deadline-date,
+.portal-page .supervisor-status {
+    transition: transform 180ms ease, box-shadow 180ms ease, background-color 180ms ease;
+}
+
+.portal-page .student-document-item:hover,
+.portal-page .group-member-chip:hover,
+.portal-page .supervisor-review-project-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 14px rgba(16,36,61,.1);
+}
+
+.portal-page tbody tr {
+    transition: background-color 160ms ease;
+}
+
+.portal-page tbody tr:hover {
+    background-color: rgba(31,99,170,.035);
+}
+
+.portal-page .notice,
+.portal-page .supervisor-info-note {
+    animation: portal-content-enter 320ms ease both;
+}
+
+.portal-page dialog[open] {
+    animation: portal-modal-enter 220ms cubic-bezier(.2,.7,.2,1) both;
+}
+
+.portal-page dialog[open]::backdrop {
+    animation: portal-backdrop-enter 180ms ease both;
+}
+
+@keyframes portal-modal-enter {
+    from { opacity: 0; transform: translateY(8px) scale(.985); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes portal-backdrop-enter {
+    from { background-color: rgba(4,15,29,0); }
+    to { background-color: rgba(4,15,29,.56); }
+}
+
+.site-page .public-shell > * {
+    animation: portal-content-enter 420ms cubic-bezier(.2,.7,.2,1) both;
+}
+
+.login-page .login-glass,
+.login-page .register-card {
+    animation: portal-modal-enter 380ms cubic-bezier(.2,.7,.2,1) both;
+}
+
+.portal-page .sidebar-nav a,
+.portal-page .sidebar-logout button,
+.portal-page .sidebar-toggle,
+.portal-page .topbar-right > a,
+.portal-page .avatar {
+    transition: color 180ms ease, background-color 180ms ease, transform 180ms ease, box-shadow 180ms ease;
+}
+
+.portal-page .sidebar-nav a:hover,
+.portal-page .sidebar-logout button:hover,
+.portal-page .sidebar-toggle:hover,
+.portal-page .topbar-right > a:hover,
+.portal-page .avatar:hover {
+    transform: translateY(-1px);
+}
+
+.portal-page button,
+.portal-page .button,
+.portal-page .download-button {
+    transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+}
+
+.portal-page button:hover,
+.portal-page .button:hover,
+.portal-page .download-button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(16,36,61,.12);
+}
+
+.portal-page button:active,
+.portal-page .button:active,
+.portal-page .download-button:active {
+    transform: translateY(0) scale(.98);
+}
+
+.portal-page input,
+.portal-page select,
+.portal-page textarea {
+    transition: border-color 180ms ease, box-shadow 180ms ease, background-color 180ms ease;
+}
+
+.portal-page input:focus,
+.portal-page select:focus,
+.portal-page textarea:focus {
+    box-shadow: 0 0 0 3px rgba(31,99,170,.14);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    ::view-transition-old(root),
+    ::view-transition-new(root) {
+        animation-duration: .01ms !important;
+    }
+    .portal-page *,
+    .portal-page *::before,
+    .portal-page *::after,
+    .site-page *,
+    .site-page *::before,
+    .site-page *::after,
+    .login-page *,
+    .login-page *::before,
+    .login-page *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+    }
+}
