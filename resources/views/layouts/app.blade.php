@@ -5,7 +5,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'SPInE') | Politeknik Besut</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="{{ asset('app.css') }}?v=2">
+    <link rel="stylesheet" href="{{ asset('app.css') }}?v=3">
+    <link rel="stylesheet" href="{{ asset('student-legacy.css') }}?v=1">
     <script defer src="{{ asset('portal.js') }}?v=1"></script>
 </head>
 @php($isLogin = request()->routeIs('login'))
@@ -21,17 +22,20 @@
     <div class="portal-shell">
         <aside class="portal-sidebar" id="portal-sidebar">
             <a class="sidebar-brand" href="{{ route('dashboard') }}"><span class="sidebar-logo"><img src="{{ asset('brand/logosistem.png') }}" alt="SPInE logo"></span><span><strong>SPInE</strong><small>Politeknik Besut</small></span></a>
-            <div class="department-label"><i class="fa-solid fa-building-columns"></i> JTMK | DFT50114</div>
+            @unless($role === 'Student')<div class="department-label"><i class="fa-solid fa-building-columns"></i> JTMK | DFT50114</div>@endunless
             <nav class="sidebar-nav" aria-label="{{ $role }} navigation">
                 <a @class(['active' => request()->routeIs('*.dashboard')]) href="{{ route('dashboard') }}"><i class="fa-solid fa-gauge-high"></i> Dashboard</a>
                 @if($role === 'Student')
                     @if(isset($project) && $project)
-                        <a href="{{ route('student.dashboard') }}#project"><i class="fa-solid fa-folder-open"></i> My Project</a>
+                        <a @class(['active' => request()->routeIs('student.projects.show')]) href="{{ route('student.projects.show') }}"><i class="fa-solid fa-folder-open"></i> My Project</a>
                     @else
                         <a @class(['active' => request()->routeIs('student.projects.create')]) href="{{ route('student.projects.create') }}"><i class="fa-solid fa-folder-plus"></i> Register Project</a>
                     @endif
-                    <a href="{{ route('student.dashboard') }}#submissions"><i class="fa-solid fa-file-arrow-up"></i> Upload Documents</a>
-                    <a href="{{ route('student.dashboard') }}#assessment"><i class="fa-solid fa-chart-simple"></i> Marks & Deadlines</a>
+                    <a @class(['active' => request()->routeIs('student.documents.index')]) href="{{ route('student.documents.index') }}"><i class="fa-solid fa-file-arrow-up"></i> Upload Documents</a>
+                    <a @class(['active' => request()->routeIs('student.milestones.index')]) href="{{ route('student.milestones.index') }}"><i class="fa-solid fa-chart-simple"></i> Evaluation Marks</a>
+                    <a @class(['active' => request()->routeIs('student.deadlines.index')]) href="{{ route('student.deadlines.index') }}"><i class="fa-solid fa-calendar-days"></i> Deadline Reminders</a>
+                    <a @class(['active' => request()->routeIs('student.groups.index')]) href="{{ route('student.groups.index') }}"><i class="fa-solid fa-users"></i> Group List</a>
+                    <a @class(['active' => request()->routeIs('student.archive.index')]) href="{{ route('student.archive.index') }}"><i class="fa-solid fa-box-archive"></i> Past Projects Archive</a>
                 @elseif($role === 'Supervisor')
                     <a href="{{ route('supervisor.dashboard') }}#projects"><i class="fa-solid fa-diagram-project"></i> Supervised Projects</a>
                     <a href="{{ route('supervisor.dashboard') }}#documents"><i class="fa-solid fa-file-circle-check"></i> Review Documents</a>
@@ -49,7 +53,7 @@
             <form class="sidebar-logout" method="post" action="{{ route('logout') }}">@csrf<button type="submit"><i class="fa-solid fa-right-from-bracket"></i> Logout</button></form>
         </aside>
         <div class="portal-main">
-            <header class="portal-topbar"><button class="sidebar-toggle" type="button" aria-controls="portal-sidebar" aria-expanded="false" aria-label="Toggle navigation"><i class="fa-solid fa-bars"></i></button><span class="topbar-title">{{ $role }} Portal</span><div class="topbar-right"><a href="{{ route('home') }}"><i class="fa-solid fa-house"></i> Home</a><span class="signed-in"><small>Signed in as</small><strong>{{ auth()->user()->full_name }}</strong></span><span class="avatar"><i class="fa-solid fa-user"></i></span></div></header>
+            <header class="portal-topbar"><button class="sidebar-toggle" type="button" aria-controls="portal-sidebar" aria-expanded="false" aria-label="Toggle navigation"><i class="fa-solid fa-bars"></i></button>@unless($role === 'Student')<span class="topbar-title">{{ $role }} Portal</span>@endunless<div class="topbar-right"><a href="{{ route('home') }}"><i class="fa-solid fa-house"></i> Home</a><span class="signed-in"><small>{{ $role === 'Student' ? 'Welcome' : 'Signed in as' }}</small><strong>{{ auth()->user()->full_name }}</strong></span><span class="avatar"><i class="fa-solid fa-user"></i></span></div></header>
             <main class="page-shell">
                 @if(session('status'))<div class="notice success">{{ session('status') }}</div>@endif
                 @if($errors->any())<div class="notice error"><strong>Please check the form.</strong><ul>@foreach($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul></div>@endif

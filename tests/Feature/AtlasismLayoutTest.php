@@ -18,7 +18,7 @@ class AtlasismLayoutTest extends TestCase
 
     public function test_role_pages_render_with_the_atlasism_portal_frame(): void
     {
-        foreach (['Student' => ['/student/dashboard', '/student/projects/create'],
+        foreach (['Student' => ['/student/dashboard', '/student/projects/create', '/student/documents', '/student/project', '/student/milestones', '/student/deadlines', '/student/groups', '/student/archive'],
             'Supervisor' => ['/supervisor/dashboard'],
             'Panel' => ['/panel/dashboard'],
             'Admin' => ['/admin/dashboard', '/admin/users', '/admin/projects', '/admin/deadlines', '/admin/reports', '/admin/settings'],

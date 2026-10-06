@@ -72,12 +72,80 @@ class PortalController extends Controller
         $user = auth()->user();
         $project = $this->studentProject($user->id);
         $team = $project ? DB::table('project_members as pm')->join('users as u', 'u.id', '=', 'pm.student_id')
-            ->where('pm.project_id', $project->id)->orderBy('pm.member_order')->select('u.full_name', 'u.matric_no', 'pm.role')->get() : collect();
+            ->where('pm.project_id', $project->id)->orderBy('pm.member_order')->select('u.id', 'u.full_name', 'u.matric_no', 'pm.role')->get() : collect();
         $documents = $project ? DB::table('project_documents')->where('project_id', $project->id)->orderByDesc('uploaded_at')->get() : collect();
         $deadlines = DB::table('submission_deadlines')->orderBy('due_date')->get();
-        $marks = $project ? DB::table('project_marks')->where('project_id', $project->id)->first() : null;
+        $supervisor = $project && $project->supervisor_id ? DB::table('users')->where('id', $project->supervisor_id)->value('full_name') : null;
+        $totalScore = $project ? DB::table('panel_evaluations as pe')
+            ->join('panel_student_marks as psm', 'psm.panel_evaluation_id', '=', 'pe.id')
+            ->where('pe.project_id', $project->id)->avg('psm.total_score') : null;
 
-        return view('portal.student', compact('user', 'project', 'team', 'documents', 'deadlines', 'marks'));
+        return view('portal.student', compact('user', 'project', 'team', 'documents', 'deadlines', 'supervisor', 'totalScore'));
+    }
+
+    public function studentDocuments(): View
+    {
+        $project = $this->studentProject(auth()->id());
+        $documents = $project ? DB::table('project_documents')->where('project_id', $project->id)->orderByDesc('uploaded_at')->get() : collect();
+
+        return view('portal.student-documents', compact('project', 'documents'));
+    }
+
+    public function studentProjectPage(): View
+    {
+        $project = $this->studentProject(auth()->id());
+        $team = $project ? DB::table('project_members as pm')->join('users as u', 'u.id', '=', 'pm.student_id')
+            ->where('pm.project_id', $project->id)->orderBy('pm.member_order')->select('u.id', 'u.full_name', 'u.matric_no', 'pm.role')->get() : collect();
+
+        return view('portal.student-project', compact('project', 'team'));
+    }
+
+    public function studentMilestones(): View
+    {
+        $verification = DB::table('student_demo_status')->where('student_id', auth()->id())->pluck('status', 'demo_type');
+
+        return view('portal.student-milestones', compact('verification'));
+    }
+
+    public function studentDeadlines(): View
+    {
+        $deadlines = DB::table('submission_deadlines')->where('title', '<>', 'Log Book')->orderBy('id')->get();
+
+        return view('portal.student-deadlines', compact('deadlines'));
+    }
+
+    public function studentGroups(Request $request): View
+    {
+        $search = trim((string) $request->query('search', ''));
+        $projects = DB::table('projects as p')->leftJoin('users as u', 'u.id', '=', 'p.student_id')
+            ->select('p.id', 'p.project_group_no', 'p.title', 'p.session', 'p.category', 'u.full_name as leader_name');
+        if ($search !== '') {
+            $projects->where(function ($query) use ($search) {
+                $query->where('p.title', 'like', '%'.$search.'%')->orWhere('u.full_name', 'like', '%'.$search.'%');
+            });
+        }
+        $projects = $projects->orderBy('p.project_group_no')->limit(100)->get();
+        $members = $projects->isEmpty() ? collect() : DB::table('project_members as pm')
+            ->join('users as u', 'u.id', '=', 'pm.student_id')
+            ->whereIn('pm.project_id', $projects->pluck('id'))
+            ->orderBy('pm.member_order')->select('pm.project_id', 'u.full_name', 'u.matric_no')->get()->groupBy('project_id');
+
+        return view('portal.student-groups', compact('projects', 'search', 'members'));
+    }
+
+    public function studentArchive(Request $request): View
+    {
+        $search = trim((string) $request->query('search', ''));
+        $projects = DB::table('projects as p')->leftJoin('users as u', 'u.id', '=', 'p.student_id')
+            ->select('p.id', 'p.project_group_no', 'p.title', 'p.description', 'p.session', 'p.category', 'u.full_name as leader_name');
+        if ($search !== '') {
+            $projects->where(function ($query) use ($search) {
+                $query->where('p.title', 'like', '%'.$search.'%')->orWhere('p.description', 'like', '%'.$search.'%');
+            });
+        }
+        $projects = $projects->orderBy('p.project_group_no')->limit(100)->get();
+
+        return view('portal.student-archive', compact('projects', 'search'));
     }
 
     public function createProject(): View|RedirectResponse

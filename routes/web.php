@@ -33,6 +33,12 @@ Route::middleware('auth')->group(function () {
 
     Route::prefix('student')->name('student.')->middleware('role:Student')->group(function () {
         Route::get('/dashboard', [PortalController::class, 'studentDashboard'])->name('dashboard');
+        Route::get('/documents', [PortalController::class, 'studentDocuments'])->name('documents.index');
+        Route::get('/project', [PortalController::class, 'studentProjectPage'])->name('projects.show');
+        Route::get('/milestones', [PortalController::class, 'studentMilestones'])->name('milestones.index');
+        Route::get('/deadlines', [PortalController::class, 'studentDeadlines'])->name('deadlines.index');
+        Route::get('/groups', [PortalController::class, 'studentGroups'])->name('groups.index');
+        Route::get('/archive', [PortalController::class, 'studentArchive'])->name('archive.index');
         Route::get('/projects/create', [PortalController::class, 'createProject'])->name('projects.create');
         Route::post('/projects', [PortalController::class, 'storeProject'])->name('projects.store');
         Route::post('/documents', [PortalController::class, 'uploadDocument'])->name('documents.store');

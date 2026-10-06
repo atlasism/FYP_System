@@ -39,7 +39,15 @@ class StudentProjectNavigationTest extends TestCase
         $this->actingAs($student)->get('/student/dashboard')
             ->assertOk()
             ->assertSee('My Project')
+            ->assertSee('Not Evaluated Yet')
+            ->assertSee('Document Submission Status')
+            ->assertDontSee('Current marks')
             ->assertDontSee('Register Project');
+
+        $this->get('/student/documents')->assertOk()->assertSee('Upload Form')->assertSee('Submitted Documents List');
+        $this->get('/student/project')->assertOk()->assertSee('My Project Information')->assertSee('Existing Project');
+        $this->get('/student/milestones')->assertOk()->assertSee('Milestone Verification Status')->assertSee('Pending');
+        $this->get('/student/deadlines')->assertOk()->assertSee('Document Submission Deadline Reminders');
 
         $this->get('/student/projects/create')
             ->assertRedirect(route('student.dashboard'))
