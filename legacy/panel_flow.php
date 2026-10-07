@@ -177,6 +177,9 @@ if ($token === '' || !preg_match('/^[a-f0-9]{64}$/', $token)) {
                     $project_lock_stmt = $conn->prepare('SELECT id FROM projects WHERE id = ? FOR UPDATE');
                     $project_lock_stmt->bind_param('i', $choice_project_id);
                     $project_lock_stmt->execute();
+                    if (!$project_lock_stmt->get_result()->fetch_assoc()) {
+                        throw new RuntimeException('The selected project no longer exists.');
+                    }
 
                     $existing_choice_stmt = $conn->prepare('SELECT project_id FROM panel_session_choices WHERE panel_session_id = ? AND project_id = ? FOR UPDATE');
                     $existing_choice_stmt->bind_param('ii', $panel_session['id'], $choice_project_id);
@@ -203,7 +206,12 @@ if ($token === '' || !preg_match('/^[a-f0-9]{64}$/', $token)) {
                     header('Location: panel.php?token=' . urlencode($token) . '&choice_saved=1');
                     exit();
                 } catch (Throwable $exception) {
-                    $conn->rollback();
+                    error_log('Panel choice transaction failed (code ' . (string) $exception->getCode() . ').');
+                    try {
+                        $conn->rollback();
+                    } catch (Throwable $rollbackException) {
+                        error_log('Panel choice rollback failed (code ' . (string) $rollbackException->getCode() . ').');
+                    }
                     $error = 'Unable to update Panel\'s Choice.';
                 }
             }
@@ -275,6 +283,9 @@ if ($token === '' || !preg_match('/^[a-f0-9]{64}$/', $token)) {
                         $project_lock_stmt = $conn->prepare('SELECT id FROM projects WHERE id = ? FOR UPDATE');
                         $project_lock_stmt->bind_param('i', $selected_project_id);
                         $project_lock_stmt->execute();
+                        if (!$project_lock_stmt->get_result()->fetch_assoc()) {
+                            throw new RuntimeException('The selected project no longer exists.');
+                        }
 
                         $duplicate_stmt = $conn->prepare("SELECT id FROM panel_evaluations WHERE project_id = ? AND LOWER(TRIM(panel_name)) = LOWER(TRIM(?)) AND LOWER(TRIM(COALESCE(panel_email, ''))) = LOWER(TRIM(?)) LIMIT 1");
                         $duplicate_stmt->bind_param('iss', $selected_project_id, $panel_name, $panel_email);
@@ -353,7 +364,12 @@ if ($token === '' || !preg_match('/^[a-f0-9]{64}$/', $token)) {
                         header('Location: panel.php?token=' . urlencode($token) . '&saved=1');
                         exit();
                     } catch (Throwable $exception) {
-                        $conn->rollback();
+                        error_log('Panel evaluation transaction failed (code ' . (string) $exception->getCode() . ').');
+                        try {
+                            $conn->rollback();
+                        } catch (Throwable $rollbackException) {
+                            error_log('Panel evaluation rollback failed (code ' . (string) $rollbackException->getCode() . ').');
+                        }
                         $error = $duplicate_panel_evaluation
                             ? 'You have already assessed this group using the same panel name and email, even through another QR batch.'
                             : 'Unable to save the evaluation. Please contact the administrator.';
