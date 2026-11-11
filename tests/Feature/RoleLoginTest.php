@@ -128,8 +128,6 @@ class RoleLoginTest extends TestCase
         $this->post('/logout');
         $this->post('/login', ['identifier' => $admin->email, 'password' => $admin->ic_number])
             ->assertSessionHasErrors('identifier');
-        $this->post('/login', ['identifier' => $admin->ic_number, 'password' => $newPassword])
-            ->assertSessionHasErrors('identifier');
         $this->post('/login', ['identifier' => $admin->email, 'password' => $newPassword])
             ->assertRedirect(route('dashboard'));
         $this->assertAuthenticatedAs($admin);
@@ -139,5 +137,32 @@ class RoleLoginTest extends TestCase
     {
         $this->actingAs($this->account('Supervisor', 'no-password-change'))
             ->get('/account/password')->assertForbidden();
+    }
+
+    public function test_profile_security_changes_require_current_password_for_all_roles(): void
+    {
+        foreach (['Student', 'Supervisor', 'Admin', 'Panel'] as $role) {
+            $account = $this->account($role, 'profile-'.strtolower($role));
+            $path = '/'.strtolower($role).'/profile';
+            $data = ['ic_number' => $account->ic_number, 'matric_no' => $account->matric_no,
+                'full_name' => $account->full_name, 'email' => $account->email,
+                'password' => 'NewPrivatePassword!', 'password_confirmation' => 'NewPrivatePassword!'];
+            $this->actingAs($account)->put($path, $data)->assertSessionHasErrors('current_password');
+            $this->assertNull($account->fresh()->password_changed_at);
+            $this->put($path, $data + ['current_password' => $account->ic_number])->assertSessionHasNoErrors();
+            $this->assertTrue(Hash::check('NewPrivatePassword!', $account->fresh()->password));
+            $this->post('/logout');
+            $account->delete();
+        }
+    }
+
+    public function test_admin_ic_update_refreshes_default_password_hash(): void
+    {
+        $admin = $this->account('Admin', 'edit-admin');
+        $student = User::query()->create(['username' => 'old-ic', 'full_name' => 'Student', 'email' => 'edit-student@example.test',
+            'ic_number' => 'old-ic', 'matric_no' => 'STUDENT1', 'password' => Hash::make('old-ic'), 'role' => 'Student']);
+        $this->actingAs($admin)->patch('/admin/users/'.$student->id, ['role' => 'Student', 'full_name' => 'Student',
+            'email' => $student->email, 'matric_no' => $student->matric_no, 'ic_number' => 'new-ic'])->assertSessionHasNoErrors();
+        $this->assertTrue(Hash::check('new-ic', $student->fresh()->password));
     }
 }

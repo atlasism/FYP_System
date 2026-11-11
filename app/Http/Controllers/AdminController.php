@@ -155,9 +155,10 @@ class AdminController extends Controller
         if ($account->username !== $data['ic_number'] && User::query()->where('username', $data['ic_number'])->whereKeyNot($account->id)->exists()) {
             return back()->withErrors(['ic_number' => 'This IC number is already used as another account username.'])->withInput();
         }
+        $icChanged = (string) $account->ic_number !== (string) $data['ic_number'];
         $account->fill($data);
         $account->username = $data['ic_number'];
-        if ($resetPassword || ($account->password_changed_at === null && $account->ic_number !== $data['ic_number'])) {
+        if ($resetPassword || ($account->password_changed_at === null && $icChanged)) {
             $account->password = Hash::make($data['ic_number']);
             $account->password_changed_at = null;
         }

@@ -43,8 +43,7 @@ return new class extends Migration
             });
         }
 
-        $indexes = collect(\Illuminate\Support\Facades\DB::select('SHOW INDEX FROM panel_evaluations'))
-            ->pluck('Key_name')->unique()->all();
+        $indexes = collect(Schema::getIndexes('panel_evaluations'))->pluck('name')->all();
         // Keep the foreign key supported after replacing the old composite unique index.
         if (! in_array('idx_panel_eval_session', $indexes, true)) {
             Schema::table('panel_evaluations', fn (Blueprint $table) => $table->index('panel_session_id', 'idx_panel_eval_session'));

@@ -24,6 +24,7 @@ class AdminProfileController extends Controller
             'full_name' => ['required', 'string', 'max:100'],
             'email' => ['required', 'email', 'max:100', Rule::unique('users', 'email')->ignore($user->id)],
             'password' => ['nullable', 'string', 'min:8', 'max:255', 'different:ic_number'],
+            'current_password' => ['nullable', 'string'],
             'profile_picture' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
         ], [
             'password.different' => 'Password must be different from your IC number.',
@@ -31,6 +32,15 @@ class AdminProfileController extends Controller
 
         $icChanged = (string) $user->ic_number !== (string) $data['ic_number'];
         $usesDefaultPassword = $user->password_changed_at === null;
+        if ($icChanged || filled($data['password'] ?? null)) {
+            $current = (string) ($data['current_password'] ?? '');
+            $valid = $usesDefaultPassword
+                ? filled($user->ic_number) && hash_equals((string) $user->ic_number, $current)
+                : Hash::check($current, (string) $user->password);
+            if (! $valid) {
+                return back()->withErrors(['current_password' => 'Enter your current password to change your IC number or password.'])->withInput($request->except('current_password', 'password'));
+            }
+        }
         $user->ic_number = $data['ic_number'];
         $user->username = $data['ic_number'];
         $user->full_name = $data['full_name'];

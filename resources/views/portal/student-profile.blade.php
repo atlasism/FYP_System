@@ -23,6 +23,7 @@
             <label for="email">Email<input id="email" name="email" type="email" value="{{ old('email', $user->email) }}" required maxlength="100" autocomplete="email"></label>
             <label for="password">Change Password <span>(at least 8 characters, different from your IC; leave blank to keep current)</span><input id="password" name="password" type="password" minlength="8" autocomplete="new-password">@error('password')<small class="profile-field-error">{{ $message }}</small>@enderror</label>
             <label for="password_confirmation">Confirm New Password<input id="password_confirmation" name="password_confirmation" type="password" minlength="8" autocomplete="new-password"></label>
+            <label for="current_password">Current Password <span>(required when changing your IC number or password)</span><input id="current_password" name="current_password" type="password" autocomplete="current-password"></label>
             <button class="button primary full" type="submit"><i class="fa-solid fa-floppy-disk"></i> Save Profile</button>
         </form>
     </section>

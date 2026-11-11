@@ -27,6 +27,7 @@
             <label class="admin-profile-field" for="email">Email<input id="email" name="email" type="email" value="{{ old('email', $user->email) }}" maxlength="100" required autocomplete="email"></label>
             <label class="admin-profile-field" for="department">Department<input id="department" type="text" value="{{ $user->department }}" disabled></label>
             <label class="admin-profile-field" for="password">Change Password<input id="password" name="password" type="password" minlength="8" maxlength="255" placeholder="Leave blank to keep current password" autocomplete="new-password"><small>Enter at least 8 characters, different from your IC number.</small>@error('password')<small class="profile-field-error">{{ $message }}</small>@enderror</label>
+            <label class="admin-profile-field" for="current_password">Current Password<input id="current_password" name="current_password" type="password" autocomplete="current-password"><small>Required when changing your IC number or password.</small></label>
             <button class="admin-profile-save" type="submit"><i class="fa-solid fa-floppy-disk"></i> Save Profile</button>
         </form>
     </section>

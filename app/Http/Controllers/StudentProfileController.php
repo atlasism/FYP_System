@@ -26,11 +26,22 @@ class StudentProfileController extends Controller
             'matric_no' => ['required', 'alpha_num', 'max:30', Rule::unique('users', 'matric_no')->ignore($user->id)],
             'email' => ['required', 'email', 'max:100', Rule::unique('users', 'email')->ignore($user->id)],
             'password' => ['nullable', 'string', 'min:8', 'max:255', 'confirmed', 'different:ic_number'],
+            'current_password' => ['nullable', 'string'],
             'profile_picture' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
         ], [
             'password.different' => 'Password must be different from your IC number.',
             'password.confirmed' => 'The password confirmation does not match.',
         ]);
+
+        if ($icChanged || filled($data['password'] ?? null)) {
+            $current = (string) ($data['current_password'] ?? '');
+            $valid = $usesDefaultPassword
+                ? filled($user->ic_number) && hash_equals((string) $user->ic_number, $current)
+                : Hash::check($current, (string) $user->password);
+            if (! $valid) {
+                return back()->withErrors(['current_password' => 'Enter your current password to change your IC number or password.'])->withInput($request->except('current_password', 'password', 'password_confirmation'));
+            }
+        }
 
         $user->ic_number = $data['ic_number'];
         $user->username = $data['ic_number'];

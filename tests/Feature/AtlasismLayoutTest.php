@@ -21,7 +21,7 @@ class AtlasismLayoutTest extends TestCase
         foreach (['Student' => ['/student/dashboard', '/student/projects/create', '/student/documents', '/student/project', '/student/milestones', '/student/deadlines', '/student/groups', '/student/archive'],
             'Supervisor' => ['/supervisor/dashboard'],
             'Panel' => ['/panel/dashboard'],
-            'Admin' => ['/admin/dashboard', '/admin/users', '/admin/projects', '/admin/deadlines', '/admin/reports', '/admin/settings'],
+            'Admin' => ['/admin/dashboard', '/admin/users', '/admin/projects', '/admin/panel-qr', '/admin/reports', '/admin/settings'],
         ] as $role => $paths) {
             $user = User::query()->create([
                 'username' => strtolower($role).'_layout',
