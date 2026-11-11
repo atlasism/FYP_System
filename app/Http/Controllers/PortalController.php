@@ -73,7 +73,7 @@ class PortalController extends Controller
         $project = $this->studentProject($user->id);
         $team = $project ? DB::table('project_members as pm')->join('users as u', 'u.id', '=', 'pm.student_id')
             ->where('pm.project_id', $project->id)->orderBy('pm.member_order')->select('u.id', 'u.full_name', 'u.ic_number', 'u.matric_no', 'pm.role')->get() : collect();
-        $documents = $project ? DB::table('project_documents')->where('project_id', $project->id)->orderByDesc('uploaded_at')->get() : collect();
+        $documents = $project ? DB::table('project_documents')->where('project_id', $project->id)->orderByDesc('uploaded_at')->orderByDesc('id')->get() : collect();
         $deadlines = DB::table('submission_deadlines')->orderBy('due_date')->get();
         $supervisor = $project && $project->supervisor_id ? DB::table('users')->where('id', $project->supervisor_id)->value('full_name') : null;
         $totalScore = $project ? DB::table('panel_evaluations as pe')
@@ -86,7 +86,7 @@ class PortalController extends Controller
     public function studentDocuments(): View
     {
         $project = $this->studentProject(auth()->id());
-        $documents = $project ? DB::table('project_documents')->where('project_id', $project->id)->orderByDesc('uploaded_at')->get() : collect();
+        $documents = $project ? DB::table('project_documents')->where('project_id', $project->id)->orderByDesc('uploaded_at')->orderByDesc('id')->get() : collect();
 
         return view('portal.student-documents', compact('project', 'documents'));
     }
@@ -216,17 +216,33 @@ class PortalController extends Controller
         ]);
         $project = $this->studentProject(auth()->id());
         abort_unless($project, 409, 'Register your project before submitting a document.');
-        $duplicate = DB::table('project_documents')->where('project_id', $project->id)->where('doc_type', $data['doc_type'])->exists();
-        if ($duplicate) {
-            return back()->withErrors(['document_file' => 'Your project team has already submitted this document type.']);
-        }
-
         $file = $request->file('document_file');
         $path = $file->store('project-documents/'.$project->id, 'local');
-        DB::table('project_documents')->insert([
-            'project_id' => $project->id, 'doc_type' => $data['doc_type'], 'file_path' => $path,
-            'original_name' => $file->getClientOriginalName(), 'status' => 'Pending', 'uploaded_at' => now(),
-        ]);
+        if ($path === false) {
+            return back()->withErrors(['document_file' => 'The file could not be saved. Please try again or contact the administrator.']);
+        }
+        try {
+            $submitted = DB::transaction(function () use ($project, $data, $path, $file) {
+                DB::table('projects')->where('id', $project->id)->lockForUpdate()->first();
+                $latest = DB::table('project_documents')->where('project_id', $project->id)
+                    ->where('doc_type', $data['doc_type'])->orderByDesc('id')->first();
+                if ($latest && strcasecmp($latest->status, 'Rejected') !== 0) {
+                    return false;
+                }
+                DB::table('project_documents')->insert([
+                    'project_id' => $project->id, 'doc_type' => $data['doc_type'], 'file_path' => $path,
+                    'original_name' => $file->getClientOriginalName(), 'status' => 'Pending', 'uploaded_at' => now(),
+                ]);
+                return true;
+            });
+        } catch (\Throwable $exception) {
+            Storage::disk('local')->delete($path);
+            throw $exception;
+        }
+        if (! $submitted) {
+            Storage::disk('local')->delete($path);
+            return back()->withErrors(['document_file' => 'A document of this type is already awaiting review or has been accepted.']);
+        }
 
         return back()->with('status', 'Document uploaded for supervisor review.');
     }
@@ -366,7 +382,7 @@ class PortalController extends Controller
         $projectRecord = $this->supervisorProjectQuery()->where('p.id', $project)->first();
         abort_unless($projectRecord, 404);
         $documents = DB::table('project_documents')->where('project_id', $project)
-            ->orderByDesc('uploaded_at')->orderBy('id')->get();
+            ->orderByDesc('uploaded_at')->orderByDesc('id')->get();
 
         return view('portal.supervisor-project-documents', compact('projectRecord', 'documents'));
     }
@@ -380,7 +396,7 @@ class PortalController extends Controller
 
         $filename = $record->original_name ?: basename($record->file_path);
         if (Storage::disk('local')->exists($record->file_path)) {
-            return Storage::disk('local')->response($record->file_path, $filename, [], 'inline');
+            return Storage::disk('local')->response($record->file_path, $filename, ['X-Content-Type-Options' => 'nosniff'], 'inline');
         }
 
         $legacyRoot = realpath(base_path('legacy/uploads/documents'));
@@ -388,6 +404,7 @@ class PortalController extends Controller
         abort_unless($legacyRoot && $legacyFile && str_starts_with($legacyFile, $legacyRoot.DIRECTORY_SEPARATOR) && is_file($legacyFile), 404);
 
         return response()->file($legacyFile, [
+            'X-Content-Type-Options' => 'nosniff',
             'Content-Disposition' => \Symfony\Component\HttpFoundation\HeaderUtils::makeDisposition(
                 \Symfony\Component\HttpFoundation\HeaderUtils::DISPOSITION_INLINE,
                 $filename,
@@ -436,11 +453,20 @@ class PortalController extends Controller
 
     public function reviewDocument(Request $request, int $document): RedirectResponse
     {
-        $data = $request->validate(['status' => ['required', Rule::in(['Reviewed', 'Approved', 'Rejected'])]]);
+        $data = $request->validate([
+            'status' => ['required', Rule::in(['Reviewed', 'Approved', 'Rejected'])],
+            'review_feedback' => ['nullable', 'string', 'max:2000', 'required_if:status,Rejected'],
+        ]);
         $record = DB::table('project_documents as d')->join('projects as p', 'p.id', '=', 'd.project_id')
-            ->where('d.id', $document)->where('p.supervisor_id', auth()->id())->select('d.id')->first();
+            ->where('d.id', $document)->where('p.supervisor_id', auth()->id())->select('d.id', 'd.project_id', 'd.doc_type')->first();
         abort_unless($record, 404);
-        DB::table('project_documents')->where('id', $document)->update(['status' => $data['status']]);
+        DB::transaction(function () use ($record, $document, $data) {
+            DB::table('projects')->where('id', $record->project_id)->lockForUpdate()->first();
+            $latestId = DB::table('project_documents')->where('project_id', $record->project_id)
+                ->where('doc_type', $record->doc_type)->max('id');
+            abort_unless((int) $latestId === $document, 409, 'Only the latest submission can be reviewed.');
+            DB::table('project_documents')->where('id', $document)->update(['status' => $data['status'], 'review_feedback' => $data['review_feedback'] ?? null]);
+        });
 
         return back()->with('status', 'Document review status saved.');
     }
@@ -499,14 +525,14 @@ class PortalController extends Controller
         abort_unless($allowed, 403);
 
         if (Storage::disk('local')->exists($record->file_path)) {
-            return Storage::disk('local')->download($record->file_path, $record->original_name ?: basename($record->file_path));
+            return Storage::disk('local')->download($record->file_path, $record->original_name ?: basename($record->file_path), ['X-Content-Type-Options' => 'nosniff']);
         }
 
         $legacyRoot = realpath(base_path('legacy/uploads/documents'));
         $legacyFile = $legacyRoot ? realpath($legacyRoot.DIRECTORY_SEPARATOR.basename($record->file_path)) : false;
         abort_unless($legacyRoot && $legacyFile && str_starts_with($legacyFile, $legacyRoot.DIRECTORY_SEPARATOR) && is_file($legacyFile), 404);
 
-        return response()->download($legacyFile, $record->original_name ?: basename($legacyFile));
+        return response()->download($legacyFile, $record->original_name ?: basename($legacyFile), ['X-Content-Type-Options' => 'nosniff']);
     }
 
     private function studentProject(int $studentId): ?object

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Student dashboard')
 @section('content')
-<div class="legacy-heading"><div><h1>Welcome, {{ $user->full_name }}! 👋</h1><p>Here is the summary of your project progress and document submissions.</p></div>@unless($project)<a class="button primary" href="{{ route('student.projects.create') }}"><i class="fa-solid fa-circle-plus"></i> Register Project</a>@endunless</div>
+<div class="legacy-heading"><div><h1>Welcome, {{ $user->full_name }}! <i class="fa-solid fa-user-graduate" aria-hidden="true"></i></h1><p>Here is the summary of your project progress and document submissions.</p></div>@unless($project)<a class="button primary" href="{{ route('student.projects.create') }}"><i class="fa-solid fa-circle-plus"></i> Register Project</a>@endunless</div>
 <div class="student-status-grid">
     <div class="student-status-card status-warning"><div><small>PROJECT STATUS</small><strong><span class="project-state-pill {{ !$project ? 'unregistered' : ($project->is_complete_for_evaluation ? 'complete' : 'in-progress') }}">@if(!$project)Not Registered@elseif($project->is_complete_for_evaluation)Complete & Ready@else In Progress @endif</span></strong></div><i class="fa-solid fa-list-check"></i></div>
     <div class="student-status-card status-success"><div><small>TOTAL SCORE</small><strong>{{ $totalScore === null ? 'Not Evaluated Yet' : number_format((float) $totalScore, 0).' / 100' }}</strong></div><i class="fa-solid fa-star"></i></div>

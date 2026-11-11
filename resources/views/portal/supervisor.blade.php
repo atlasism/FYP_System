@@ -2,7 +2,7 @@
 @section('title', 'Supervisor dashboard')
 @section('content')
 <div class="supervisor-welcome">
-    <div><span class="eyebrow"><i class="fa-solid fa-user-tie"></i> SUPERVISOR PORTAL</span><h1>Welcome back, {{ auth()->user()->full_name }}! <span aria-hidden="true">👋</span></h1><p>Here is the overview of your supervision activities, student progress, and final year project updates for this session.</p></div>
+    <div><span class="eyebrow"><i class="fa-solid fa-user-tie"></i> SUPERVISOR PORTAL</span><h1>Welcome back, {{ auth()->user()->full_name }}! <i class="fa-solid fa-circle-user" aria-hidden="true"></i></h1><p>Here is the overview of your supervision activities, student progress, and final year project updates for this session.</p></div>
     <span class="supervisor-date"><i class="fa-regular fa-calendar-days"></i> {{ now()->format('F d, Y') }}</span>
 </div>
 <section class="supervisor-banner"><h2><i class="fa-solid fa-chalkboard-user"></i> Supervisor Dashboard Control Center</h2><p>Manage your supervised students, review pending project submissions, and evaluate academic milestones efficiently in one centralized place.</p></section>
